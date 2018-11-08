@@ -1,0 +1,10 @@
+path relinking
+
+générer un ensemble de solution d'élite P.
+sélectionner deux solution dans P, Sa et Sb
+i <- 1 ; s <-sa
+tant que(∆(s,sB) > 0)
+  s'<-identifier les voisin de s
+  si ∆(si+1,sB) est le minimun dans ∆ sur les voisin de s.
+  alors  s<- recherche locle (s'+1)P
+  sinon
