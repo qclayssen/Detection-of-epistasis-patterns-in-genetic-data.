@@ -63,7 +63,7 @@ void Parameters_file_parsing::import_line(string const& line)
         n = value;
 
     else if(key == "memetique_local_search_id")
-        n_smmb_aco_runs = atoi(value.c_str());
+        memetique_local_search_id = atoi(value.c_str());
 
     else if(key == "n_it")
         aco_n_ants = atoi(value.c_str());
@@ -78,7 +78,44 @@ void Parameters_file_parsing::import_line(string const& line)
         best_k = atoi(value.c_str());
 
 
+            else {}
 
-    else {}
+        }
+//=================================================
+// Parameters_file_parsing : split
+//=================================================
+vector<string> Parameters_file_parsing::split(string const& s, char delim)
+{
+    stringstream ss(s);
+    string item;
+    vector<string> tokens;
+    while (getline(ss, item, delim))
+        tokens.push_back(item);
+    return tokens;
+}
 
+//=================================================
+// Parameters_file_parsing : list_parameters
+//=================================================
+void Parameters_file_parsing::list_parameters() const
+{
+    cout << "########### PARAMETERS ###########\n" << "header => " << header << endl
+    << "separator => " << separator << endl
+    << "k => " << k << endl
+    << "relinking_local_search_id => " << relinking_local_search_id << endl
+    << "n => " << n << endl
+    << "memetique_local_search_id => " << memetique_local_search_id << endl
+    << "n_it => " << n_it << endl
+    << "n_pairs_selected_parents => " << n_pairs_selected_parents << endl
+    << "prob_mutation => " << prob_mutation << endl
+    << "best_k => " << best_k << endl
+    << "#################################" << endl;
+}
+//=================================================
+// Parameters_file_parsing : update_subset_size_large
+//=================================================
+void Parameters_file_parsing::update_subset_size_large(unsigned const& n_genos)
+{
+    if(aco_set_size == 0)
+        aco_set_size = sqrt(n_genos);
 }
