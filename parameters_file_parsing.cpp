@@ -66,7 +66,7 @@ void Parameters_file_parsing::import_line(string const& line)
         memetique_local_search_id = atoi(value.c_str());
 
     else if(key == "n_it")
-        aco_n_ants = atoi(value.c_str());
+        n_it = atoi(value.c_str());
 
     else if(key == "n_pairs_selected_parents")
         n_pairs_selected_parents = atoi(value.c_str());
