@@ -1,0 +1,35 @@
+# number of header lines in the genotype file
+header 1
+
+# separation between fields in the genotype file
+separator ,
+
+## PROCEDURE path-relinking
+
+# number of elite solutions (k ≥ 2)
+k entier?
+
+#the identifier for a given strategy based on local search
+(basic local search, VND, VNS, ...)
+relinking_local_search_id basic local search, VND, VNS?
+
+## genetic_algorithm
+
+#number of individuals (i.e., solutions) in each population
+n entier?
+
+#the identifier for a given strategy based on local search
+(basic local search, VND, VNS, ...)
+memetique_local_search_id basic local search, VND, VNS?
+
+#maximal number of iterations (i.e., successive populations)
+n_it 
+
+#number of parents to be selected in current population
+n_pairs_selected_parents
+
+#probability that a child be subject to a mutation
+prob_mutation
+
+#maximal number of distinct best individuals in the last population
+best_k
