@@ -2,4 +2,4 @@
 # coding: utf-8
 
 import os
-os.system("simu_naive.py zbi 10 aaa 10 10 10")
+os.system("python3 simu_naive.py simu1 10 simu1 10 10 10")
