@@ -24,33 +24,38 @@ except FileExistsError:
 
 random.seed()
 
-alpha=random.uniform(-1,1)
-beta1=random.uniform(-1,1)
-beta2=random.uniform(-1,1)
-beta12=random.uniform(-1,1)
 
 phiList=[]
 globalList=[]
-for X1 in range (0,3):
-	for X2 in range (0,3):
-		value=alpha+beta1*X1+beta2*X2+beta12*X1*X2
-		phiList.append(value)
-		theMiddle=[X1,X2,value]
-		globalList.append(theMiddle)
-
-
-minim=min(phiList)
-maxim=max(phiList)
-
 phenoPosList=[]
 phenoNegList=[]
-for i in range(0,len(phiList)):
-	globalList[i][2]=1/(1+(math.exp(-phiList[i])))
-	print(globalList[i][2])
-	if (globalList[i][2]>0.5) :
-		phenoPosList.append([globalList[i][0],globalList[i][1]])
-	else :
-		phenoNegList.append([globalList[i][0],globalList[i][1]])
+
+while (phenoPosList==[] or phenoNegList==[]):
+    alpha=random.uniform(-1,1)
+    beta1=random.uniform(-1,1)
+    beta2=random.uniform(-1,1)
+    beta12=random.uniform(-1,1)
+
+
+    for X1 in range (0,3):
+    	for X2 in range (0,3):
+    		value=alpha+beta1*X1+beta2*X2+beta12*X1*X2
+    		phiList.append(value)
+    		theMiddle=[X1,X2,value]
+    		globalList.append(theMiddle)
+
+
+    minim=min(phiList)
+    maxim=max(phiList)
+
+
+    for i in range(0,len(phiList)):
+    	globalList[i][2]=1/(1+(math.exp(-phiList[i])))
+    	print(globalList[i][2])
+    	if (globalList[i][2]>0.5) :
+    		phenoPosList.append([globalList[i][0],globalList[i][1]])
+    	else :
+    		phenoNegList.append([globalList[i][0],globalList[i][1]])
 
 for i in range(1,nbFiles+1):
     newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
