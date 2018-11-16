@@ -10,6 +10,7 @@ INC=-I$(BOOST_FOLDER) \
  -I./include/usecases \
  -I./include/markov
 
-
 parsingmake: parameters_file.o
-     g++ -c parameters_file_parsing.cpp c++11 -fopenmp -Wall -Wextra -DNDEBUG -g $(INC)
+	g++ -o parameters_file_parsing.o -c parameters_file_parsing.cpp -std=c++11 -fopenmp -Wall -Wextra -DNDEBUG
+target: parameters_file.o
+     g++ -o exec_parser parameters_file_parsing.o -std=c++11 -Wall -Wextra -DNDEBUG

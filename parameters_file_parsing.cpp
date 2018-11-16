@@ -60,7 +60,7 @@ void parameters_file_parsing::import_line(string const& line)
         relinking_local_search_id = atof(value.c_str());
 
     else if(key == "n")
-        n = value;
+        n = atoi(value.c_str());
 
     else if(key == "memetique_local_search_id")
         memetique_local_search_id = atoi(value.c_str());
@@ -114,8 +114,8 @@ void parameters_file_parsing::list_parameters() const
 //=================================================
 // parameters_file_parsing : update_subset_size_large
 //=================================================
-void parameters_file_parsing::update_subset_size_large(unsigned const& n_genos)
+/*void parameters_file_parsing::update_subset_size_large(unsigned const& n_genos)
 {
     if(aco_set_size == 0)
         aco_set_size = sqrt(n_genos);
-}
+}*/
