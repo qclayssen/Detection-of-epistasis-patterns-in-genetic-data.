@@ -61,13 +61,13 @@ for i in range(1,nbFiles+1):
     newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
     newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
     header=""
-    for j in range(1,nbVar+1):
+    for j in range(1,nbVar-1):
         header=header+"N"+str(j)+","
     header=header+"CAUS1,CAUS2\n"
     line=""
     countPosNeg=0
     for k in range(nbTotal):
-        for j in range(nbVar):
+        for j in range(nbVar-2):
             line=line+str(random.randrange(3))+","
         if (countPosNeg<nbPositive):
             whichDuo=random.randrange(len(phenoPosList))
