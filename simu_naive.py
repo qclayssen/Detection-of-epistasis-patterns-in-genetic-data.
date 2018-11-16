@@ -1,20 +1,21 @@
 import re
 import os
 import random
-import textwrap
+import math
 import sys
 import warnings
 
-outFolder=input("Nom du répertoire de sortie :\n")
-nbFiles=int(input("Nombre de fichier générés :\n"))
-prefix=input("Préfixer commun aux fichiers générés :\n")
-nbVar=int(input("Nombre des SNP à simuler :\n"))
-nbPositive=int(input("Nombre de cas à simuler :\n"))
-nbNegative=int(input("Nombre de témoins à simuler :\n"))
+outFolder=str(sys.argv[1])
+nbFiles=int(sys.argv[2])
+prefix=str(sys.argv[3])
+nbVar=int(sys.argv[4])
+nbPositive=int(sys.argv[5])
+nbNegative=int(sys.argv[6])
 nbTotal=nbPositive+nbNegative
+
 try:
     os.mkdir(outFolder)
-    print("Dossier de sortie" , outFolder ,  " créé") 
+    print("Dossier de sortie" , outFolder ,  " créé")
 except FileExistsError:
     print("Le dossier de sortie" , outFolder ,  " existe déjà")
 
@@ -32,17 +33,18 @@ for i in range(1,nbFiles+1):
 		line=line[0:-1]+'\n'
 	newFile.write(header)
 	newFile.write(line)
-	newFile.close
 
-S1=random.uniform(-1,1)
-S2=random.uniform(-1,1)
-S12=random.uniform(-1,1)
+	newFile.close
+alpha=random.uniform(-1,1)
+beta1=random.uniform(-1,1)
+beta2=random.uniform(-1,1)
+beta12=random.uniform(-1,1)
 
 phiList=[]
 globalList=[]
 for X1 in range (0,3):
 	for X2 in range (0,3):
-		value=S1*X1+S2*X2+S12*X1*X2
+		value=alpha+beta1*X1+beta2*X2+beta12*X1*X2
 		phiList.append(value)
 		theMiddle=[X1,X2,value]
 		globalList.append(theMiddle)
@@ -54,17 +56,16 @@ maxim=max(phiList)
 phenoPosList=[]
 phenoNegList=[]
 for i in range(0,len(phiList)):
-	globalList[i][2]=(phiList[i]-minim)/(maxim-minim)
-
+	globalList[i][2]=1/(1+(math.exp(-phiList[i])))
+	print(globalList[i][2])
 	if (globalList[i][2]>0.5) :
 		phenoPosList.append([globalList[i][0],globalList[i][1]])
-	else : 
+	else :
 		phenoNegList.append([globalList[i][0],globalList[i][1]])
 
-# 1/(1+(-phi)²)
-
-print(S1)
-print(S2)
-print(S12)
+print("\n",alpha)
+print(beta1)
+print(beta2)
+print(beta12)
 print("Cas",phenoPosList)
 print("Témoins",phenoNegList)
