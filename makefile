@@ -11,6 +11,6 @@ INC=-I$(BOOST_FOLDER) \
  -I./include/markov
 
 parsingmake: parameters_file.o
-	g++ -o parameters_file_parsing.o -c parameters_file_parsing.cpp -std=c++11 -fopenmp -Wall -Wextra -DNDEBUG
+	g++ -o parameters_file_parsing.o -c parameters_file_parsing.cpp -std=c++11 -Wall -Wextra -DNDEBUG
 target: parameters_file.o
      g++ -o exec_parser parameters_file_parsing.o -std=c++11 -Wall -Wextra -DNDEBUG
