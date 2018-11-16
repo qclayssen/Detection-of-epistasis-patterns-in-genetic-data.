@@ -1,4 +1,4 @@
-#include "Parameters_file_parsing.hpp"
+#include "parameters_file_parsing.hpp"
 
 #include <sstream>
 #include <algorithm>
@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Parameters_file_parsing::Parameters_file_parsing()
+parameters_file_parsing::parameters_file_parsing()
 {
     ifstream file("./PARAMETERS_PROJECT.txt");
     if(file)
@@ -36,7 +36,7 @@ Parameters_file_parsing::Parameters_file_parsing()
 
 
 
-void Parameters_file_parsing::import_line(string const& line)
+void parameters_file_parsing::import_line(string const& line)
 {
     vector<string> token = this->split(line, ' ');
     string const& key = token[0];
@@ -82,9 +82,9 @@ void Parameters_file_parsing::import_line(string const& line)
 
         }
 //=================================================
-// Parameters_file_parsing : split
+// parameters_file_parsing : split
 //=================================================
-vector<string> Parameters_file_parsing::split(string const& s, char delim)
+vector<string> parameters_file_parsing::split(string const& s, char delim)
 {
     stringstream ss(s);
     string item;
@@ -95,9 +95,9 @@ vector<string> Parameters_file_parsing::split(string const& s, char delim)
 }
 
 //=================================================
-// Parameters_file_parsing : list_parameters
+// parameters_file_parsing : list_parameters
 //=================================================
-void Parameters_file_parsing::list_parameters() const
+void parameters_file_parsing::list_parameters() const
 {
     cout << "########### PARAMETERS ###########\n" << "header => " << header << endl
     << "separator => " << separator << endl
@@ -112,9 +112,9 @@ void Parameters_file_parsing::list_parameters() const
     << "#################################" << endl;
 }
 //=================================================
-// Parameters_file_parsing : update_subset_size_large
+// parameters_file_parsing : update_subset_size_large
 //=================================================
-void Parameters_file_parsing::update_subset_size_large(unsigned const& n_genos)
+void parameters_file_parsing::update_subset_size_large(unsigned const& n_genos)
 {
     if(aco_set_size == 0)
         aco_set_size = sqrt(n_genos);

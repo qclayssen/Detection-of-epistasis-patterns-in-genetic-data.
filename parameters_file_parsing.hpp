@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Parameters_file_parsing
+class parameters_file_parsing
 {
 public:
     parameters_file_parsing();
