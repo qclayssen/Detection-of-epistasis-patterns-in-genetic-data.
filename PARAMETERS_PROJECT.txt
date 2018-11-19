@@ -11,7 +11,7 @@ k 3
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)
-relinking_local_search_id basic VND
+relinking_local_search_id basic
 
 ## memetique_algorithm
 

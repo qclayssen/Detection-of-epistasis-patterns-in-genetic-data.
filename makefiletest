@@ -1,0 +1,8 @@
+
+all: exec_parameters_file_parsing
+
+exec_parameters_file_parsing: parameters_file_parsing.o
+	g++ -o exec_parameters_file_parsing parameters_file_parsing..o -std=c++11 -Wall -Wextra -DNDEBUG -v
+
+parameters_file_parsing.o : parameters_file_parsing.cpp
+	g++ -o parameters_file_parsing.o -c parameters_file_parsing.cpp -std=c++11 -Wall -Wextra -DNDEBUG -v
