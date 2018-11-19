@@ -1,3 +1,8 @@
+//Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
+//Parsing of CSV Files for Epistasis detection
+//Created :
+//Modified :
+
 #include <iostream>
 #include <stdlib.h>
 #include <ctime>
@@ -13,11 +18,11 @@ int main()
 {
     // Arguments
     string genos_file;
+    genos_file="simu1_Genotype_1.csv";
     cout<<"Genotype file path : "<<endl;
-    cin>>genos_file;
     string phenos_file;
+    phenos_file="simu1_Phenotype_1.csv";
     cout<<"Phenotype file path : "<<endl;
-    cin>> phenos_file;
     int header = 1;
     char separator = ',';
 
@@ -27,7 +32,93 @@ int main()
     blas_matrix genos = genos_csv.data();
     blas_matrix phenos_m = phenos_csv.data();
     blas_column phenos(phenos_m, 0);
-
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
+    int k,l1,l2;
+
+    int contingence[3][10]={0};
+    for (k=0;k<int(genos.size2())-1;k++){
+      contingence[3][10]={0};
+      for (l1=0;l1<int(genos.size1())-2;l1++){
+        for (l2=1;l2<int(genos.size1())-1;l2++){
+          if (phenos_m(l1,0)==1){
+            if (genos(l1,k)==0){
+              if (genos(l2,k)==0){
+                contingence[0][0]+=1;
+              }
+              else if (genos(l2,k)==1){
+                contingence[0][1]+=1;
+              }
+              else{
+                contingence[0][2]+=1;
+              }
+            }
+            else if (genos(l1,k)==0){
+              if (genos(l2,k)==0){
+                contingence[0][3]+=1;
+              }
+              else if (genos(l2,k)==1){
+                contingence[0][4]+=1;
+              }
+              else{
+                contingence[0][5]+=1;
+              }
+            }
+            else{
+              if (genos(l2,k)==0){
+                contingence[0][6]+=1;
+              }
+              else if (genos(l2,k)==1){
+                contingence[0][7]+=1;
+              }
+              else{
+                contingence[0][8]+=1;
+              }
+            }
+          }
+          else{
+            if (genos(l1,k)==0){
+              if (genos(l2,k)==0){
+                contingence[1][0]++;
+              }
+              else if (genos(l2,k)==1){
+                contingence[1][1]++;
+              }
+              else{
+                contingence[1][2]++;
+              }
+            }
+            else if (genos(l1,k)==0){
+              if (genos(l2,k)==0){
+                contingence[1][3]++;
+              }
+              else if (genos(l2,k)==1){
+                contingence[1][4]++;
+              }
+              else{
+                contingence[1][5]++;
+              }
+            }
+            else{
+              if (genos(l2,k)==0){
+                contingence[1][6]++;
+              }
+              else if (genos(l2,k)==1){
+                contingence[1][7]++;
+              }
+              else{
+                contingence[1][8]++;
+              }
+            }
+          }
+        }
+      }
+      for (int i=0;i<3;i++){
+        for (int j=0;j<10;j++){
+          cout<<contingence[j][i]<<" ";
+        }
+        cout<<endl;
+      }
+      cout<<endl;
+    }
     return 0;
 }
