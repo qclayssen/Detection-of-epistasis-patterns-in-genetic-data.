@@ -35,9 +35,13 @@ int main()
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
     int k,l1,l2;
 
-    int contingence[3][10]={0};
+    int contingence[3][10];
     for (k=0;k<int(genos.size2())-1;k++){
-      contingence[3][10]={0};
+      for (int i=0;i<3;i++){
+        for (int j=0;j<10;j++){
+          contingence[i][j]=0;
+        }
+      }
       for (l1=0;l1<int(genos.size1())-2;l1++){
         for (l2=1;l2<int(genos.size1())-1;l2++){
           if (phenos_m(l1,0)==1){
@@ -52,7 +56,7 @@ int main()
                 contingence[0][2]+=1;
               }
             }
-            else if (genos(l1,k)==0){
+            else if (genos(l1,k)==1){
               if (genos(l2,k)==0){
                 contingence[0][3]+=1;
               }
@@ -87,7 +91,7 @@ int main()
                 contingence[1][2]++;
               }
             }
-            else if (genos(l1,k)==0){
+            else if (genos(l1,k)==1){
               if (genos(l2,k)==0){
                 contingence[1][3]++;
               }
@@ -114,7 +118,7 @@ int main()
       }
       for (int i=0;i<3;i++){
         for (int j=0;j<10;j++){
-          cout<<contingence[j][i]<<" ";
+          cout<<contingence[i][j]<<" ";
         }
         cout<<endl;
       }
