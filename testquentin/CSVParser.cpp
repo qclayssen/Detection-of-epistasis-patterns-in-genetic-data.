@@ -1,16 +1,3 @@
-/*
-
-#Autor:Antoine Laiwnee (Master 2 Bioinformatics, University of Nantes)
-#Autor:Quentin Clayssen (Master 2 Bioinformatics, University of Nantes)
-#methode: path-relinking for episatasie detection
-or //script for ...
-#University of Nantes
-#undersupervison: Christine Sinoquet
-#dates
-
-F mesure temps d'execution
-*/
-#include <math.h>
 //Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
 //Parsing of CSV Files for Epistasis detection
 //Created :
@@ -23,53 +10,9 @@ F mesure temps d'execution
 
 #include "CSVParser.hpp"
 #include "common.h"
-
+#include <boost/math/distributions/chi_squared.hpp>
 using namespace std;
 using namespace std::chrono;
-
-
-
-/*float khi(int contingence[2][9] ,int nbrligne, int nbrcolonnes)
-{    for(int i(0); i<(nbrcolonnes-1); ++i)
-    {    for(int j(0); j<(nbrligne-1); ++j)
-        {
-           contingence[nbrligne][i] += contingence[i][j];
-        }
-    }
-
-
-    for(int j(0); j<(nbrcolonnes-1); ++j)
-    {    for(int i(0); i<(nbrligne-1); ++i)
-        {
-           contingence[j][nbrcolonnes] += contingence[i][j];
-        }
-    }
-
-
-
-    int contingencetheo[nbrcolonnes-1][nbrligne-1];
-    for(int i(0); i<(nbrcolonnes-1); ++i)
-    {    for(int j(0); j<(nbrligne-1); ++j)
-        {
-           contingencetheo[i][j] = contingence[i][nbrligne]*contingence[nbrcolonnes][j]/contingence[nbrcolonnes][nbrligne];
-        }
-    }
-
-
-
-    int scorekhi2=0;
-    for(int i(0); i<(nbrcolonnes-1); ++i)
-    {    for(int j(0); j<(nbrligne-1); ++j)
-        {
-           scorekhi2 += (contingence[i][j]-pow(contingencetheo[i][j],2))/contingence[nbrcolonnes][nbrligne];
-        }
-    }
-
-    return (scorekhi2);
-
-}*/
-
-
 
 int main()
 {
@@ -92,9 +35,13 @@ int main()
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
     int k,l1,l2;
 
-    int contingence[2][9]={0};
+    int contingence[3][10];
     for (k=0;k<int(genos.size2())-1;k++){
-      contingence[2][9]={0};
+      for (int i=0;i<3;i++){
+        for (int j=0;j<10;j++){
+          contingence[i][j]=0;
+        }
+      }
       for (l1=0;l1<int(genos.size1())-2;l1++){
         for (l2=1;l2<int(genos.size1())-1;l2++){
           if (phenos_m(l1,0)==1){
@@ -109,7 +56,7 @@ int main()
                 contingence[0][2]+=1;
               }
             }
-            else if (genos(l1,k)==0){
+            else if (genos(l1,k)==1){
               if (genos(l2,k)==0){
                 contingence[0][3]+=1;
               }
@@ -144,7 +91,7 @@ int main()
                 contingence[1][2]++;
               }
             }
-            else if (genos(l1,k)==0){
+            else if (genos(l1,k)==1){
               if (genos(l2,k)==0){
                 contingence[1][3]++;
               }
@@ -171,7 +118,7 @@ int main()
       }
       for (int i=0;i<3;i++){
         for (int j=0;j<10;j++){
-          cout<<contingence[j][i]<<" ";
+          cout<<contingence[i][j]<<" ";
         }
         cout<<endl;
       }
@@ -179,40 +126,78 @@ int main()
     }
     int const nbrcolonnes(9);
     int const nbrligne(2);
-    for(int i(0); i<(nbrcolonnes-1); ++i)
-    {    for(int j(0); j<(nbrligne-1); ++j)
+    //cout<<nbrcolonnes<<endl;
+
+    for(int j(0); j<(nbrcolonnes); ++j)
+    {    for(int i(0); i<(nbrligne); ++i)
         {
-           contingence[nbrligne][i] += contingence[i][j];
+
+           cout<<contingence[nbrligne][j]<<"+"<<contingence[i][j]<<"=";
+           contingence[nbrligne][j] += contingence[i][j];
+           cout<<contingence[nbrligne][j]<<" ";
+
+        }cout<<";"<<endl;
+    }
+    for (int i=0;i<3;i++){
+      for (int j=0;j<10;j++){
+        cout<<contingence[i][j]<<" ";
+      }
+      cout<<endl;
+    }
+    cout<<endl;
+
+
+
+    for(int j(0); j<(nbrcolonnes); ++j)
+    {    for(int i(0); i<(nbrligne); ++i)
+        {
+           contingence[i][nbrcolonnes] += contingence[i][j];
         }
     }
-
-
-    for(int j(0); j<(nbrcolonnes-1); ++j)
-    {    for(int i(0); i<(nbrligne-1); ++i)
+ for(int i(0); i<(nbrligne); ++i)
         {
-           contingence[j][nbrcolonnes] += contingence[i][j];
+           contingence[nbrligne][nbrcolonnes] += contingence[i][nbrcolonnes];
+        }
+    for (int i=0;i<3;i++){
+      for (int j=0;j<10;j++){
+        cout<<contingence[i][j]<<" ";
+      }
+      cout<<endl;
+    }
+    cout<<endl;
+
+
+
+    int contingencetheo[nbrcolonnes][nbrligne];
+    for(int i(0); i<(nbrligne); ++i)
+    {    for(int j(0); j<(nbrcolonnes); ++j)
+        {
+           cout<<contingence[i][nbrcolonnes]<<"*"<<contingence[nbrligne][j]<<"/"<<contingence[nbrligne][nbrcolonnes];
+           contingencetheo[i][j] = contingence[i][nbrcolonnes]*contingence[nbrligne][j]/contingence[nbrligne][nbrcolonnes];
+           cout<<"="<<contingencetheo[i][j]<<endl;
+        }
+    }    for (int i=0;i<2;i++){
+          for (int j=0;j<9;j++){
+            cout<<contingencetheo[i][j]<<" ";
+          }
+          cout<<endl;
+        }
+        cout<<endl;
+
+
+
+    float scorekhi2=0;
+    for(int i(0); i<(nbrligne); ++i)
+    {    for(int j(0); j<(nbrcolonnes); ++j)
+        {
+           scorekhi2 += (pow(((contingence[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
+           cout<<scorekhi2<<"="<<contingence[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
         }
     }
-
-
-
-    int contingencetheo[nbrcolonnes-1][nbrligne-1];
-    for(int i(0); i<(nbrcolonnes-1); ++i)
-    {    for(int j(0); j<(nbrligne-1); ++j)
-        {
-           contingencetheo[i][j] = contingence[i][nbrligne]*contingence[nbrcolonnes][j]/contingence[nbrcolonnes][nbrligne];
-        }
-    }
-
-
-
-    int scorekhi2=0;
-    for(int i(0); i<(nbrcolonnes-1); ++i)
-    {    for(int j(0); j<(nbrligne-1); ++j)
-        {
-           scorekhi2 += (contingence[i][j]-pow(contingencetheo[i][j],2))/contingence[nbrcolonnes][nbrligne];
-        }
-    }
-
-    return (scorekhi2);
+    float p;
+    cout<<"score: "<<scorekhi2<<endl;
+    boost::math::chi_squared mydist(8);
+    p=boost::math::cdf(mydist,scorekhi2);
+    cout<<"p: "<<p<<endl;
+    return 0;
 }
