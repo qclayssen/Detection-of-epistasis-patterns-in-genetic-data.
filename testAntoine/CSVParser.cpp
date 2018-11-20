@@ -14,6 +14,9 @@
 using namespace std;
 using namespace std::chrono;
 
+typedef int contingence2SNP[3][10];
+
+
 int main()
 {
     // Arguments
@@ -35,15 +38,16 @@ int main()
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
     int k,l1,l2;
 
-    int contingence[3][10];
-    for (k=0;k<int(genos.size2())-1;k++){
-      for (int i=0;i<3;i++){
+    contingence2SNP contingence;
+    for (k=0;k<int(genos.size2())-1;k++){ //For each individuals in the data imported
+      for (int i=0;i<3;i++){ //Set contingency matrix to 0
         for (int j=0;j<10;j++){
           contingence[i][j]=0;
         }
       }
-      for (l1=0;l1<int(genos.size1())-2;l1++){
-        for (l2=1;l2<int(genos.size1())-1;l2++){
+      for (l1=0;l1<int(genos.size1())-2;l1++){ //First SNP of the pattern
+        for (l2=1;l2<int(genos.size1())-1;l2++){ //Second SNP of the pattern
+          //Filling the contingency matrix
           if (phenos_m(l1,0)==1){
             if (genos(l1,k)==0){
               if (genos(l2,k)==0){
@@ -116,13 +120,18 @@ int main()
           }
         }
       }
-      for (int i=0;i<3;i++){
-        for (int j=0;j<10;j++){
+      int countNonStat=0;
+      for (int i=0;i<2;i++){
+        for (int j=0;j<9;j++){
           cout<<contingence[i][j]<<" ";
+          if (contingence[i][j]<5){
+            countNonStat++;
+          }
         }
         cout<<endl;
       }
       cout<<endl;
+      cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
     }
     return 0;
 }
