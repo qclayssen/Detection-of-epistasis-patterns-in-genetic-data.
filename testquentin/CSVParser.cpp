@@ -201,29 +201,65 @@ int main()
           }
           cout<<endl;
 
+          int test;
+          test=0;
+          unsigned ncells = nbrligne*nbrcolonnes;
+          int count_inf_5 = 0;
+          for(unsigned i=0; i<nbrligne; ++i)
+          {
+              for(unsigned j=0; j<nbrcolonnes; ++j)
+              {
+                  if(contingence[i][j] < 0 || contingence[i][j]!=contingence[i][j]) // test for nan
+                  {
+                      test=1;
+                  }
+                  if(contingence[i][j] < 5)
+                  {
+                      count_inf_5 ++;
+                      if((double)count_inf_5 / ncells > 0.2)
+                      {
+      //                    cout << "Not reliable test, ";
+      //                    cout << "expected: " << e << endl;
+                          test=1;
+                      }
+                  }
+              }
 
-          float scorekhi2=0;
+              for(unsigned i=0; i<nbrligne; ++i)
+              {
+                 for(unsigned j=0; j<nbrcolonnes; ++j)
+                 {
+                       if(contingencetheo[i][j] < 5)
+                       test=1;
+                 }
+              }
+          cout<<"test:"<<test<<endl;
+            float scorekhi2=0;
+          if(test==0)
+          {
+
           for(int i(0); i<(nbrligne); ++i)
           {    for(int j(0); j<(nbrcolonnes); ++j)
               {
+                if (contingencetheo[i][j] != 0 || contingence[i][j] != 0 ){
                       double div = (double) contingencetheo[i][j] / contingence[i][j];
                       scorekhi2 += contingencetheo[i][j] * log(div);
+                    }
 
               }
 
           }
+        }
           scorekhi2  *= 2;
-
-
           float pval;
           cout<<"score: "<<scorekhi2<<endl;
           boost::math::chi_squared mydist(8);
           pval = 1 - boost::math::cdf(mydist, scorekhi2);
+          if(pval == 0)
+              pval = 2.0e-16;
           cout<<"p: "<<pval<<endl;
-          return(scorekhi2);
 
-
-
-        }
+      }
+    }
     return 0;
   }
