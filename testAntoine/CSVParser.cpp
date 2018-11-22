@@ -210,11 +210,13 @@ int main()
                //cout<<scorekhi2<<"="<<contingence[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
             }
         }
-        float p;
+        float pval;
         cout<<"score: "<<scorekhi2<<endl;
         boost::math::chi_squared mydist(8);
-        p=boost::math::cdf(mydist,scorekhi2);
-        cout<<"p: "<<p<<endl;
+        pval = 1 - boost::math::cdf(mydist, scorekhi2);
+        if(pval == 0)
+            pval = 2.0e-16;
+        cout<<"p: "<<pval<<endl;
       }
     }
     return 0;
