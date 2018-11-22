@@ -24,7 +24,7 @@ void create_contingency_table(int l1,int l2,contingence2SNP* adr_contingence,bla
       (*adr_contingence)[i][j]=0;
     }
   }
-  for (k=0;k<int(genos.size1()-1);k++){ //For each individuals in the data imported
+  for (k=0;k<int(genos.size1());k++){ //For each individuals in the data imported
     //Filling the contingency matrix
     if (phenos_m(k,0)==1){
       if (genos(k,l1)==0){
@@ -123,7 +123,8 @@ int main()
     contingence2SNP contingence;
     contingence2SNP* adr_contingence = &contingence;
     for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
-      for (l2=1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
+      for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
+        cout<<l1<<" " <<l2<<endl;
         create_contingency_table(l1,l2,adr_contingence,genos,phenos_m);
         int countNonStat=0;
         for (int i=0;i<2;i++){
