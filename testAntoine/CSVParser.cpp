@@ -28,23 +28,23 @@ void create_contingency_table(int nb_sample,contingence2SNP* adr_contingence,bla
   for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
     for (l2=1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
       //Filling the contingency matrix
-      if (phenos_m(l1,0)==1){
-        if (genos(l1,k)==0){
-          if (genos(l2,k)==0){
+      if (phenos_m(k,0)==1){
+        if (genos(k,l1)==0){
+          if (genos(k,l2)==0){
             (*adr_contingence)[0][0]+=1;
           }
-          else if (genos(l2,k)==1){
+          else if (genos(k,l2)==1){
             (*adr_contingence)[0][1]+=1;
           }
           else{
             (*adr_contingence)[0][2]+=1;
           }
         }
-        else if (genos(l1,k)==1){
-          if (genos(l2,k)==0){
+        else if (genos(k,l1)==1){
+          if (genos(k,l2)==0){
             (*adr_contingence)[0][3]+=1;
           }
-          else if (genos(l2,k)==1){
+          else if (genos(k,l2)==1){
             (*adr_contingence)[0][4]+=1;
           }
           else{
@@ -52,10 +52,10 @@ void create_contingency_table(int nb_sample,contingence2SNP* adr_contingence,bla
           }
         }
         else{
-          if (genos(l2,k)==0){
+          if (genos(k,l2)==0){
             (*adr_contingence)[0][6]+=1;
           }
-          else if (genos(l2,k)==1){
+          else if (genos(k,l2)==1){
             (*adr_contingence)[0][7]+=1;
           }
           else{
@@ -64,22 +64,22 @@ void create_contingency_table(int nb_sample,contingence2SNP* adr_contingence,bla
         }
       }
       else{
-        if (genos(l1,k)==0){
-          if (genos(l2,k)==0){
+        if (genos(k,l1)==0){
+          if (genos(k,l2)==0){
             (*adr_contingence)[1][0]++;
           }
-          else if (genos(l2,k)==1){
+          else if (genos(k,l2)==1){
             (*adr_contingence)[1][1]++;
           }
           else{
             (*adr_contingence)[1][2]++;
           }
         }
-        else if (genos(l1,k)==1){
-          if (genos(l2,k)==0){
+        else if (genos(k,l1)==1){
+          if (genos(k,l2)==0){
             (*adr_contingence)[1][3]++;
           }
-          else if (genos(l2,k)==1){
+          else if (genos(k,l2)==1){
             (*adr_contingence)[1][4]++;
           }
           else{
@@ -87,10 +87,10 @@ void create_contingency_table(int nb_sample,contingence2SNP* adr_contingence,bla
           }
         }
         else{
-          if (genos(l2,k)==0){
+          if (genos(k,l2)==0){
             (*adr_contingence)[1][6]++;
           }
-          else if (genos(l2,k)==1){
+          else if (genos(k,l2)==1){
             (*adr_contingence)[1][7]++;
           }
           else{
