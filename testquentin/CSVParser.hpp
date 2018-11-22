@@ -7,8 +7,8 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include </Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0//boost/config/user.hpp>
-#include </Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0//boost/numeric/ublas/matrix.hpp>
+#include </Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0/boost/config/user.hpp>
+#include </Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0/boost/numeric/ublas/matrix.hpp>
 
 /*!
  * \class CSVParser
