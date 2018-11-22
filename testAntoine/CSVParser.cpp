@@ -104,10 +104,8 @@ int main()
     // Arguments
     string genos_file;
     genos_file="simu1_Genotype_1.csv";
-    cout<<"Genotype file path : "<<endl;
     string phenos_file;
     phenos_file="simu1_Phenotype_1.csv";
-    cout<<"Phenotype file path : "<<endl;
     int header = 1;
     char separator = ',';
 
@@ -124,7 +122,6 @@ int main()
     contingence2SNP* adr_contingence = &contingence;
     for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
       for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
-        cout<<l1<<" " <<l2<<endl;
         create_contingency_table(l1,l2,adr_contingence,genos,phenos_m);
         int countNonStat=0;
         for (int i=0;i<2;i++){
@@ -136,15 +133,15 @@ int main()
           }
           cout<<endl;
         }
-        cout<<endl;
         cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
+        cout<<endl;
 
         int const nbrcolonnes(9);
         int const nbrligne(2);
         //cout<<nbrcolonnes<<endl;
 
-        for(int j(0); j<(nbrcolonnes); ++j)
-        {    for(int i(0); i<(nbrligne); ++i)
+        for(int j=0; j<(nbrcolonnes); ++j)
+        {    for(int i=0; i<(nbrligne); ++i)
             {
 
                //cout<<contingence[nbrligne][j]<<"+"<<contingence[i][j]<<"=";
@@ -154,18 +151,9 @@ int main()
             }
             //cout<<";"<<endl;
         }
-        for (int i=0;i<3;i++){
-          for (int j=0;j<10;j++){
-            cout<<contingence[i][j]<<" ";
-          }
-          cout<<endl;
-        }
-        cout<<endl;
 
-
-
-        for(int j(0); j<(nbrcolonnes); ++j)
-        {    for(int i(0); i<(nbrligne); ++i)
+        for(int j=0; j<(nbrcolonnes); ++j)
+        {    for(int i=0; i<(nbrligne); ++i)
             {
                contingence[i][nbrcolonnes] += contingence[i][j];
             }
@@ -174,6 +162,7 @@ int main()
             {
                contingence[nbrligne][nbrcolonnes] += contingence[i][nbrcolonnes];
             }
+
         for (int i=0;i<3;i++){
           for (int j=0;j<10;j++){
             cout<<contingence[i][j]<<" ";
@@ -183,22 +172,23 @@ int main()
         cout<<endl;
 
 
-
         int contingencetheo[nbrcolonnes][nbrligne];
-        for(int i(0); i<(nbrligne); ++i)
-        {    for(int j(0); j<(nbrcolonnes); ++j)
+        for(int i=0; i<(nbrligne); ++i)
+        {    for(int j=0; j<(nbrcolonnes); ++j)
             {
                //cout<<contingence[i][nbrcolonnes]<<"*"<<contingence[nbrligne][j]<<"/"<<contingence[nbrligne][nbrcolonnes];
                contingencetheo[i][j] = contingence[i][nbrcolonnes]*contingence[nbrligne][j]/contingence[nbrligne][nbrcolonnes];
               // cout<<"="<<contingencetheo[i][j]<<endl;
             }
-        }    for (int i=0;i<2;i++){
-              for (int j=0;j<9;j++){
-                cout<<contingencetheo[i][j]<<" ";
-              }
-              cout<<endl;
-            }
-            cout<<endl;
+        }
+
+        for (int i=0;i<2;i++){
+          for (int j=0;j<9;j++){
+            cout<<contingencetheo[i][j]<<" ";
+          }
+          cout<<endl;
+        }
+        cout<<endl;
 
 
 
@@ -217,6 +207,7 @@ int main()
         if(pval == 0)
             pval = 2.0e-16;
         cout<<"p: "<<pval<<endl;
+        cout<<endl;
       }
     }
     return 0;

@@ -24,70 +24,132 @@ except FileExistsError:
 
 random.seed()
 
+patternSize=0
+while (patternSize!=2 and patternSize!=3):
+    patternSize=int(input("Size of causal SNP pattern (2 or 3):"))
+
 
 phiList=[]
 globalList=[]
 phenoPosList=[]
 phenoNegList=[]
 
-while (phenoPosList==[] or phenoNegList==[]):
-    alpha=random.uniform(-1,1)
-    beta1=random.uniform(-1,1)
-    beta2=random.uniform(-1,1)
-    beta12=random.uniform(-1,1)
+if (patternSize==2):
+    while (phenoPosList==[] or phenoNegList==[]):
+        alpha=random.uniform(-1,1)
+        beta1=random.uniform(-1,1)
+        beta2=random.uniform(-1,1)
+        beta12=random.uniform(-1,1)
 
 
-    for X1 in range (0,3):
-    	for X2 in range (0,3):
-    		value=alpha+beta1*X1+beta2*X2+beta12*X1*X2
-    		phiList.append(value)
-    		theMiddle=[X1,X2,value]
-    		globalList.append(theMiddle)
+        for X1 in range (0,3):
+        	for X2 in range (0,3):
+        		value=alpha+beta1*X1+beta2*X2+beta12*X1*X2
+        		phiList.append(value)
+        		theMiddle=[X1,X2,value]
+        		globalList.append(theMiddle)
 
 
-    minim=min(phiList)
-    maxim=max(phiList)
+        minim=min(phiList)
+        maxim=max(phiList)
 
 
-    for i in range(0,len(phiList)):
-    	globalList[i][2]=1/(1+(math.exp(-phiList[i])))
-    	print(globalList[i][2])
-    	if (globalList[i][2]>0.5) :
-    		phenoPosList.append([globalList[i][0],globalList[i][1]])
-    	else :
-    		phenoNegList.append([globalList[i][0],globalList[i][1]])
+        for i in range(0,len(phiList)):
+        	globalList[i][2]=1/(1+(math.exp(-phiList[i])))
+        	print(globalList[i][2])
+        	if (globalList[i][2]>0.5) :
+        		phenoPosList.append([globalList[i][0],globalList[i][1]])
+        	else :
+        		phenoNegList.append([globalList[i][0],globalList[i][1]])
 
-for i in range(1,nbFiles+1):
-    newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
-    newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
-    newFilePheno.write("Class")
-    header=""
-    for j in range(1,nbVar-1):
-        header=header+"N"+str(j)+","
-    header=header+"CAUS1,CAUS2\n"
-    line=""
-    countPosNeg=0
-    for k in range(nbTotal):
-        for j in range(nbVar-2):
-            line=line+str(random.randrange(3))+","
-        if (countPosNeg<nbPositive):
-            whichDuo=random.randrange(len(phenoPosList))
-            line=line+str(phenoPosList[whichDuo][0])+","+str(phenoPosList[whichDuo][1])
-            newFilePheno.write("1\n")
-        else :
-            whichDuo=random.randrange(len(phenoNegList))
-            line=line+str(phenoNegList[whichDuo][0])+","+str(phenoNegList[whichDuo][1])
-            newFilePheno.write("0\n")
-        line=line+"\n"
-        countPosNeg+=1
-    newFileGeno.write(header)
-    newFileGeno.write(line)
-    newFileGeno.close
-    newFilePheno.close
+    for i in range(1,nbFiles+1):
+        newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
+        newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
+        newFilePheno.write("Class")
+        header=""
+        for j in range(1,nbVar-1):
+            header=header+"N"+str(j)+","
+        header=header+"CAUS1,CAUS2\n"
+        line=""
+        countPosNeg=0
+        for k in range(nbTotal):
+            for j in range(nbVar-2):
+                line=line+str(random.randrange(3))+","
+            if (countPosNeg<nbPositive):
+                whichDuo=random.randrange(len(phenoPosList))
+                line=line+str(phenoPosList[whichDuo][0])+","+str(phenoPosList[whichDuo][1])
+                newFilePheno.write("1\n")
+            else :
+                whichDuo=random.randrange(len(phenoNegList))
+                line=line+str(phenoNegList[whichDuo][0])+","+str(phenoNegList[whichDuo][1])
+                newFilePheno.write("0\n")
+            line=line+"\n"
+            countPosNeg+=1
+        newFileGeno.write(header)
+        newFileGeno.write(line)
+        newFileGeno.close
+        newFilePheno.close
 
-print("\n",alpha)
-print(beta1)
-print(beta2)
-print(beta12)
+else:
+    while (phenoPosList==[] or phenoNegList==[]):
+        alpha=random.uniform(-1,1)
+        beta1=random.uniform(-1,1)
+        beta2=random.uniform(-1,1)
+        beta3=random.uniform(-1,1)
+        beta12=random.uniform(-1,1)
+        beta23=random.uniform(-1,1)
+        beta13=random.uniform(-1,1)
+        beta123=random.uniform(-1,1)
+
+        for X1 in range (0,3):
+            for X2 in range (0,3):
+                for X3 in range (0,3):
+                    value=alpha+beta1*X1+beta2*X2+beta3+X3+beta12*X1*X2+beta23*X2*X3+beta13*X1*X3+beta123*X1*X2*X3
+                    phiList.append(value)
+                    theMiddle=[X1,X2,X3,value]
+                    globalList.append(theMiddle)
+
+
+        minim=min(phiList)
+        maxim=max(phiList)
+
+
+        for i in range(0,len(phiList)):
+        	globalList[i][3]=1/(1+(math.exp(-phiList[i])))
+        	print(globalList[i][3])
+        	if (globalList[i][3]>0.5) :
+        		phenoPosList.append([globalList[i][0],globalList[i][1],globalList[i][2]])
+        	else :
+        		phenoNegList.append([globalList[i][0],globalList[i][1],globalList[i][2]])
+
+    for i in range(1,nbFiles+1):
+        newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
+        newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
+        newFilePheno.write("Class")
+        header=""
+        for j in range(1,nbVar-2):
+            header=header+"N"+str(j)+","
+        header=header+"CAUS1,CAUS2,CAUS3\n"
+        line=""
+        countPosNeg=0
+        for k in range(nbTotal):
+            for j in range(nbVar-3):
+                line=line+str(random.randrange(3))+","
+            if (countPosNeg<nbPositive):
+                whichTrio=random.randrange(len(phenoPosList))
+                line=line+str(phenoPosList[whichTrio][0])+","+str(phenoPosList[whichTrio][1])+","+str(phenoPosList[whichTrio][2])
+                newFilePheno.write("1\n")
+            else :
+                whichTrio=random.randrange(len(phenoNegList))
+                line=line+str(phenoNegList[whichTrio][0])+","+str(phenoNegList[whichTrio][1])+","+str(phenoNegList[whichTrio][2])
+                newFilePheno.write("0\n")
+            line=line+"\n"
+            countPosNeg+=1
+        newFileGeno.write(header)
+        newFileGeno.write(line)
+        newFileGeno.close
+        newFilePheno.close
+
 print("Cas",phenoPosList)
 print("Témoins",phenoNegList)
+print(len(phenoNegList)+len(phenoPosList))
