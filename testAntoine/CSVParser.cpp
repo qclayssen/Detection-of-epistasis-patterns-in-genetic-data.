@@ -17,6 +17,90 @@ using namespace std::chrono;
 
 typedef int contingence2SNP[3][10];
 
+void create_contingency_table(int nb_sample,contingence2SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
+  int k=nb_sample;
+  int l1,l2;
+  for (int i=0;i<3;i++){ //Set contingency matrix to 0
+    for (int j=0;j<10;j++){
+      (*adr_contingence)[i][j]=0;
+    }
+  }
+  for (l1=0;l1<int(genos.size1())-2;l1++){ //First SNP of the pattern
+    for (l2=1;l2<int(genos.size1())-1;l2++){ //Second SNP of the pattern
+      //Filling the contingency matrix
+      if (phenos_m(l1,0)==1){
+        if (genos(l1,k)==0){
+          if (genos(l2,k)==0){
+            (*adr_contingence)[0][0]+=1;
+          }
+          else if (genos(l2,k)==1){
+            (*adr_contingence)[0][1]+=1;
+          }
+          else{
+            (*adr_contingence)[0][2]+=1;
+          }
+        }
+        else if (genos(l1,k)==1){
+          if (genos(l2,k)==0){
+            (*adr_contingence)[0][3]+=1;
+          }
+          else if (genos(l2,k)==1){
+            (*adr_contingence)[0][4]+=1;
+          }
+          else{
+            (*adr_contingence)[0][5]+=1;
+          }
+        }
+        else{
+          if (genos(l2,k)==0){
+            (*adr_contingence)[0][6]+=1;
+          }
+          else if (genos(l2,k)==1){
+            (*adr_contingence)[0][7]+=1;
+          }
+          else{
+            (*adr_contingence)[0][8]+=1;
+          }
+        }
+      }
+      else{
+        if (genos(l1,k)==0){
+          if (genos(l2,k)==0){
+            (*adr_contingence)[1][0]++;
+          }
+          else if (genos(l2,k)==1){
+            (*adr_contingence)[1][1]++;
+          }
+          else{
+            (*adr_contingence)[1][2]++;
+          }
+        }
+        else if (genos(l1,k)==1){
+          if (genos(l2,k)==0){
+            (*adr_contingence)[1][3]++;
+          }
+          else if (genos(l2,k)==1){
+            (*adr_contingence)[1][4]++;
+          }
+          else{
+            (*adr_contingence)[1][5]++;
+          }
+        }
+        else{
+          if (genos(l2,k)==0){
+            (*adr_contingence)[1][6]++;
+          }
+          else if (genos(l2,k)==1){
+            (*adr_contingence)[1][7]++;
+          }
+          else{
+            (*adr_contingence)[1][8]++;
+          }
+        }
+      }
+    }
+  }
+}
 
 int main()
 {
@@ -37,90 +121,12 @@ int main()
     blas_matrix phenos_m = phenos_csv.data();
     blas_column phenos(phenos_m, 0);
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
-    int k,l1,l2;
+    int k;
 
     contingence2SNP contingence;
+    contingence2SNP* adr_contingence = &contingence;
     for (k=0;k<int(genos.size2())-1;k++){ //For each individuals in the data imported
-      for (int i=0;i<3;i++){ //Set contingency matrix to 0
-        for (int j=0;j<10;j++){
-          contingence[i][j]=0;
-        }
-      }
-      for (l1=0;l1<int(genos.size1())-2;l1++){ //First SNP of the pattern
-        for (l2=1;l2<int(genos.size1())-1;l2++){ //Second SNP of the pattern
-          //Filling the contingency matrix
-          if (phenos_m(l1,0)==1){
-            if (genos(l1,k)==0){
-              if (genos(l2,k)==0){
-                contingence[0][0]+=1;
-              }
-              else if (genos(l2,k)==1){
-                contingence[0][1]+=1;
-              }
-              else{
-                contingence[0][2]+=1;
-              }
-            }
-            else if (genos(l1,k)==1){
-              if (genos(l2,k)==0){
-                contingence[0][3]+=1;
-              }
-              else if (genos(l2,k)==1){
-                contingence[0][4]+=1;
-              }
-              else{
-                contingence[0][5]+=1;
-              }
-            }
-            else{
-              if (genos(l2,k)==0){
-                contingence[0][6]+=1;
-              }
-              else if (genos(l2,k)==1){
-                contingence[0][7]+=1;
-              }
-              else{
-                contingence[0][8]+=1;
-              }
-            }
-          }
-          else{
-            if (genos(l1,k)==0){
-              if (genos(l2,k)==0){
-                contingence[1][0]++;
-              }
-              else if (genos(l2,k)==1){
-                contingence[1][1]++;
-              }
-              else{
-                contingence[1][2]++;
-              }
-            }
-            else if (genos(l1,k)==1){
-              if (genos(l2,k)==0){
-                contingence[1][3]++;
-              }
-              else if (genos(l2,k)==1){
-                contingence[1][4]++;
-              }
-              else{
-                contingence[1][5]++;
-              }
-            }
-            else{
-              if (genos(l2,k)==0){
-                contingence[1][6]++;
-              }
-              else if (genos(l2,k)==1){
-                contingence[1][7]++;
-              }
-              else{
-                contingence[1][8]++;
-              }
-            }
-          }
-        }
-      }
+      create_contingency_table(k,adr_contingence,genos,phenos_m);
       int countNonStat=0;
       for (int i=0;i<2;i++){
         for (int j=0;j<9;j++){
