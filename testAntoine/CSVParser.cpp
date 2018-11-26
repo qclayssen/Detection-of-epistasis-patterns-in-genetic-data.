@@ -8,6 +8,7 @@
 #include <ctime>
 #include <chrono>
 #include <boost/math/distributions/chi_squared.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "CSVParser.hpp"
 #include "common.h"
@@ -16,6 +17,17 @@ using namespace std;
 using namespace std::chrono;
 
 typedef int contingence2SNP[3][10];
+
+vector<string> get_snp_list(string genos_file){
+  vector<string> tokens;
+  ifstream file;
+  file.open(genos_file);
+  string SNPheader;
+  getline(file,SNPheader);
+  file.close();
+  boost::algorithm::split(tokens, SNPheader, boost::is_any_of(","));
+  return tokens;
+}
 
 void create_contingency_table(int l1,int l2,contingence2SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
   int k;
@@ -117,6 +129,9 @@ int main()
     blas_column phenos(phenos_m, 0);
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
     int l1,l2;
+
+    vector<string> snpNameList;
+    snpNameList = get_snp_list(genos_file);
 
     contingence2SNP contingence;
     contingence2SNP* adr_contingence = &contingence;
