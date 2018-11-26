@@ -14,6 +14,7 @@ prefix=str(sys.argv[3])
 nbVar=int(sys.argv[4])
 nbPositive=int(sys.argv[5])
 nbNegative=int(sys.argv[6])
+patternSize=int(sys.argv[7])
 nbTotal=nbPositive+nbNegative
 
 try:
@@ -23,10 +24,6 @@ except FileExistsError:
     print("Le dossier de sortie" , outFolder ,  " existe déjà")
 
 random.seed()
-
-patternSize=0
-while (patternSize!=2 and patternSize!=3):
-    patternSize=int(input("Size of causal SNP pattern (2 or 3):"))
 
 
 phiList=[]
