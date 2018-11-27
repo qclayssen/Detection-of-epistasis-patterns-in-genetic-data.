@@ -17,85 +17,82 @@ using namespace std::chrono;
 
 typedef int contingence2SNP[3][10];
 
-void create_contingency_table(int nb_sample,contingence2SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
-  int k=nb_sample;
-  int l1,l2;
+void create_contingency_table(int l1,int l2,contingence2SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
+  int k;
   for (int i=0;i<3;i++){ //Set contingency matrix to 0
     for (int j=0;j<10;j++){
       (*adr_contingence)[i][j]=0;
     }
   }
-  for (l1=0;l1<int(genos.size1())-2;l1++){ //First SNP of the pattern
-    for (l2=1;l2<int(genos.size1())-1;l2++){ //Second SNP of the pattern
-      //Filling the contingency matrix
-      if (phenos_m(l1,0)==1){
-        if (genos(l1,k)==0){
-          if (genos(l2,k)==0){
-            (*adr_contingence)[0][0]+=1;
-          }
-          else if (genos(l2,k)==1){
-            (*adr_contingence)[0][1]+=1;
-          }
-          else{
-            (*adr_contingence)[0][2]+=1;
-          }
+  for (k=0;k<int(genos.size1());k++){ //For each individuals in the data imported
+    //Filling the contingency matrix
+    if (phenos_m(k,0)==1){
+      if (genos(k,l1)==0){
+        if (genos(k,l2)==0){
+          (*adr_contingence)[0][0]+=1;
         }
-        else if (genos(l1,k)==1){
-          if (genos(l2,k)==0){
-            (*adr_contingence)[0][3]+=1;
-          }
-          else if (genos(l2,k)==1){
-            (*adr_contingence)[0][4]+=1;
-          }
-          else{
-            (*adr_contingence)[0][5]+=1;
-          }
+        else if (genos(k,l2)==1){
+          (*adr_contingence)[0][1]+=1;
         }
         else{
-          if (genos(l2,k)==0){
-            (*adr_contingence)[0][6]+=1;
-          }
-          else if (genos(l2,k)==1){
-            (*adr_contingence)[0][7]+=1;
-          }
-          else{
-            (*adr_contingence)[0][8]+=1;
-          }
+          (*adr_contingence)[0][2]+=1;
+        }
+      }
+      else if (genos(k,l1)==1){
+        if (genos(k,l2)==0){
+          (*adr_contingence)[0][3]+=1;
+        }
+        else if (genos(k,l2)==1){
+          (*adr_contingence)[0][4]+=1;
+        }
+        else{
+          (*adr_contingence)[0][5]+=1;
         }
       }
       else{
-        if (genos(l1,k)==0){
-          if (genos(l2,k)==0){
-            (*adr_contingence)[1][0]++;
-          }
-          else if (genos(l2,k)==1){
-            (*adr_contingence)[1][1]++;
-          }
-          else{
-            (*adr_contingence)[1][2]++;
-          }
+        if (genos(k,l2)==0){
+          (*adr_contingence)[0][6]+=1;
         }
-        else if (genos(l1,k)==1){
-          if (genos(l2,k)==0){
-            (*adr_contingence)[1][3]++;
-          }
-          else if (genos(l2,k)==1){
-            (*adr_contingence)[1][4]++;
-          }
-          else{
-            (*adr_contingence)[1][5]++;
-          }
+        else if (genos(k,l2)==1){
+          (*adr_contingence)[0][7]+=1;
         }
         else{
-          if (genos(l2,k)==0){
-            (*adr_contingence)[1][6]++;
-          }
-          else if (genos(l2,k)==1){
-            (*adr_contingence)[1][7]++;
-          }
-          else{
-            (*adr_contingence)[1][8]++;
-          }
+          (*adr_contingence)[0][8]+=1;
+        }
+      }
+    }
+    else{
+      if (genos(k,l1)==0){
+        if (genos(k,l2)==0){
+          (*adr_contingence)[1][0]++;
+        }
+        else if (genos(k,l2)==1){
+          (*adr_contingence)[1][1]++;
+        }
+        else{
+          (*adr_contingence)[1][2]++;
+        }
+      }
+      else if (genos(k,l1)==1){
+        if (genos(k,l2)==0){
+          (*adr_contingence)[1][3]++;
+        }
+        else if (genos(k,l2)==1){
+          (*adr_contingence)[1][4]++;
+        }
+        else{
+          (*adr_contingence)[1][5]++;
+        }
+      }
+      else{
+        if (genos(k,l2)==0){
+          (*adr_contingence)[1][6]++;
+        }
+        else if (genos(k,l2)==1){
+          (*adr_contingence)[1][7]++;
+        }
+        else{
+          (*adr_contingence)[1][8]++;
         }
       }
     }
@@ -121,145 +118,162 @@ int main()
     blas_matrix phenos_m = phenos_csv.data();
     blas_column phenos(phenos_m, 0);
     cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
-    int k;
+    int l1,l2;
 
     contingence2SNP contingence;
     contingence2SNP* adr_contingence = &contingence;
-    for (k=0;k<int(genos.size2())-1;k++){ //For each individuals in the data imported
-      create_contingency_table(k,adr_contingence,genos,phenos_m);
-      int countNonStat=0;
-      for (int i=0;i<2;i++){
-        for (int j=0;j<9;j++){
-          cout<<contingence[i][j]<<" ";
-          if (contingence[i][j]<5){
-            countNonStat++;
-          }
-        }
-        cout<<endl;
-      }
-      cout<<endl;
-      cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
-
-      int const nbrcolonnes(9);
-      int const nbrligne(2);
-      //cout<<nbrcolonnes<<endl;
-
-      for(int j(0); j<(nbrcolonnes); ++j)
-      {    for(int i(0); i<(nbrligne); ++i)
-          {
-
-             //cout<<contingence[nbrligne][j]<<"+"<<contingence[i][j]<<"=";
-             contingence[nbrligne][j] += contingence[i][j];
-             //cout<<contingence[nbrligne][j]<<" ";
-
-          }
-          //cout<<";"<<endl;
-      }
-      for (int i=0;i<3;i++){
-        for (int j=0;j<10;j++){
-          cout<<contingence[i][j]<<" ";
-        }
-        cout<<endl;
-      }
-      cout<<endl;
-
-
-
-      for(int j(0); j<(nbrcolonnes); ++j)
-      {    for(int i(0); i<(nbrligne); ++i)
-          {
-             contingence[i][nbrcolonnes] += contingence[i][j];
-          }
-      }
-      for(int i(0); i<(nbrligne); ++i)
-          {
-             contingence[nbrligne][nbrcolonnes] += contingence[i][nbrcolonnes];
-          }
-      for (int i=0;i<3;i++){
-        for (int j=0;j<10;j++){
-          cout<<contingence[i][j]<<" ";
-        }
-        cout<<endl;
-      }
-      cout<<endl;
-
-
-
-      int contingencetheo[nbrcolonnes][nbrligne];
-      for(int i(0); i<(nbrligne); ++i)
-      {    for(int j(0); j<(nbrcolonnes); ++j)
-          {
-             //cout<<contingence[i][nbrcolonnes]<<"*"<<contingence[nbrligne][j]<<"/"<<contingence[nbrligne][nbrcolonnes];
-             contingencetheo[i][j] = contingence[i][nbrcolonnes]*contingence[nbrligne][j]/contingence[nbrligne][nbrcolonnes];
-            // cout<<"="<<contingencetheo[i][j]<<endl;
-          }
-      }    for (int i=0;i<2;i++){
-            for (int j=0;j<9;j++){
-              cout<<contingencetheo[i][j]<<" ";
+    for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
+      for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
+        cout<<l1<<" " <<l2<<endl;
+        create_contingency_table(l1,l2,adr_contingence,genos,phenos_m);
+        int countNonStat=0;
+        for (int i=0;i<2;i++){
+          for (int j=0;j<9;j++){
+            cout<<contingence[i][j]<<" ";
+            if (contingence[i][j]<5){
+              countNonStat++;
             }
-            cout<<endl;
           }
           cout<<endl;
+        }
+        cout<<endl;
+        cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
 
-          int test;
-          test=0;
-          unsigned ncells = nbrligne*nbrcolonnes;
-          int count_inf_5 = 0;
-          for(unsigned i=0; i<nbrligne; ++i)
-          {
-              for(unsigned j=0; j<nbrcolonnes; ++j)
-              {
-                  if(contingence[i][j] < 0 || contingence[i][j]!=contingence[i][j]) // test for nan
-                  {
-                      test=1;
-                  }
-                  if(contingence[i][j] < 5)
-                  {
-                      count_inf_5 ++;
-                      if((double)count_inf_5 / ncells > 0.2)
-                      {
-      //                    cout << "Not reliable test, ";
-      //                    cout << "expected: " << e << endl;
-                          test=1;
-                      }
-                  }
+        int const nbrcolonnes(9);
+        int const nbrligne(2);
+        //cout<<nbrcolonnes<<endl;
+
+        for(int j(0); j<(nbrcolonnes); ++j)
+        {    for(int i(0); i<(nbrligne); ++i)
+            {
+
+               //cout<<contingence[nbrligne][j]<<"+"<<contingence[i][j]<<"=";
+               contingence[nbrligne][j] += contingence[i][j];
+               //cout<<contingence[nbrligne][j]<<" ";
+
+            }
+            //cout<<";"<<endl;
+        }
+        for (int i=0;i<3;i++){
+          for (int j=0;j<10;j++){
+            cout<<contingence[i][j]<<" ";
+          }
+          cout<<endl;
+        }
+        cout<<endl;
+
+
+
+        for(int j(0); j<(nbrcolonnes); ++j)
+        {    for(int i(0); i<(nbrligne); ++i)
+            {
+               contingence[i][nbrcolonnes] += contingence[i][j];
+            }
+        }
+        for(int i(0); i<(nbrligne); ++i)
+            {
+               contingence[nbrligne][nbrcolonnes] += contingence[i][nbrcolonnes];
+            }
+        for (int i=0;i<3;i++){
+          for (int j=0;j<10;j++){
+            cout<<contingence[i][j]<<" ";
+          }
+          cout<<endl;
+        }
+        cout<<endl;
+
+
+
+        int contingencetheo[nbrcolonnes][nbrligne];
+        for(int i(0); i<(nbrligne); ++i)
+        {    for(int j(0); j<(nbrcolonnes); ++j)
+            {
+               //cout<<contingence[i][nbrcolonnes]<<"*"<<contingence[nbrligne][j]<<"/"<<contingence[nbrligne][nbrcolonnes];
+               contingencetheo[i][j] = contingence[i][nbrcolonnes]*contingence[nbrligne][j]/contingence[nbrligne][nbrcolonnes];
+              // cout<<"="<<contingencetheo[i][j]<<endl;
+            }
+        }    for (int i=0;i<2;i++){
+              for (int j=0;j<9;j++){
+                cout<<contingencetheo[i][j]<<" ";
               }
+              cout<<endl;
+            }
+            cout<<endl;
 
-              for(unsigned i=0; i<nbrligne; ++i)
-              {
-                 for(unsigned j=0; j<nbrcolonnes; ++j)
-                 {
-                       if(contingencetheo[i][j] < 5)
-                       test=1;
-                 }
-              }
-          cout<<"test:"<<test<<endl;
-            float scorekhi2=0;
-          if(test==0)
-          {
 
-          for(int i(0); i<(nbrligne); ++i)
-          {    for(int j(0); j<(nbrcolonnes); ++j)
-              {
-                if (contingencetheo[i][j] != 0 || contingence[i][j] != 0 ){
-                      double div = (double) contingencetheo[i][j] / contingence[i][j];
-                      scorekhi2 += contingencetheo[i][j] * log(div);
+
+        float scorekhi2=0;/*
+        for(int i(0); i<(nbrligne); ++i)
+        {    for(int j(0); j<(nbrcolonnes); ++j)
+            {
+               scorekhi2 += (pow(((contingence[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
+               //cout<<scorekhi2<<"="<<contingence[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
+            }
+        }*/
+        int test;
+        test=0;
+        unsigned ncells = nbrligne*nbrcolonnes;
+        int count_inf_5 = 0;
+        for(unsigned i=0; i<nbrligne; ++i)
+        {
+            for(unsigned j=0; j<nbrcolonnes; ++j)
+            {
+                if(contingencetheo[i][j] < 0 || contingencetheo[i][j]!=contingencetheo[i][j]) // test for nan
+                {
+                    test=1;
+                }
+                if(contingencetheo[i][j] < 5)
+                {
+                    count_inf_5 ++;
+                    if((double)count_inf_5 / ncells > 0.2)
+                    {
+        //                    cout << "Not reliable test, ";
+        //                    cout << "expected: " << e << endl;
+                        test=1;
                     }
+                }
+            }
+          }
 
-              }
+        for(unsigned i=0; i<nbrligne; ++i)
+        {
+           for(unsigned j=0; j<nbrcolonnes; ++j)
+           {
+                 if(contingence[i][j] < 5)
+                 test=1;
+           }
+        }
+        cout<<"test:"<<test<<endl;
+        if(test==0)
+        {
+
+        for(int i(0); i<(nbrligne); ++i)
+        {    for(int j(0); j<(nbrcolonnes); ++j)
+            {
+              if (contingence[i][j] != 0 ){
+                    double div = (double) contingence[i][j] / contingencetheo[i][j];
+                    scorekhi2 += contingence[i][j] * log(div);
+                  }
+
+            }
 
           }
         }
-          scorekhi2  *= 2;
-          float pval;
-          cout<<"score: "<<scorekhi2<<endl;
+        scorekhi2  *= 2;
+        float pval;
+        if(test==0){
           boost::math::chi_squared mydist(8);
           pval = 1 - boost::math::cdf(mydist, scorekhi2);
-          if(pval == 0)
-              pval = 2.0e-16;
-          cout<<"p: "<<pval<<endl;
+          if(pval == 0){
+              pval = 2.0e-16;}
+          cout<<"score: "<<scorekhi2<<endl;
+          cout<<"p: "<<pval<<endl;}
+      else {
+        cout<<"score: Null value <5"<<endl;
+        cout<<"p: 1"<<endl;
+        }
+        }
+        return 0;
+        }
 
-      }
-    }
-    return 0;
-  }
+}
