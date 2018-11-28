@@ -138,6 +138,7 @@ int main()
     for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
       for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
         create_contingency_table(l1,l2,adr_contingence,genos,phenos_m);
+        cout<<snpNameList[l1]<<","<<snpNameList[l2]<<endl;
         int countNonStat=0;
         for (int i=0;i<2;i++){
           for (int j=0;j<9;j++){
