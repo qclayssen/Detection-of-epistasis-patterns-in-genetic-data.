@@ -486,40 +486,35 @@ int main()
 
 
         float pval;
-        if(test==0)
-        {
-        for(int i(0); i<(nbrligne); ++i)
-        {    for(int j(0); j<(nbrcolonnes); ++j)
-            {
+        if(test==0){
+          for(int i(0); i<(nbrligne); ++i){
+            for(int j(0); j<(nbrcolonnes); ++j){
               if (contingence2[i][j] != 0 ){
                     double div = (double) contingence2[i][j] / contingencetheo[i][j];
                     scorekhi2 += contingence2[i][j] * log(div);
                   }
-
-            }
-          }            scorekhi2  *= 2;
-                      boost::math::chi_squared mydist(8);
-                      pval = 1 - boost::math::cdf(mydist, scorekhi2);
-                      if(pval == 0){
-                          pval = 2.0e-16;}
-                      cout<<"score: "<<scorekhi2<<endl;
-                      cout<<"p: "<<pval<<endl;
-
-
-
-        }
-        else {
-          scorekhi2=0;
-          pval=1;
-          cout<<"score: "<<endl;
-          cout<<"p: "<<endl;
-          continue;         }
+                }
+              }
+            scorekhi2  *= 2;
+            boost::math::chi_squared mydist(8);
+            pval = 1 - boost::math::cdf(mydist, scorekhi2);
+            if(pval == 0){
+                pval = 2.0e-16;}
+            cout<<"score: "<<scorekhi2<<endl;
+            cout<<"p: "<<pval<<endl;
+          }
+          else{
+            scorekhi2=0;
+            pval=1;
+            cout<<"score: "<<endl;
+            cout<<"p: "<<endl;
+            continue;
+          }
           patternscore p1;
           p1.pattern1=snpNameList[l1];
           p1.pattern2=snpNameList[l2];
           p1.score=scorekhi2;
           patternscoreList.push_back(p1);
-
         }
       }
 
