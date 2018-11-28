@@ -62,7 +62,7 @@ if (patternSize==2):
     for i in range(1,nbFiles+1):
         newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
         newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
-        newFilePheno.write("Class")
+        newFilePheno.write("Class\n")
         header=""
         for j in range(1,nbVar-1):
             header=header+"N"+str(j)+","
