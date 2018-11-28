@@ -124,7 +124,7 @@ int main()
     contingence2SNP* adr_contingence = &contingence;
     for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
       for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
-        cout<<l1<<" " <<l2<<endl;
+        //cout<<l1<<" " <<l2<<endl;
         create_contingency_table(l1,l2,adr_contingence,genos,phenos_m);
         int countNonStat=0;
         for (int i=0;i<2;i++){
@@ -202,7 +202,7 @@ int main()
 
 
 
-        float scorekhi2=0;/*
+      float scorekhi2=0;/*
         for(int i(0); i<(nbrligne); ++i)
         {    for(int j(0); j<(nbrcolonnes); ++j)
             {
@@ -210,31 +210,30 @@ int main()
                //cout<<scorekhi2<<"="<<contingence[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
             }
         }*/
-        int test;
-        test=0;
-        unsigned ncells = nbrligne*nbrcolonnes;
-        int count_inf_5 = 0;
-        for(unsigned i=0; i<nbrligne; ++i)
-        {
-            for(unsigned j=0; j<nbrcolonnes; ++j)
-            {
-                if(contingencetheo[i][j] < 0 || contingencetheo[i][j]!=contingencetheo[i][j]) // test for nan
-                {
-                    test=1;
-                }
-                if(contingencetheo[i][j] < 5)
-                {
-                    count_inf_5 ++;
-                    if((double)count_inf_5 / ncells > 0.2)
-                    {
-        //                    cout << "Not reliable test, ";
-        //                    cout << "expected: " << e << endl;
-                        test=1;
-                    }
-                }
-            }
+      int test;
+      test=0;
+      unsigned ncells = nbrligne*nbrcolonnes;
+      int count_inf_5 = 0;
+      for(unsigned i=0; i<nbrligne; ++i)
+      {
+          for(unsigned j=0; j<nbrcolonnes; ++j)
+          {
+              if(contingencetheo[i][j] < 0 || contingencetheo[i][j]!=contingencetheo[i][j]) // test for nan
+              {
+                  test=1;
+              }
+              if(contingencetheo[i][j] < 5)
+              {
+                  count_inf_5 ++;
+                  if((double)count_inf_5 / ncells > 0.2)
+                  {
+      //                    cout << "Not reliable test, ";
+      //                    cout << "expected: " << e << endl;
+                      test=1;
+                  }
+              }
           }
-
+        }
         for(unsigned i=0; i<nbrligne; ++i)
         {
            for(unsigned j=0; j<nbrcolonnes; ++j)
@@ -244,6 +243,7 @@ int main()
            }
         }
         cout<<"test:"<<test<<endl;
+        float pval;
         if(test==0)
         {
 
@@ -256,24 +256,32 @@ int main()
                   }
 
             }
+          }            scorekhi2  *= 2;
+                      boost::math::chi_squared mydist(8);
+                      pval = 1 - boost::math::cdf(mydist, scorekhi2);
+                      if(pval == 0){
+                          pval = 2.0e-16;}
+                      cout<<"score: "<<scorekhi2<<endl;
+                      cout<<"p: "<<pval<<endl;
 
-          }
+
+
         }
-        scorekhi2  *= 2;
-        float pval;
-        if(test==0){
+        else {
+          cout<<"score: "<<endl;
+          cout<<"p: "<<endl;
+          continue;         }
+
+
+      /*  if(test==0){
           boost::math::chi_squared mydist(8);
           pval = 1 - boost::math::cdf(mydist, scorekhi2);
           if(pval == 0){
               pval = 2.0e-16;}
           cout<<"score: "<<scorekhi2<<endl;
-          cout<<"p: "<<pval<<endl;}
-      else {
-        cout<<"score: Null value <5"<<endl;
-        cout<<"p: 1"<<endl;
-        }
-        }
-        return 0;
-        }
+          cout<<"p: "<<pval<<endl;}*/
 
+
+          }
+          }          return 0;
 }
