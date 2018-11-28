@@ -18,6 +18,11 @@ using namespace std::chrono;
 
 typedef int contingence2SNP[3][10];
 typedef int contingence3SNP[3][28];
+struct patternscore {
+  string pattern1;
+  string pattern2;
+  float score;
+};
 
 vector<string> get_snp_list(string genos_file){
   vector<string> tokens;
@@ -435,26 +440,43 @@ int main()
         }
         cout<<endl;
 
-
-
-        float scorekhi2=0;
+        float pval;
+        if(test==0)
+        {
         for(int i(0); i<(nbrligne); ++i)
         {    for(int j(0); j<(nbrcolonnes); ++j)
             {
-               scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
-               //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
+              if (contingence[i][j] != 0 ){
+                    double div = (double) contingence[i][j] / contingencetheo[i][j];
+                    scorekhi2 += contingence[i][j] * log(div);
+                  }
+
             }
+          }            scorekhi2  *= 2;
+                      boost::math::chi_squared mydist(8);
+                      pval = 1 - boost::math::cdf(mydist, scorekhi2);
+                      if(pval == 0){
+                          pval = 2.0e-16;}
+                      cout<<"score: "<<scorekhi2<<endl;
+                      cout<<"p: "<<pval<<endl;
+
+
+
         }
-        float pval;
-        cout<<"score: "<<scorekhi2<<endl;
-        boost::math::chi_squared mydist(8);
-        pval = 1 - boost::math::cdf(mydist, scorekhi2);
-        if(pval == 0)
-            pval = 2.0e-16;
-        cout<<"p: "<<pval<<endl;
-        cout<<endl;
-      }
-    }
+        else {
+          scorekhi2=0;
+          pval=1;
+          cout<<"score: "<<endl;
+          cout<<"p: "<<endl;
+          continue;         }
+          patternscore p1;
+          p1.pattern1=snpNameList[l1];
+          p1.pattern2=snpNameList[l2];
+          p1.score=scorekhi2;
+          patternscoreList.push_back(p1);
+
+        }
+          }
 
     contingence3SNP contingence3;
     contingence3SNP* adr_contingence3 = &contingence3;
