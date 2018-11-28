@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <ctime>
 #include <chrono>
+#include <list>
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -366,6 +367,9 @@ int main()
     vector<string> snpNameList;
     snpNameList = get_snp_list(genos_file);
 
+    list<patternscore>patternscoreList;
+    list<patternscore>::iterator iterpatternscorList;
+
     contingence2SNP contingence2;
     contingence2SNP* adr_contingence2 = &contingence2;
 
@@ -421,90 +425,103 @@ int main()
         }
         cout<<endl;
 
+        int contingencetheo[nbrcolonnes][nbrligne];
+        for(int i(0); i<(nbrligne); ++i)
+        {    for(int j(0); j<(nbrcolonnes); ++j)
+            {
+               //cout<<contingence2[i][nbrcolonnes]<<"*"<<contingence2[nbrligne][j]<<"/"<<contingence2[nbrligne][nbrcolonnes];
+               contingencetheo[i][j] = contingence2[i][nbrcolonnes]*contingence2[nbrligne][j]/contingence2[nbrligne][nbrcolonnes];
+              // cout<<"="<<contingencetheo[i][j]<<endl;
+            }
+        }    for (int i=0;i<2;i++){
+              for (int j=0;j<9;j++){
+                cout<<contingencetheo[i][j]<<" ";
+              }
+              cout<<endl;
+            }
+            cout<<endl;
 
-                      float scorekhi2=0;/*
-                        for(int i(0); i<(nbrligne); ++i)
-                        {    for(int j(0); j<(nbrcolonnes); ++j)
-                            {
-                               scorekhi2 += (pow(((contingence[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
-                               //cout<<scorekhi2<<"="<<contingence[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
-                            }
-                        }*/
-                      int test;
-                      test=0;
-                      unsigned ncells = nbrligne*nbrcolonnes;
-                      int count_inf_5 = 0;
-                      for(unsigned i=0; i<nbrligne; ++i)
-                      {
-                          for(unsigned j=0; j<nbrcolonnes; ++j)
-                          {
-                              if(contingencetheo[i][j] < 0 || contingencetheo[i][j]!=contingencetheo[i][j]) // test for nan
-                              {
-                                  test=1;
-                              }
-                              if(contingencetheo[i][j] < 5)
-                              {
-                                  count_inf_5 ++;
-                                  if((double)count_inf_5 / ncells > 0.2)
-                                  {
-                      //                    cout << "Not reliable test, ";
-                      //                    cout << "expected: " << e << endl;
-                                      test=1;
-                                  }
-                              }
-                          }
-                        }
-                        for(unsigned i=0; i<nbrligne; ++i)
-                        {
-                           for(unsigned j=0; j<nbrcolonnes; ++j)
-                           {
-                                 if(contingence[i][j] < 5)
-                                 test=1;
-                           }
-                        }
-                        cout<<"test:"<<test<<endl;
-
-
-
-                        float pval;
-                        if(test==0)
-                        {
-                        for(int i(0); i<(nbrligne); ++i)
-                        {    for(int j(0); j<(nbrcolonnes); ++j)
-                            {
-                              if (contingence[i][j] != 0 ){
-                                    double div = (double) contingence[i][j] / contingencetheo[i][j];
-                                    scorekhi2 += contingence[i][j] * log(div);
-                                  }
-
-                            }
-                          }            scorekhi2  *= 2;
-                                      boost::math::chi_squared mydist(8);
-                                      pval = 1 - boost::math::cdf(mydist, scorekhi2);
-                                      if(pval == 0){
-                                          pval = 2.0e-16;}
-                                      cout<<"score: "<<scorekhi2<<endl;
-                                      cout<<"p: "<<pval<<endl;
-
-
-
-                        }
-                        else {
-                          scorekhi2=0;
-                          pval=1;
-                          cout<<"score: "<<endl;
-                          cout<<"p: "<<endl;
-                          continue;         }
-                          patternscore p1;
-                          p1.pattern1=snpNameList[l1];
-                          p1.pattern2=snpNameList[l2];
-                          p1.score=scorekhi2;
-                          patternscoreList.push_back(p1);
-
-                        }
-                          }
-        }
+      float scorekhi2=0;/*
+        for(int i(0); i<(nbrligne); ++i)
+        {    for(int j(0); j<(nbrcolonnes); ++j)
+            {
+               scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
+               //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
+            }
+        }*/
+      int test;
+      test=0;
+      unsigned ncells = nbrligne*nbrcolonnes;
+      int count_inf_5 = 0;
+      for(unsigned i=0; i<nbrligne; ++i)
+      {
+          for(unsigned j=0; j<nbrcolonnes; ++j)
+          {
+              if(contingencetheo[i][j] < 0 || contingencetheo[i][j]!=contingencetheo[i][j]) // test for nan
+              {
+                  test=1;
+              }
+              if(contingencetheo[i][j] < 5)
+              {
+                  count_inf_5 ++;
+                  if((double)count_inf_5 / ncells > 0.2)
+                  {
+      //                    cout << "Not reliable test, ";
+      //                    cout << "expected: " << e << endl;
+                      test=1;
+                  }
+              }
           }
+        }
+        for(unsigned i=0; i<nbrligne; ++i)
+        {
+           for(unsigned j=0; j<nbrcolonnes; ++j)
+           {
+                 if(contingence2[i][j] < 5)
+                 test=1;
+           }
+        }
+        cout<<"test:"<<test<<endl;
+
+
+
+        float pval;
+        if(test==0)
+        {
+        for(int i(0); i<(nbrligne); ++i)
+        {    for(int j(0); j<(nbrcolonnes); ++j)
+            {
+              if (contingence2[i][j] != 0 ){
+                    double div = (double) contingence2[i][j] / contingencetheo[i][j];
+                    scorekhi2 += contingence2[i][j] * log(div);
+                  }
+
+            }
+          }            scorekhi2  *= 2;
+                      boost::math::chi_squared mydist(8);
+                      pval = 1 - boost::math::cdf(mydist, scorekhi2);
+                      if(pval == 0){
+                          pval = 2.0e-16;}
+                      cout<<"score: "<<scorekhi2<<endl;
+                      cout<<"p: "<<pval<<endl;
+
+
+
+        }
+        else {
+          scorekhi2=0;
+          pval=1;
+          cout<<"score: "<<endl;
+          cout<<"p: "<<endl;
+          continue;         }
+          patternscore p1;
+          p1.pattern1=snpNameList[l1];
+          p1.pattern2=snpNameList[l2];
+          p1.score=scorekhi2;
+          patternscoreList.push_back(p1);
+
+        }
+      }
 
     contingence3SNP contingence3;
     contingence3SNP* adr_contingence3 = &contingence3;
