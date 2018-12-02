@@ -451,9 +451,20 @@ int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_
   }
 }
 
+patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
+  vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
+  patternscore actual_s = s_closest_neighbour;
+  for (int i=0;i<patternscoreList.size();i++){
+    if (s_neighbours[i].score>actual_s.score){
+      actual_s=s_neighbours[i];
+    }
+  }
+  return(actual_s);
+}
 
+void update(patternscore s_opt, vector<patternscore>* elite_sols){
 
-
+}
 
 
 int main()
@@ -663,6 +674,7 @@ int main()
     int k = 4;
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
+    vector<patternscore>* adr_elite_sols = &elite_sols;
     cout<<"Elite solutions :"<<endl;
     cout_list(elite_sols);
 
@@ -677,12 +689,13 @@ int main()
       patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList);
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
         cout<<"Recherche locale"<<endl;
+        patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList);
+        //update(elite_sols,s_opt);
       }
       else{
         cout<<"Pas de recherche locale"<<endl;
       }
-
-      s=sB;
+      s=s_closest_neighbour;
     }
 
     return 0;
