@@ -8,7 +8,11 @@
 #include <math.h>
 #include <ctime>
 #include <chrono>
+#include <algorithm>
 #include <list>
+#include <numeric>
+#include <random>
+#include <vector>
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -23,6 +27,7 @@ typedef int contingence3SNP[3][28];
 struct patternscore {
   string pattern1;
   string pattern2;
+  string pattern3;
   float score;
 };
 
@@ -345,6 +350,68 @@ void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr
   }
 }
 
+vector<patternscore> initialize_elite_solutions(int k,vector<patternscore> patternscoreList){
+  vector<patternscore> elite_sols;
+  vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
+  random_shuffle(nodes.begin(), nodes.end());
+  for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
+    if(elite_sols.size()<k){
+      elite_sols.push_back(*it);
+    }
+    else{
+      break;
+    }
+  }
+  return(elite_sols);
+}
+
+vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols){
+  vector<patternscore> sA_sB;
+  vector<patternscore> nodes(elite_sols.begin(),elite_sols.end());
+  random_shuffle(nodes.begin(), nodes.end());
+  if(nodes[0].score < nodes[1].score){
+    sA_sB.push_back(nodes[0]);
+    sA_sB.push_back(nodes[1]);
+  }
+  else{
+    sA_sB.push_back(nodes[1]);
+    sA_sB.push_back(nodes[0]);
+  }
+  return(sA_sB);
+}
+
+void cout_list(vector<patternscore> list_to_cout){
+  for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
+    if ((*it).pattern3!=""){
+      cout<<(*it).pattern1<<","<<(*it).pattern2<<endl;
+      cout<<(*it).score<<endl;
+    }
+    else{
+      cout<<(*it).pattern1<<","<<(*it).pattern2<<(*it).pattern3<<endl;
+      cout<<(*it).score<<endl;
+    }
+  }
+}
+
+int calculate_delta(patternscore s, patternscore sB){
+  int diff=0;
+  if (s.pattern1!=sB.pattern1 && s.pattern1!=sB.pattern2 && s.pattern1!=sB.pattern3){
+    diff=diff+1;
+  }
+  if (s.pattern2!=sB.pattern1 && s.pattern2!=sB.pattern2 && s.pattern2!=sB.pattern3){
+    diff=diff+1;
+  }
+  if (s.pattern3!=sB.pattern1 && s.pattern3!=sB.pattern2 && s.pattern3!=sB.pattern3){
+    diff=diff+1;
+  }
+  return(diff);
+}
+
+
+
+
+
+
 
 int main()
 {
@@ -368,8 +435,8 @@ int main()
     vector<string> snpNameList;
     snpNameList = get_snp_list(genos_file);
 
-    list<patternscore>patternscoreList;
-    list<patternscore>::iterator iterpatternscorList;
+    vector<patternscore>patternscoreList;
+    vector<patternscore>::iterator iterpatternscoreList;
 
     contingence2SNP contingence2;
     contingence2SNP* adr_contingence2 = &contingence2;
@@ -515,6 +582,7 @@ int main()
         patternscore p1;
         p1.pattern1=snpNameList[l1];
         p1.pattern2=snpNameList[l2];
+        p1.pattern3="";
         p1.score=scorekhi2;
         patternscoreList.push_back(p1);
       }
@@ -542,5 +610,27 @@ int main()
         }
       }
     }
+/*
+    for (iterpatternscoreList=patternscoreList.begin();iterpatternscoreList!=patternscoreList.end();iterpatternscoreList++){
+      cout<<(*iterpatternscoreList).pattern1<<","<<(*iterpatternscoreList).pattern2<<endl;
+      cout<<(*iterpatternscoreList).score<<endl;
+    }
+*/
+
+    int k = 4;
+    vector<patternscore> elite_sols;
+    elite_sols = initialize_elite_solutions(k,patternscoreList);
+    cout<<"Elite solutions :"<<endl;
+    cout_list(elite_sols);
+
+    vector<patternscore> sA_sB;
+    sA_sB=select_two_solutions_at_random(elite_sols);
+    cout<<"Two random : (sA, sB)"<<endl;
+    cout_list(sA_sB);
+    patternscore s = sA_sB[0];
+    patternscore sB = sA_sB[1];
+    int delta=calculate_delta(s,sB);
+    cout<<delta<<endl;
+
     return 0;
 }
