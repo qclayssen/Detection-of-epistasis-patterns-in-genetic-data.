@@ -353,6 +353,7 @@ void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr
 vector<patternscore> initialize_elite_solutions(int k,vector<patternscore> patternscoreList){
   vector<patternscore> elite_sols;
   vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
+  srand(time(0));
   random_shuffle(nodes.begin(), nodes.end());
   for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
     if(elite_sols.size()<k){
@@ -368,6 +369,7 @@ vector<patternscore> initialize_elite_solutions(int k,vector<patternscore> patte
 vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols){
   vector<patternscore> sA_sB;
   vector<patternscore> nodes(elite_sols.begin(),elite_sols.end());
+  srand(time(0));
   random_shuffle(nodes.begin(), nodes.end());
   if(nodes[0].score < nodes[1].score){
     sA_sB.push_back(nodes[0]);
@@ -407,6 +409,47 @@ int calculate_delta(patternscore s, patternscore sB){
   return(diff);
 }
 
+vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList){
+  vector<patternscore> s_neighbours;
+  for (int i=0;i<patternscoreList.size();i++){
+    int delta=calculate_delta(s,patternscoreList[i]);
+    if (delta==1){
+      s_neighbours.push_back(patternscoreList[i]);
+    }
+  }
+  return(s_neighbours);
+}
+
+patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList){
+  patternscore s_closest_neighbour;
+  vector<patternscore> s_neighbours=neighbours(s,patternscoreList);
+  int min_delta=999;
+  for (int i=0;i<s_neighbours.size();i++){
+    int delta=calculate_delta(s_neighbours[i],sB);
+    if (delta<min_delta){
+      min_delta=delta;
+      s_closest_neighbour=s_neighbours[i];
+    }
+  }
+  return(s_closest_neighbour);
+}
+
+int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols){
+  int min_elite;
+  double min_score=99999999;
+  for (int i=0;i<elite_sols.size();i++){
+    if (elite_sols[i].score<min_score){
+      min_score=elite_sols[i].score;
+      min_elite=i;
+    }
+  }
+  if (elite_sols[min_elite].score<s_closest_neighbour.score){
+    return(1);
+  }
+  else{
+    return(0);
+  }
+}
 
 
 
@@ -629,8 +672,18 @@ int main()
     cout_list(sA_sB);
     patternscore s = sA_sB[0];
     patternscore sB = sA_sB[1];
-    int delta=calculate_delta(s,sB);
-    cout<<delta<<endl;
+
+    while (calculate_delta(s,sB)>0){
+      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList);
+      if (promizing_score(s_closest_neighbour,elite_sols)==1){
+        cout<<"Recherche locale"<<endl;
+      }
+      else{
+        cout<<"Pas de recherche locale"<<endl;
+      }
+
+      s=sB;
+    }
 
     return 0;
 }
