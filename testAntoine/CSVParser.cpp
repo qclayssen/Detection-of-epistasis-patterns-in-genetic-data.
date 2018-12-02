@@ -462,8 +462,16 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
   return(actual_s);
 }
 
-void update(patternscore s_opt, vector<patternscore>* elite_sols){
-
+void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
+  double min_score=99999999;
+  int min_elite=0;
+  for(int i=0;i<(*adr_elite_sols).size();i++){
+    if ((*adr_elite_sols)[i].score<min_score){
+      min_score=(*adr_elite_sols)[i].score;
+      min_elite=i;
+    }
+  }
+  (*adr_elite_sols)[min_elite]=s_opt;
 }
 
 
@@ -690,13 +698,14 @@ int main()
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
         cout<<"Recherche locale"<<endl;
         patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList);
-        //update(elite_sols,s_opt);
+        update(s_opt,adr_elite_sols);
       }
       else{
         cout<<"Pas de recherche locale"<<endl;
       }
       s=s_closest_neighbour;
     }
-
+    cout<<endl<<"Solutions d'élite finales:"<<endl;
+    cout_list(elite_sols);
     return 0;
 }
