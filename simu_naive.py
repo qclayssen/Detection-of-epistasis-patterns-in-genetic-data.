@@ -165,6 +165,7 @@ else:
                     whichTrio=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichTrio][0])+","+str(phenoNegList[whichTrio][1])+","+str(phenoNegList[whichTrio][2])
                 newFilePheno.write("0\n")
+            print("Incr: ",incr)
             line=line+"\n"
             countPosNeg+=1
         newFileGeno.write(header)
