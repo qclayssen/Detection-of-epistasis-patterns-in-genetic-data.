@@ -70,6 +70,7 @@ if (patternSize==2):
         header=header+"CAUS1,CAUS2\n"
         line=""
         countPosNeg=0
+        incr=0
         for k in range(nbTotal):
             for j in range(nbVar-2):
                 line=line+str(random.randrange(3))+","
@@ -78,15 +79,16 @@ if (patternSize==2):
                 if (scramble<(10*scramblePercent)):
                     whichDuo=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichDuo][0])+","+str(phenoNegList[whichDuo][1])
+                    incr+=1
                 else :
                     whichDuo=random.randrange(len(phenoPosList))
                     line=line+str(phenoPosList[whichDuo][0])+","+str(phenoPosList[whichDuo][1])
                 newFilePheno.write("1\n")
             else :
-                scramble=random.randrange(1000)
-                if (scramble<(10*scramblePercent)):
+                if (incr>0):
                     whichDuo=random.randrange(len(phenoPosList))
                     line=line+str(phenoPosList[whichDuo][0])+","+str(phenoPosList[whichDuo][1])
+                    incr-=1
                 else :
                     whichDuo=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichDuo][0])+","+str(phenoNegList[whichDuo][1])
@@ -140,6 +142,7 @@ else:
         header=header+"CAUS1,CAUS2,CAUS3\n"
         line=""
         countPosNeg=0
+        incr=0
         for k in range(nbTotal):
             for j in range(nbVar-3):
                 line=line+str(random.randrange(3))+","
@@ -148,15 +151,16 @@ else:
                 if (scramble<(10*scramblePercent)):
                     whichTrio=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichTrio][0])+","+str(phenoNegList[whichTrio][1])+","+str(phenoNegList[whichTrio][2])
+                    incr+=1
                 else :
                     whichTrio=random.randrange(len(phenoPosList))
                     line=line+str(phenoPosList[whichTrio][0])+","+str(phenoPosList[whichTrio][1])+","+str(phenoPosList[whichTrio][2])
                 newFilePheno.write("1\n")
             else :
-                scramble=random.randrange(1000)
-                if (scramble<(10*scramblePercent)):
+                if (incr>0):
                     whichTrio=random.randrange(len(phenoPosList))
                     line=line+str(phenoPosList[whichTrio][0])+","+str(phenoPosList[whichTrio][1])+","+str(phenoPosList[whichTrio][2])
+                    incr-=1
                 else :
                     whichTrio=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichTrio][0])+","+str(phenoNegList[whichTrio][1])+","+str(phenoNegList[whichTrio][2])
