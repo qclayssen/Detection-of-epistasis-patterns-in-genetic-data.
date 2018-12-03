@@ -47,14 +47,8 @@ if (patternSize==2):
         		theMiddle=[X1,X2,value]
         		globalList.append(theMiddle)
 
-
-        minim=min(phiList)
-        maxim=max(phiList)
-
-
         for i in range(0,len(phiList)):
         	globalList[i][2]=1/(1+(math.exp(-phiList[i])))
-        	print(globalList[i][2])
         	if (globalList[i][2]>0.5) :
         		phenoPosList.append([globalList[i][0],globalList[i][1]])
         	else :
@@ -75,8 +69,8 @@ if (patternSize==2):
             for j in range(nbVar-2):
                 line=line+str(random.randrange(3))+","
             if (countPosNeg<nbPositive):
-                scramble=random.randrange(1000)
-                if (scramble<(10*scramblePercent)):
+                scramble=random.randrange(100)
+                if (scramble<(scramblePercent)):
                     whichDuo=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichDuo][0])+","+str(phenoNegList[whichDuo][1])
                     incr+=1
@@ -97,8 +91,8 @@ if (patternSize==2):
             countPosNeg+=1
         newFileGeno.write(header)
         newFileGeno.write(line)
-        newFileGeno.close
-        newFilePheno.close
+        newFileGeno.close()
+        newFilePheno.close()
 
 else:
     while (phenoPosList==[] or phenoNegList==[]):
@@ -120,9 +114,6 @@ else:
                     globalList.append(theMiddle)
 
 
-        minim=min(phiList)
-        maxim=max(phiList)
-
 
         for i in range(0,len(phiList)):
         	globalList[i][3]=1/(1+(math.exp(-phiList[i])))
@@ -134,28 +125,26 @@ else:
 
     for i in range(1,nbFiles+1):
         newFileGeno=open("{0}/{1}_Genotype_{2}.csv".format(outFolder,prefix,i),"w")
-        newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
-        newFilePheno.write("Class\n")
         header=""
         for j in range(1,nbVar-2):
             header=header+"N"+str(j)+","
         header=header+"CAUS1,CAUS2,CAUS3\n"
-        line=""
+        newFileGeno.write(header)
         countPosNeg=0
         incr=0
         for k in range(nbTotal):
+            line=""
             for j in range(nbVar-3):
                 line=line+str(random.randrange(3))+","
             if (countPosNeg<nbPositive):
-                scramble=random.randrange(1000)
-                if (scramble<(10*scramblePercent)):
+                scramble=random.randrange(100)
+                if (scramble<(scramblePercent)):
                     whichTrio=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichTrio][0])+","+str(phenoNegList[whichTrio][1])+","+str(phenoNegList[whichTrio][2])
                     incr+=1
                 else :
                     whichTrio=random.randrange(len(phenoPosList))
                     line=line+str(phenoPosList[whichTrio][0])+","+str(phenoPosList[whichTrio][1])+","+str(phenoPosList[whichTrio][2])
-                newFilePheno.write("1\n")
             else :
                 if (incr>0):
                     whichTrio=random.randrange(len(phenoPosList))
@@ -164,14 +153,18 @@ else:
                 else :
                     whichTrio=random.randrange(len(phenoNegList))
                     line=line+str(phenoNegList[whichTrio][0])+","+str(phenoNegList[whichTrio][1])+","+str(phenoNegList[whichTrio][2])
-                newFilePheno.write("0\n")
-            print("Incr: ",incr)
             line=line+"\n"
+            newFileGeno.write(line)
             countPosNeg+=1
-        newFileGeno.write(header)
-        newFileGeno.write(line)
-        newFileGeno.close
-        newFilePheno.close
+        newFileGeno.close()
+
+        newFilePheno=open("{0}/{1}_Phenotype_{2}.csv".format(outFolder,prefix,i),"w")
+        newFilePheno.write("Class\n")
+        for o in range(nbPositive):
+            newFilePheno.write("1\n")
+        for o in range(nbNegative):
+            newFilePheno.write("0\n")
+        newFilePheno.close()
 
 print("Cas",phenoPosList)
 print("Témoins",phenoNegList)

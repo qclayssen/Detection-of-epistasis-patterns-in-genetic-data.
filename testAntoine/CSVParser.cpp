@@ -28,7 +28,7 @@ struct patternscore {
   string pattern1;
   string pattern2;
   string pattern3;
-  float score;
+  float score = -1;
 };
 
 vector<string> get_snp_list(string genos_file){
@@ -350,6 +350,252 @@ void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr
   }
 }
 
+float g_test_2SNP(contingence2SNP contingence2){
+  int const nbrcolonnes(9);
+  int const nbrligne(2);
+  //cout<<nbrcolonnes<<endl;
+
+  for(int j=0; j<(nbrcolonnes); ++j)
+  {    for(int i=0; i<(nbrligne); ++i)
+      {
+
+         //cout<<contingence2[nbrligne][j]<<"+"<<contingence2[i][j]<<"=";
+         contingence2[nbrligne][j] += contingence2[i][j];
+         //cout<<contingence2[nbrligne][j]<<" ";
+
+      }
+      //cout<<";"<<endl;
+  }
+
+  for(int j=0; j<(nbrcolonnes); ++j)
+  {    for(int i=0; i<(nbrligne); ++i)
+      {
+         contingence2[i][nbrcolonnes] += contingence2[i][j];
+      }
+  }
+  for(int i(0); i<(nbrligne); ++i)
+      {
+         contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
+      }
+
+  for (int i=0;i<3;i++){
+    for (int j=0;j<10;j++){
+      cout<<contingence2[i][j]<<" ";
+    }
+    cout<<endl;
+  }
+  cout<<endl;
+
+  float contingencetheo[nbrligne][nbrcolonnes];
+  for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
+    for (int j=0;j<(nbrcolonnes);j++){
+      contingencetheo[i][j]=0;
+    }
+  }
+  for(int i=0; i<(nbrligne); ++i){
+    for(int j=0; j<(nbrcolonnes); ++j){
+       //cout<<contingence2[i][nbrcolonnes]<<"*"<<contingence2[nbrligne][j]<<"/"<<contingence2[nbrligne][nbrcolonnes];
+      contingencetheo[i][j] = (float) contingence2[i][nbrcolonnes]* (float)contingence2[nbrligne][j]/(float)contingence2[nbrligne][nbrcolonnes];
+      // cout<<"="<<contingencetheo[i][j]<<endl;
+    }
+  }
+  for (int i=0;i<2;i++){
+    for (int j=0;j<9;j++){
+      cout<<contingencetheo[i][j]<<" ";
+    }
+    cout<<endl;
+  }
+  cout<<endl;
+
+float scorekhi2=0;
+/*
+  for(int i(0); i<(nbrligne); ++i)
+  {    for(int j(0); j<(nbrcolonnes); ++j)
+      {
+         scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
+         //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
+      }
+  }
+  */
+
+int test;
+test=0;
+/*
+unsigned ncells = nbrligne*nbrcolonnes;
+int count_inf_5 = 0;
+for(unsigned i=0; i<nbrligne; ++i){
+  for(unsigned j=0; j<nbrcolonnes; ++j){
+    if(contingencetheo[i][j] < 5){
+      count_inf_5 ++;
+      if((double)count_inf_5 / ncells > 0.2){
+            test=1;
+      }
+    }
+  }
+}
+for(unsigned i=0; i<nbrligne; ++i){
+  for(unsigned j=0; j<nbrcolonnes; ++j){
+    if(contingence2[i][j] < 5){
+      test=1;
+    }
+  }
+}
+if(test==1){
+  cout<<"The test isn't reliable"<<endl;
+}
+*/
+  int df;
+  df=(nbrligne-1)*(nbrcolonnes-1);
+  float pval;
+  if(test==0){
+    for(int i(0); i<(nbrligne); ++i){
+      for(int j(0); j<(nbrcolonnes); ++j){
+        if (contingence2[i][j] != 0 ){
+          double div=(double)contingence2[i][j]/contingencetheo[i][j];
+          scorekhi2 += contingence2[i][j] * log(div);
+        }
+      }
+    }
+    scorekhi2  *= 2;
+    boost::math::chi_squared_distribution<double> chi2_dist(df);
+    pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
+    if(pval == 0){
+        pval = 2.0e-16;}
+    cout<<"score: "<<scorekhi2<<endl;
+    cout<<"p: "<<pval<<endl;
+  }
+  else{
+    scorekhi2=0;
+    pval=1;
+    cout<<"score: "<<scorekhi2<<endl;
+    cout<<"p: "<<pval<<endl;
+  }
+  return(scorekhi2);
+}
+
+float g_test_3SNP(contingence3SNP contingence2){
+  int const nbrcolonnes(27);
+  int const nbrligne(2);
+  //cout<<nbrcolonnes<<endl;
+
+  for(int j=0; j<(nbrcolonnes); ++j)
+  {    for(int i=0; i<(nbrligne); ++i)
+      {
+
+         //cout<<contingence2[nbrligne][j]<<"+"<<contingence2[i][j]<<"=";
+         contingence2[nbrligne][j] += contingence2[i][j];
+         //cout<<contingence2[nbrligne][j]<<" ";
+
+      }
+      //cout<<";"<<endl;
+  }
+
+  for(int j=0; j<(nbrcolonnes); ++j)
+  {    for(int i=0; i<(nbrligne); ++i)
+      {
+         contingence2[i][nbrcolonnes] += contingence2[i][j];
+      }
+  }
+  for(int i(0); i<(nbrligne); ++i)
+      {
+         contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
+      }
+
+  for (int i=0;i<3;i++){
+    for (int j=0;j<28;j++){
+      cout<<contingence2[i][j]<<" ";
+    }
+    cout<<endl;
+  }
+  cout<<endl;
+
+  float contingencetheo[nbrligne][nbrcolonnes];
+  for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
+    for (int j=0;j<(nbrcolonnes);j++){
+      contingencetheo[i][j]=0;
+    }
+  }
+  for(int i=0; i<(nbrligne); ++i){
+    for(int j=0; j<(nbrcolonnes); ++j){
+       //cout<<contingence2[i][nbrcolonnes]<<"*"<<contingence2[nbrligne][j]<<"/"<<contingence2[nbrligne][nbrcolonnes];
+      contingencetheo[i][j] = (float) contingence2[i][nbrcolonnes]* (float)contingence2[nbrligne][j]/(float)contingence2[nbrligne][nbrcolonnes];
+      // cout<<"="<<contingencetheo[i][j]<<endl;
+    }
+  }
+  for (int i=0;i<2;i++){
+    for (int j=0;j<27;j++){
+      cout<<contingencetheo[i][j]<<" ";
+    }
+    cout<<endl;
+  }
+  cout<<endl;
+
+float scorekhi2=0;
+/*
+  for(int i(0); i<(nbrligne); ++i)
+  {    for(int j(0); j<(nbrcolonnes); ++j)
+      {
+         scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
+         //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
+      }
+  }
+  */
+
+int test;
+test=0;
+/*
+unsigned ncells = nbrligne*nbrcolonnes;
+int count_inf_5 = 0;
+for(unsigned i=0; i<nbrligne; ++i){
+  for(unsigned j=0; j<nbrcolonnes; ++j){
+    if(contingencetheo[i][j] < 5){
+      count_inf_5 ++;
+      if((double)count_inf_5 / ncells > 0.2){
+            test=1;
+      }
+    }
+  }
+}
+for(unsigned i=0; i<nbrligne; ++i){
+  for(unsigned j=0; j<nbrcolonnes; ++j){
+    if(contingence2[i][j] < 5){
+      test=1;
+    }
+  }
+}
+if(test==1){
+  cout<<"The test isn't reliable"<<endl;
+}
+*/
+  int df;
+  df=(nbrligne-1)*(nbrcolonnes-1);
+  float pval;
+  if(test==0){
+    for(int i(0); i<(nbrligne); ++i){
+      for(int j(0); j<(nbrcolonnes); ++j){
+        if (contingence2[i][j] != 0 ){
+          double div=(double)contingence2[i][j]/contingencetheo[i][j];
+          scorekhi2 += contingence2[i][j] * log(div);
+        }
+      }
+    }
+    scorekhi2  *= 2;
+    boost::math::chi_squared_distribution<double> chi2_dist(df);
+    pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
+    if(pval == 0){
+        pval = 2.0e-16;}
+    cout<<"score: "<<scorekhi2<<endl;
+    cout<<"p: "<<pval<<endl;
+  }
+  else{
+    scorekhi2=0;
+    pval=1;
+    cout<<"score: "<<scorekhi2<<endl;
+    cout<<"p: "<<pval<<endl;
+  }
+  return(scorekhi2);
+}
+
 vector<patternscore> initialize_elite_solutions(int k,vector<patternscore> patternscoreList){
   vector<patternscore> elite_sols;
   vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
@@ -466,6 +712,9 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
   double min_score=99999999;
   int min_elite=0;
   for(int i=0;i<(*adr_elite_sols).size();i++){
+    if ((*adr_elite_sols)[i].pattern1==s_opt.pattern1 && (*adr_elite_sols)[i].pattern2==s_opt.pattern2){
+      return;
+    }
     if ((*adr_elite_sols)[i].score<min_score){
       min_score=(*adr_elite_sols)[i].score;
       min_elite=i;
@@ -520,126 +769,7 @@ int main()
         cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
         cout<<endl;
 
-        int const nbrcolonnes(9);
-        int const nbrligne(2);
-        //cout<<nbrcolonnes<<endl;
-
-        for(int j=0; j<(nbrcolonnes); ++j)
-        {    for(int i=0; i<(nbrligne); ++i)
-            {
-
-               //cout<<contingence2[nbrligne][j]<<"+"<<contingence2[i][j]<<"=";
-               contingence2[nbrligne][j] += contingence2[i][j];
-               //cout<<contingence2[nbrligne][j]<<" ";
-
-            }
-            //cout<<";"<<endl;
-        }
-
-        for(int j=0; j<(nbrcolonnes); ++j)
-        {    for(int i=0; i<(nbrligne); ++i)
-            {
-               contingence2[i][nbrcolonnes] += contingence2[i][j];
-            }
-        }
-        for(int i(0); i<(nbrligne); ++i)
-            {
-               contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
-            }
-
-        for (int i=0;i<3;i++){
-          for (int j=0;j<10;j++){
-            cout<<contingence2[i][j]<<" ";
-          }
-          cout<<endl;
-        }
-        cout<<endl;
-
-        float contingencetheo[nbrligne][nbrcolonnes];
-        for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
-          for (int j=0;j<(nbrcolonnes);j++){
-            contingencetheo[i][j]=0;
-          }
-        }
-        for(int i=0; i<(nbrligne); ++i){
-          for(int j=0; j<(nbrcolonnes); ++j){
-             //cout<<contingence2[i][nbrcolonnes]<<"*"<<contingence2[nbrligne][j]<<"/"<<contingence2[nbrligne][nbrcolonnes];
-            contingencetheo[i][j] = (float) contingence2[i][nbrcolonnes]* (float)contingence2[nbrligne][j]/(float)contingence2[nbrligne][nbrcolonnes];
-            // cout<<"="<<contingencetheo[i][j]<<endl;
-          }
-        }
-        for (int i=0;i<2;i++){
-          for (int j=0;j<9;j++){
-            cout<<contingencetheo[i][j]<<" ";
-          }
-          cout<<endl;
-        }
-        cout<<endl;
-
-        float scorekhi2=0;/*
-        for(int i(0); i<(nbrligne); ++i)
-        {    for(int j(0); j<(nbrcolonnes); ++j)
-            {
-               scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
-               //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
-            }
-        }*/
-
-      int test;
-      test=0;
-      unsigned ncells = nbrligne*nbrcolonnes;
-      int count_inf_5 = 0;
-      for(unsigned i=0; i<nbrligne; ++i){
-        for(unsigned j=0; j<nbrcolonnes; ++j){
-          if(contingencetheo[i][j] < 5){
-            count_inf_5 ++;
-            if((double)count_inf_5 / ncells > 0.2){
-                  test=1;
-            }
-          }
-        }
-      }
-      for(unsigned i=0; i<nbrligne; ++i){
-        for(unsigned j=0; j<nbrcolonnes; ++j){
-          if(contingence2[i][j] < 5){
-            test=1;
-          }
-        }
-      }
-      if(test==1){
-        cout<<"The test isn't reliable"<<endl;
-      }
-
-
-        int df;
-        df=(nbrligne-1)*(nbrcolonnes-1);
-        float pval;
-        if(test==0){
-          for(int i(0); i<(nbrligne); ++i){
-            for(int j(0); j<(nbrcolonnes); ++j){
-              if (contingence2[i][j] != 0 ){
-                double div=(double)contingence2[i][j]/contingencetheo[i][j];
-                cout<<log(div)<<endl;
-                scorekhi2 += contingence2[i][j] * log(div);
-                cout<<scorekhi2<<endl;
-              }
-            }
-          }
-          scorekhi2  *= 2;
-          boost::math::chi_squared_distribution<double> chi2_dist(df);
-          pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
-          if(pval == 0){
-              pval = 2.0e-16;}
-          cout<<"score: "<<scorekhi2<<endl;
-          cout<<"p: "<<pval<<endl;
-        }
-        else{
-          scorekhi2=0;
-          pval=1;
-          cout<<"score: "<<endl;
-          cout<<"p: "<<endl;
-          continue;
-        }
+        float scorekhi2=g_test_2SNP(contingence2);
 
         patternscore p1;
         p1.pattern1=snpNameList[l1];
@@ -669,6 +799,15 @@ int main()
           }
           cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
           cout<<endl;
+
+          float scorekhi2=g_test_3SNP(contingence3);
+
+          patternscore p1;
+          p1.pattern1=snpNameList[l1];
+          p1.pattern2=snpNameList[l2];
+          p1.pattern3=snpNameList[l3];
+          p1.score=scorekhi2;
+          patternscoreList.push_back(p1);
         }
       }
     }
@@ -679,6 +818,7 @@ int main()
     }
 */
 
+/*
     int k = 4;
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
@@ -707,5 +847,7 @@ int main()
     }
     cout<<endl<<"Solutions d'élite finales:"<<endl;
     cout_list(elite_sols);
+
+*/
     return 0;
 }
