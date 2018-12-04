@@ -726,18 +726,23 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
   (*adr_elite_sols)[min_elite]=s_opt;
 }
 
-int calculate_gtest (){
-  for (int i=0;i<elite_sols.size();i++){
-    if(elite_sols[i].snp3==NULL){
-      create_contingency_table_pattern2(elite_sols[i].snp1,elite_sols[i].snp2,adr_contingence2,genos,phenos_m);
-      elite_sols[i].score=g_test_2SNP(contingence2);
-    }
-    else{
-      create_contingency_table_pattern3(elite_sols[i].snp1,elite_sols[i].snp2,elite_sols[i].snp3,adr_contingence3,genos,phenos_m);
-      elite_sols[i].score=g_test_3SNP(contingence3);
-    }
+float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
+  float score;
+  if(pattern.snp3==NULL){
+    contingence2SNP contingence2;
+    contingence2SNP* adr_contingence2 = &contingence2;
+    create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
+    score=g_test_2SNP(contingence2);
   }
+  else{
+    contingence3SNP contingence3;
+    contingence3SNP* adr_contingence3 = &contingence3;
+    create_contingency_table_pattern3(pattern.snp1,pattern.snp2,pattern.snp3,adr_contingence3,genos,phenos_m);
+    score=g_test_3SNP(contingence3);
+  }
+  return(score);
 }
+
 int main()
 {
     // Arguments
@@ -763,10 +768,6 @@ int main()
     vector<patternscore>patternscoreList;
     vector<patternscore>::iterator iterpatternscoreList;
 
-    contingence2SNP contingence2;
-    contingence2SNP* adr_contingence2 = &contingence2;
-    contingence3SNP contingence3;
-    contingence3SNP* adr_contingence3 = &contingence3;
 
     for (l1=0;l1<int(genos.size2())-1;l1++){ //First SNP of the pattern
       for (l2=l1+1;l2<int(genos.size2());l2++){ //Second SNP of the pattern
@@ -778,24 +779,6 @@ int main()
         p1.snp2=l2;
         p1.snp3=NULL;
         patternscoreList.push_back(p1);
-/*
-        create_contingency_table_pattern2(l1,l2,adr_contingence2,genos,phenos_m);
-        cout<<snpNameList[l1]<<","<<snpNameList[l2]<<endl;
-        int countNonStat=0;
-        for (int i=0;i<2;i++){
-          for (int j=0;j<9;j++){
-            cout<<contingence2[i][j]<<" ";
-            if (contingence2[i][j]<5){
-              countNonStat++;
-            }
-          }
-          cout<<endl;
-        }
-        cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
-        cout<<endl;
-        float scorekhi2=g_test_2SNP(contingence2);
-*/
-
       }
     }
 
@@ -811,41 +794,16 @@ int main()
           p1.pattern2=snpNameList[l2];
           p1.pattern3=snpNameList[l3];
           patternscoreList.push_back(p1);
-/*
-          create_contingency_table_pattern3(l1,l2,l3,adr_contingence3,genos,phenos_m);
-          cout<<snpNameList[l1]<<","<<snpNameList[l2]<<","<<snpNameList[l3]<<endl;
-          int countNonStat=0;
-          for (int i=0;i<2;i++){
-            for (int j=0;j<27;j++){
-              cout<<contingence3[i][j]<<" ";
-              if (contingence3[i][j]<5){
-                countNonStat++;
-              }
-            }
-            cout<<endl;
-          }
-          cout<<countNonStat<<" valeurs dans le tableau inférieures à 5."<<endl;
-          cout<<endl;
-
-          float scorekhi2=g_test_3SNP(contingence3);
-*/
         }
       }
     }
 
 
-    int k = 4;
+    int k = 10;
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
     for (int i=0;i<elite_sols.size();i++){
-      if(elite_sols[i].snp3==NULL){
-        create_contingency_table_pattern2(elite_sols[i].snp1,elite_sols[i].snp2,adr_contingence2,genos,phenos_m);
-        elite_sols[i].score=g_test_2SNP(contingence2);
-      }
-      else{
-        create_contingency_table_pattern3(elite_sols[i].snp1,elite_sols[i].snp2,elite_sols[i].snp3,adr_contingence3,genos,phenos_m);
-        elite_sols[i].score=g_test_3SNP(contingence3);
-      }
+        elite_sols[i].score=add_gtest_score(elite_sols[i],genos,phenos_m);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
     cout<<"Elite solutions :"<<endl;
@@ -860,16 +818,7 @@ int main()
 
     while (calculate_delta(s,sB)>0){
       patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList);
-
-      if(s_closest_neighbour.snp3==NULL){
-        create_contingency_table_pattern2(s_closest_neighbour.snp1,s_closest_neighbour.snp2,adr_contingence2,genos,phenos_m);
-        s_closest_neighbour.score=g_test_2SNP(contingence2);
-      }
-      else{
-        create_contingency_table_pattern3(s_closest_neighbour.snp1,s_closest_neighbour.snp2,s_closest_neighbour.snp3,adr_contingence3,genos,phenos_m);
-        s_closest_neighbour[i].score=g_test_3SNP(contingence3);
-      }
-
+      s_closest_neighbour.score=add_gtest_score(s_closest_neighbour,genos,phenos_m);
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
         cout<<"Recherche locale"<<endl;
         patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList);
@@ -883,6 +832,5 @@ int main()
     cout<<endl<<"Solutions d'élite finales:"<<endl;
     cout_list(elite_sols);
 
-*/
     return 0;
 }
