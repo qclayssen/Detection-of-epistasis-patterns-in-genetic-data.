@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import os
-os.system("python3 simu_naive.py simu2 10 simu2 100 2000 2000 3 1")
+os.system("python3 simu_naive.py simu2 10 simu2 100 2000 2000 3 5")
 
 # 7 Arguments :
 # python3 simu_naive.py {1} {2} {3} {4} {5} {6} {7}
@@ -13,3 +13,4 @@ os.system("python3 simu_naive.py simu2 10 simu2 100 2000 2000 3 1")
 # {5} = int : Number of Cases (Phenotype 1)
 # {6} = int : Number of Controls (Phenotype 0)
 # {7} = int : Size of causal pattern (2 or 3)
+# {8} = int : Percentage of scrambling (change for a Control to get causal pattern)
