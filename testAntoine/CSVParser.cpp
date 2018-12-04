@@ -599,6 +599,23 @@ if(test==1){
   return(scorekhi2);
 }
 
+float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
+  float score;
+  if(pattern.snp3==NULL){
+    contingence2SNP contingence2;
+    contingence2SNP* adr_contingence2 = &contingence2;
+    create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
+    score=g_test_2SNP(contingence2);
+  }
+  else{
+    contingence3SNP contingence3;
+    contingence3SNP* adr_contingence3 = &contingence3;
+    create_contingency_table_pattern3(pattern.snp1,pattern.snp2,pattern.snp3,adr_contingence3,genos,phenos_m);
+    score=g_test_3SNP(contingence3);
+  }
+  return(score);
+}
+
 vector<patternscore> initialize_elite_solutions(int k,vector<patternscore> patternscoreList){
   vector<patternscore> elite_sols;
   vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
@@ -700,10 +717,12 @@ int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_
   }
 }
 
-patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
+patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m){
   vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
   patternscore actual_s = s_closest_neighbour;
-  for (int i=0;i<patternscoreList.size();i++){
+  float score;
+  for (int i=0;i<s_neighbours.size();i++){
+    s_neighbours[i].score=add_gtest_score(s_neighbours[i],genos,phenos_m);
     if (s_neighbours[i].score>actual_s.score){
       actual_s=s_neighbours[i];
     }
@@ -724,23 +743,6 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
     }
   }
   (*adr_elite_sols)[min_elite]=s_opt;
-}
-
-float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
-  float score;
-  if(pattern.snp3==NULL){
-    contingence2SNP contingence2;
-    contingence2SNP* adr_contingence2 = &contingence2;
-    create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
-    score=g_test_2SNP(contingence2);
-  }
-  else{
-    contingence3SNP contingence3;
-    contingence3SNP* adr_contingence3 = &contingence3;
-    create_contingency_table_pattern3(pattern.snp1,pattern.snp2,pattern.snp3,adr_contingence3,genos,phenos_m);
-    score=g_test_3SNP(contingence3);
-  }
-  return(score);
 }
 
 int main()
@@ -821,7 +823,7 @@ int main()
       s_closest_neighbour.score=add_gtest_score(s_closest_neighbour,genos,phenos_m);
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
         cout<<"Recherche locale"<<endl;
-        patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList);
+        patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList,genos,phenos_m);
         update(s_opt,adr_elite_sols);
       }
       else{
