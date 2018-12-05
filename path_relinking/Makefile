@@ -1,6 +1,7 @@
 BOOST_FOLDER=/home/antoine/Documents/project_c_sinoquet/include/boost_1_68_0
 
 SRC=path_relinking.cpp\
+../src/Parameters_file_parsing.cpp\
 ../src/stats.cpp\
 ../src/tools.cpp\
 ../src/path_relinking_func.cpp

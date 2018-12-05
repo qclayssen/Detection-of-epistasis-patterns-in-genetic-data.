@@ -7,7 +7,7 @@ separator ,
 ## PROCEDURE path-relinking
 
 # number of elite solutions (k ≥ 2)
-k 3
+k 10
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)

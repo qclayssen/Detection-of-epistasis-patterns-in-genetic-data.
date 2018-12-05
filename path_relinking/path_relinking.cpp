@@ -16,7 +16,7 @@
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/algorithm/string.hpp>
 
-
+#include "../include/Parameters_file_parsing.hpp"
 #include "../include/typesandstruct.hpp"
 #include "../include/CSVParser.hpp"
 #include "../include/stats.hpp"
@@ -28,15 +28,23 @@ using namespace std;
 using namespace std::chrono;
 
 
-int main()
+int main(int argc, char *argv[])
 {
+  if(argc < 3)
+  {
+      cerr << "Missing parameter :\n"
+           << "\t./path_relinking <path_to_genotypes> <path_to_phenotypes>"
+           << endl;
+      exit(-1);
+  }
+
     // Arguments
-    string genos_file;
-    genos_file="../simu2/simu2_Genotype_1.csv";
-    string phenos_file;
-    phenos_file="../simu2/simu2_Phenotype_1.csv";
-    int header = 1;
-    char separator = ',';
+    string genos_file = argv[1];
+    string phenos_file = argv[2];
+
+    parameters_file_parsing params;
+    int header = params.header;
+    char separator = params.separator;
 
 //  DATA IMPORTATION
     CSVParser<int> genos_csv(genos_file, separator, header);
@@ -84,7 +92,7 @@ int main()
     }
 
 
-    int k = 10;
+    int k = params.k;
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
     for (int i=0;i<elite_sols.size();i++){

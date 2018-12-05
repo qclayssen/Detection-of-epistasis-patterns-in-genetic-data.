@@ -1,4 +1,4 @@
-#include "./include/parameters_file_parsing.hpp"
+#include "../include/Parameters_file_parsing.hpp"
 
 #include <sstream>
 #include <algorithm>
@@ -12,7 +12,7 @@ using namespace std;
 
 parameters_file_parsing::parameters_file_parsing()
 {
-    ifstream file("./PARAMETERS_PROJECT.txt");
+    ifstream file("../PARAMETERS_PROJECT.txt");
     if(file)
     {
         string line;
