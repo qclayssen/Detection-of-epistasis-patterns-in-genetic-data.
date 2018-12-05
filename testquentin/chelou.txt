@@ -1,140 +1,76 @@
 
 Data imported : 4000 individuals X 20 SNPs
 enfant:
-13,1
-723.201
-1,8
-11.2745
-5,2
-1624.88
-2,12
-6.81527
-6,5
-1628.38
-5,13
-4.42406
+6,1
+9.61228
+1,16
+13.9129
 2,0
-10.4124
+6.81527
+0,9
+18.4067
+5,6
+4.42406
+6,12
+4.71251
 1,7
-7.69939
+11.2745
 7,18
 1622.74
-3,2
-1623.06
-2,13
-1.86154
+6,2
+cool
+nouveau par adr:2
+nouveau :2
+nouveau :2
+1,5
+cool
+nouveau par adr:5
+nouveau :5
+nouveau :5
 2,6
-5.40454
-6,7
-7.08394
-1,6
-13.9129
-6,14
-5.16143
-16,4
-725.94
-4,13
-4.87461
-13,5
-cool
-nouveau par adr:5
-nouveau :5
-1,2
-cool
-nouveau par adr:2
-nouveau :2
-5,2
-cool
-nouveau par adr:2
-nouveau :2
-2,5
-cool
-nouveau par adr:5
-nouveau :5
-6,6
 cool
 nouveau par adr:6
 nouveau :6
-5,5
+nouveau :6
+0,6
 cool
-nouveau par adr:5
-nouveau :5
-2,16
+nouveau par adr:6
+nouveau :6
+nouveau :6
+5,1
 cool
-nouveau par adr:16
-nouveau :16
-1,2
+nouveau par adr:1
+nouveau :1
+nouveau :1
+6,1
 cool
-nouveau par adr:2
-nouveau :2
-7,2
+nouveau par adr:1
+nouveau :1
+nouveau :1
+1,1
 cool
-nouveau par adr:2
-nouveau :2
-3,2
+nouveau par adr:1
+nouveau :1
+nouveau :1
+7,1
 cool
-nouveau par adr:2
-nouveau :2
-2,2
-cool
-nouveau par adr:2
-nouveau :2
-2,5
-cool
-nouveau par adr:5
-nouveau :5
-6,2
-cool
-nouveau par adr:2
-nouveau :2
-1,2
-cool
-nouveau par adr:2
-nouveau :2
-6,2
-cool
-nouveau par adr:2
-nouveau :2
-16,2
-cool
-nouveau par adr:2
-nouveau :2
-4,2
-cool
-nouveau par adr:2
-nouveau :2
+nouveau par adr:1
+nouveau :1
+nouveau :1
 enfant muté:
-13,1
-7.897
-1,8
-11.2745
-5,2
-4.54809
-2,12
-6.81527
-6,5
-4.70651
-5,13
-4.42406
-2,0
-5.7011
-1,7
-15.2882
-7,18
-1622.74
-3,2
-8.86191
-2,13
-1.86154
-2,6
-5.40454
-6,7
-7.08394
+2,1
+8.59314
+5,16
+5.87342
+6,0
+7.65457
+6,9
+18.2737
 1,6
 10.4776
-6,14
-5.16143
-16,4
-9.99057
-4,13
-4.87461
+1,12
+7.69939
+1,7
+15.2882
+1,18
+1627.74

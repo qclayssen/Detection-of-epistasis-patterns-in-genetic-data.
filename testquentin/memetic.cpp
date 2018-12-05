@@ -29,9 +29,11 @@ struct patternscore {
   unsigned int snp1;
   unsigned int snp2;
   unsigned int snp3=NULL;
+  int idparent;
   string pattern1;
   string pattern2;
   string pattern3;
+
   float score = -1;
 };
 
@@ -644,9 +646,8 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
 
  }
 
-void perform_one_mutation_per_child(vector<patternscore> children_parents,int prob_mutation){
-  for (int i=0;i<children_parents.size();++i){
-    vector<patternscore>* adr_children_parents = &children_parents;
+void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,int prob_mutation){
+  for (int i=0;i<(*adr_children_parents).size();++i){
     int mutation = rand() % 100;
     //cout<<mutation<<endl;
     if (mutation > prob_mutation){
@@ -664,17 +665,14 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
         case 0:
           break;
         case 1:
-          {int snp = rand() % children_parents.size();
-          cout<<children_parents[i].snp1<<","<<children_parents[snp].snp1<<endl;
-          if(parentpattern == 1 ){if(mutpattern == 1){cout<<"cool"<<endl;
-            (*adr_children_parents)[i].snp1=children_parents[snp].snp1;}
-            else{children_parents[i].snp1=children_parents[snp].snp2;}}
+          {int snp = rand() % (*adr_children_parents).size();
+          cout<<(*adr_children_parents)[i].snp1<<","<<(*adr_children_parents)[snp].snp1<<endl;
+          if(parentpattern == 1 ){if(mutpattern == 1){//cout<<"cool"<<endl;
+            (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp1;}
+            else{(*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp2;}}
           else{if(mutpattern ==0){
-            children_parents[i].snp2=children_parents[snp].snp1;}
-            else{children_parents[i].snp2=children_parents[snp].snp2;}}
-          cout<<"nouveau par adr:"<<(*adr_children_parents)[i].snp1<<endl;
-          cout<<"nouveau :"<<children_parents[i].snp1<<endl;
-        out<<"nouveau :"<<&children_parents[i].snp1<<endl;}break;
+            (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp1;}
+            else{(*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp2;}}}break;
         case 2:
           break;
         }
@@ -694,7 +692,8 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
       for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
         if ((*it).pattern3==""){
           cout<<(*it).snp1<<","<<(*it).snp2<<endl;
-          cout<<(*it).score<<endl;
+          cout<<"idparent :"<<(*it).idparent<<" score:"<<(*it).score<<endl;
+          cout<<endl;
         }
         else{
           cout<<(*it).snp1<<","<<(*it).snp2<<(*it).pattern3<<endl;
@@ -756,14 +755,56 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
       return(actual_s);
     }
 
+
+    void quicksort(int* adr_pop.score, int left, int right) {
+        int i = left, j = right;
+        int tmp;
+        int pivot = adr_pop[(left + right).score / 2];
+        while (i <= j) {
+              while (adr_pop[i].score < pivot){
+                    i++;}
+              while (adr_pop[j].score > pivot){
+                    j--;}
+              if (i <= j) {
+                    tmp = adr_pop[i].score;
+                    adr_pop[i].score = adr_pop[j].score;
+                    adr_pop[j].score = tmp;
+                    i++;
+                    j--;
+              }
+        };
+        if (left < j){
+              quicksort(adr_pop, left, j);}
+        if (i < right){
+              quicksort(adr_pop, i, right);}
+  }
+
+    vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n){
+      vector<patternscore> best_solutions;
+      vector<patternscore>* adr_pop = &pop;
+      int left =1;
+      int right = pop.size();
+      cout<<"pop taille "<<pop.size()<<" snp1:"<<pop[0].snp1<<" snp2:"<<pop[0].snp2<<endl;
+      quicksort(adr_pop,left,right);
+      int i=0;
+      while(i<k){
+        cout<<"pop1"<<pop[i].snp1<<","<<pop[i].snp1<<endl;
+        best_solutions.push_back(pop[i]);
+        i=i+1;} return(best_solutions);
+      }
+
+
     vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList){
       vector<patternscore> pop;
       vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
+      int i=0;
       srand(time(0));
       random_shuffle(nodes.begin(), nodes.end());
       for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
         if(pop.size()<n){
+          (*it).idparent=i;
           pop.push_back(*it);
+          i=i+1;
         }
         else{
           break;
@@ -772,7 +813,19 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
       return(pop);
     }
 
-  //void update_population(vector<patternscore> children_parents, vector<patternscore>pop,int n)
+  void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
+        for (int i=0;i<children_parents.size();i++){
+          for (int j=0;j<(*adr_pop).size();j++){
+        if(children_parents[i].idparent==(*adr_pop)[j].idparent){
+          //cout<<"snp"<<(*it).snp1<<(*it).snp2<<endl;
+          //cout<<"size:"<<(*itp).snp1<<(*itp).snp2<<endl;
+          //cout<<(*itp).idparent<<" <-parent "<<(*itp).idparent<<endl;
+          (*adr_pop)[j]=children_parents[i];
+          break;
+          }
+        }
+      }
+    }
 
     float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
       float score;
@@ -864,9 +917,11 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
         int n_it = 2;
         int n = 10;
         int h = 1;
+        int k = 3;
         vector<patternscore>n_pairs_selected_parents=initialize_population(n, patternscoreList);
-
-
+        vector<patternscore>pop=n_pairs_selected_parents;
+        cout<<"pop initiale:"<<endl;
+        cout_list(pop);
         for (int i=0;i<n_pairs_selected_parents.size();i++){
             n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
         }
@@ -885,16 +940,22 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
           }
           cout<<"enfant:"<<endl;
           cout_list(children_parents);
-          perform_one_mutation_per_child(children_parents,prob_mutation);
+          vector<patternscore>* adr_children_parents = &children_parents;
+          perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
           for (int i=0;i<children_parents.size();i++){
               children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
           }
           cout<<"enfant muté:"<<endl;
           cout_list(children_parents);
-
-          //update_population(children_parents, pop,n)
+          vector<patternscore>* adr_pop = &pop;
+          update_population(children_parents, adr_pop,n);
+          cout<<"pop finale:"<<endl;
+          cout_list(pop);
           h=h+1;
         }
+        cout<<"best_solutions:"<<endl;
+        vector<patternscore> best_solutions=identify_best_solutions(pop,k,n);
+        cout_list(best_solutions);
         return 0;
     }
