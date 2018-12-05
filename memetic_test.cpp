@@ -631,32 +631,31 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
    patternscore daugther;
    vector<patternscore> children_parents;
    for (int i=0;i<pairs_of_parents.size();++i){
-     if(pairs_of_parents[i].parent1.snp1==pairs_of_parents[i].parent2.snp1){continue;}
+     if(pairs_of_parents[i].parent1.pattern1==pairs_of_parents[i].parent2.pattern1){continue;}
      son=pairs_of_parents[i].parent1;
-     son.snp2=pairs_of_parents[i].parent2.snp1;
+     son.pattern2=pairs_of_parents[i].parent2.pattern1;
      children_parents.push_back(son);
-     if(pairs_of_parents[i].parent1.snp2==pairs_of_parents[i].parent2.snp2){continue;}
+     if(pairs_of_parents[i].parent1.pattern2==pairs_of_parents[i].parent2.pattern2){continue;}
      daugther=pairs_of_parents[i].parent2;
-     daugther.snp2=pairs_of_parents[i].parent2.snp2;
+     daugther.pattern2=pairs_of_parents[i].parent2.pattern2;
      children_parents.push_back(daugther);
    } return(children_parents);
 
 
  }
 
-void perform_one_mutation_per_child(vector<patternscore> children_parents,int prob_mutation){
-  vector<patternscore>* adr_children_parents = &children_parents;;
+void perform_one_mutation_per_child(vector<patternscore>children_parents,int prob_mutation){
   for (int i=0;i<children_parents.size();++i){
     int mutation = rand() % 100;
     //cout<<mutation<<endl;
     if (mutation > prob_mutation){
       break;
-      //cout<<"sheit"<<endl;
+      cout<<"sheit"<<endl;
     }else{
 
       //int type = rand() % 2 + 0;
       int type = 1;
-      //int parentpattern = rand() % 1 + 0;
+      // int parentpattern = rand() % 1 + 0;
       //int mutpattern = rand() % 1 + 0;
       int parentpattern =1;
       int mutpattern=1;
@@ -664,16 +663,17 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
         case 0:
           break;
         case 1:
+
           {int snp = rand() % children_parents.size();
           cout<<"mutation: "<<snp<<endl;
-          cout<<children_parents[i].snp1<<","<<children_parents[snp].snp1<<endl;
+          cout<<children_parents[i].pattern1<<","<<children_parents[snp].pattern1<<endl;
           if(parentpattern == 1 ){if(mutpattern == 1){cout<<"cool"<<endl;
-            (*adr_children_parents)[i].snp1=children_parents[snp].snp1;}
-            else{children_parents[i].snp1=children_parents[snp].snp2;}}
+            children_parents[i].pattern1=children_parents[snp].pattern1;}
+            else{children_parents[i].pattern1=children_parents[snp].pattern2;}}
           else{if(mutpattern ==0){
-            children_parents[i].snp2=children_parents[snp].snp1;}
-            else{children_parents[i].snp2=children_parents[snp].snp2;}}
-          cout<<"nouveau"<<(*adr_children_parents)[i].snp1<<endl;}break;
+            children_parents[i].pattern2=children_parents[snp].pattern1;}
+            else{children_parents[i].pattern2=children_parents[snp].pattern2;}}
+          cout<<children_parents[i].pattern1<<endl;}break;
         case 2:
           break;
         }
@@ -684,19 +684,19 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
   void cout_list_indiv(vector<parents_pairs> list_to_cout_indiv){
     for (vector<parents_pairs>::iterator it=list_to_cout_indiv.begin();it!=list_to_cout_indiv.end();it++){
         cout<<"Parent"<<endl;
-        cout<<"parent1:"<<(*it).parent1.snp1<<","<<(*it).parent1.snp2<<"   "<<(*it).parent1.score<<endl;
-        cout<<"parent2:"<<(*it).parent2.snp1<<","<<(*it).parent2.snp2<<"   "<<(*it).parent2.score<<endl;
+        cout<<"parent1:"<<(*it).parent1.pattern1<<","<<(*it).parent1.pattern2<<"   "<<(*it).parent1.score<<endl;
+        cout<<"parent2:"<<(*it).parent2.pattern1<<","<<(*it).parent2.pattern2<<"   "<<(*it).parent2.score<<endl;
       }
     }
 
     void cout_list(vector<patternscore> list_to_cout){
       for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
         if ((*it).pattern3==""){
-          cout<<(*it).snp1<<","<<(*it).snp2<<endl;
+          cout<<(*it).pattern1<<","<<(*it).pattern2<<endl;
           cout<<(*it).score<<endl;
         }
         else{
-          cout<<(*it).snp1<<","<<(*it).snp2<<(*it).pattern3<<endl;
+          cout<<(*it).pattern1<<","<<(*it).pattern2<<(*it).pattern3<<endl;
           cout<<(*it).score<<endl;
         }
       }
@@ -771,7 +771,6 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
       return(pop);
     }
 
-  //void update_population(vector<patternscore> children_parents, vector<patternscore>pop,int n)
 
     float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
       float score;
@@ -780,7 +779,7 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
         contingence2SNP* adr_contingence2 = &contingence2;
         /*cout<<pattern.pattern1<<", "<<pattern.pattern2<<endl;
         cout<<pattern.snp1<<":pattern.snp1 "<<pattern.snp2<<":pattern.snp2"<<endl;*/
-        create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
+        create_contingency_table_pattern2(pattern.pattern1,pattern.pattern2,adr_contingence2,genos,phenos_m);
         score=g_test_2SNP(contingence2);
       }
       else{
@@ -791,11 +790,6 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
       }
       return(score);
     }
-
-
-
-
-
 
     int main()
     {
@@ -891,8 +885,6 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
           }
           cout<<"enfant muté:"<<endl;
           cout_list(children_parents);
-
-          //update_population(children_parents, pop,n)
           h=h+1;
         }
         return 0;
