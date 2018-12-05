@@ -862,7 +862,7 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
 
         int prob_mutation = 100;
         int n_it = 2;
-        int n = 20;
+        int n = 10;
         int h = 1;
         vector<patternscore>n_pairs_selected_parents=initialize_population(n, patternscoreList);
 
