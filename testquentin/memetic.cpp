@@ -645,8 +645,8 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
  }
 
 void perform_one_mutation_per_child(vector<patternscore> children_parents,int prob_mutation){
-  vector<patternscore>* adr_children_parents = &children_parents;;
   for (int i=0;i<children_parents.size();++i){
+    vector<patternscore>* adr_children_parents = &children_parents;
     int mutation = rand() % 100;
     //cout<<mutation<<endl;
     if (mutation > prob_mutation){
@@ -665,7 +665,6 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
           break;
         case 1:
           {int snp = rand() % children_parents.size();
-          cout<<"mutation: "<<snp<<endl;
           cout<<children_parents[i].snp1<<","<<children_parents[snp].snp1<<endl;
           if(parentpattern == 1 ){if(mutpattern == 1){cout<<"cool"<<endl;
             (*adr_children_parents)[i].snp1=children_parents[snp].snp1;}
@@ -673,7 +672,9 @@ void perform_one_mutation_per_child(vector<patternscore> children_parents,int pr
           else{if(mutpattern ==0){
             children_parents[i].snp2=children_parents[snp].snp1;}
             else{children_parents[i].snp2=children_parents[snp].snp2;}}
-          cout<<"nouveau"<<(*adr_children_parents)[i].snp1<<endl;}break;
+          cout<<"nouveau par adr:"<<(*adr_children_parents)[i].snp1<<endl;
+          cout<<"nouveau :"<<children_parents[i].snp1<<endl;
+        out<<"nouveau :"<<&children_parents[i].snp1<<endl;}break;
         case 2:
           break;
         }
