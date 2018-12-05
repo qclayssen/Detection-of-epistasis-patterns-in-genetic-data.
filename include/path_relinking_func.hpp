@@ -23,7 +23,7 @@
 using namespace std;
 using namespace std::chrono;
 
-vector<patternscore> initialize_elite_solutions(int k,vector<patternscore> patternscoreList);
+vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternscore> patternscoreList);
 
 vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols);
 

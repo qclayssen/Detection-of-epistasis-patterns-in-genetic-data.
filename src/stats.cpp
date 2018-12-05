@@ -556,7 +556,7 @@ if(test==1){
 
 float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   float score;
-  if(pattern.snp3==NULL){
+  if(pattern.snp3==-1){
     contingence2SNP contingence2;
     contingence2SNP* adr_contingence2 = &contingence2;
     create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);

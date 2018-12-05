@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
         p1.pattern3="";
         p1.snp1=l1;
         p1.snp2=l2;
-        p1.snp3=NULL;
+        p1.snp3=-1;
         patternscoreList.push_back(p1);
       }
     }
@@ -92,10 +92,10 @@ int main(int argc, char *argv[])
     }
 
 
-    int k = params.k;
+    unsigned int k = params.k;
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
-    for (int i=0;i<elite_sols.size();i++){
+    for (unsigned int i=0;i<elite_sols.size();i++){
         elite_sols[i].score=add_gtest_score(elite_sols[i],genos,phenos_m);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;

@@ -14,7 +14,7 @@ vector<string> get_snp_list(string genos_file){
 
 void cout_list(vector<patternscore> list_to_cout){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
-    if ((*it).snp3==NULL){
+    if ((*it).snp3==-1){
       cout<<(*it).pattern1<<","<<(*it).pattern2<<endl;
       cout<<(*it).score<<endl;
     }
