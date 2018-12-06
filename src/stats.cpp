@@ -335,7 +335,7 @@ float g_test_2SNP(contingence2SNP contingence2){
       {
          contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
       }
-
+/*
   for (int i=0;i<3;i++){
     for (int j=0;j<10;j++){
       cout<<contingence2[i][j]<<" ";
@@ -343,7 +343,7 @@ float g_test_2SNP(contingence2SNP contingence2){
     cout<<endl;
   }
   cout<<endl;
-
+*/
   float contingencetheo[nbrligne][nbrcolonnes];
   for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
     for (int j=0;j<(nbrcolonnes);j++){
@@ -357,6 +357,8 @@ float g_test_2SNP(contingence2SNP contingence2){
       // cout<<"="<<contingencetheo[i][j]<<endl;
     }
   }
+
+/*
   for (int i=0;i<2;i++){
     for (int j=0;j<9;j++){
       cout<<contingencetheo[i][j]<<" ";
@@ -364,6 +366,7 @@ float g_test_2SNP(contingence2SNP contingence2){
     cout<<endl;
   }
   cout<<endl;
+*/
 
 float scorekhi2=0;
 /*
@@ -419,14 +422,14 @@ if(test==1){
     pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
     if(pval == 0){
         pval = 2.0e-16;}
-    cout<<"score: "<<scorekhi2<<endl;
-    cout<<"p: "<<pval<<endl;
+    //cout<<"score: "<<scorekhi2<<endl;
+    //cout<<"p: "<<pval<<endl;
   }
   else{
     scorekhi2=0;
     pval=1;
-    cout<<"score: "<<scorekhi2<<endl;
-    cout<<"p: "<<pval<<endl;
+    //cout<<"score: "<<scorekhi2<<endl;
+    //cout<<"p: "<<pval<<endl;
   }
   return(scorekhi2);
 }
@@ -458,7 +461,7 @@ float g_test_3SNP(contingence3SNP contingence2){
       {
          contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
       }
-
+/*
   for (int i=0;i<3;i++){
     for (int j=0;j<28;j++){
       cout<<contingence2[i][j]<<" ";
@@ -466,7 +469,7 @@ float g_test_3SNP(contingence3SNP contingence2){
     cout<<endl;
   }
   cout<<endl;
-
+*/
   float contingencetheo[nbrligne][nbrcolonnes];
   for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
     for (int j=0;j<(nbrcolonnes);j++){
@@ -480,6 +483,7 @@ float g_test_3SNP(contingence3SNP contingence2){
       // cout<<"="<<contingencetheo[i][j]<<endl;
     }
   }
+/*
   for (int i=0;i<2;i++){
     for (int j=0;j<27;j++){
       cout<<contingencetheo[i][j]<<" ";
@@ -487,7 +491,7 @@ float g_test_3SNP(contingence3SNP contingence2){
     cout<<endl;
   }
   cout<<endl;
-
+*/
 float scorekhi2=0;
 /*
   for(int i(0); i<(nbrligne); ++i)
@@ -542,14 +546,14 @@ if(test==1){
     pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
     if(pval == 0){
         pval = 2.0e-16;}
-    cout<<"score: "<<scorekhi2<<endl;
-    cout<<"p: "<<pval<<endl;
+    //cout<<"score: "<<scorekhi2<<endl;
+    //cout<<"p: "<<pval<<endl;
   }
   else{
     scorekhi2=0;
     pval=1;
-    cout<<"score: "<<scorekhi2<<endl;
-    cout<<"p: "<<pval<<endl;
+    //cout<<"score: "<<scorekhi2<<endl;
+    //cout<<"p: "<<pval<<endl;
   }
   return(scorekhi2);
 }

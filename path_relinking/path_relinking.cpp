@@ -100,12 +100,12 @@ int main(int argc, char *argv[])
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
     cout<<"Elite solutions :"<<endl;
-    cout_list(elite_sols);
+    cout_list(elite_sols,snpNameList);
 
     vector<patternscore> sA_sB;
     sA_sB=select_two_solutions_at_random(elite_sols);
     cout<<"Two random : (sA, sB)"<<endl;
-    cout_list(sA_sB);
+    cout_list(sA_sB,snpNameList);
     patternscore s = sA_sB[0];
     patternscore sB = sA_sB[1];
 
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
       s=s_closest_neighbour;
     }
     cout<<endl<<"Solutions d'élite finales:"<<endl;
-    cout_list(elite_sols);
+    cout_list(elite_sols,snpNameList);
 
     return 0;
 }

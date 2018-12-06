@@ -17,6 +17,7 @@
 
 #include "typesandstruct.hpp"
 #include "stats.hpp"
+#include "tools.hpp"
 #include "CSVParser.hpp"
 #include "common.h"
 
@@ -27,15 +28,9 @@ vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternsco
 
 vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols);
 
-int calculate_delta(patternscore s, patternscore sB);
-
-vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList);
-
 patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList);
 
 int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols);
-
-patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m);
 
 void update(patternscore s_opt, vector<patternscore>* adr_elite_sols);
 
