@@ -18,10 +18,16 @@ struct patternscore {
   int snp1;
   int snp2;
   int snp3;
+  int idparent;
   string pattern1;
   string pattern2;
   string pattern3;
   float score = -1;
+};
+
+struct parents_pairs {
+  patternscore parent1;
+  patternscore parent2;
 };
 
 #endif
