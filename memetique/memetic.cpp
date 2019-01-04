@@ -30,191 +30,143 @@ using namespace std::chrono;
 
 
 
-typedef int contingence2SNP[3][10];
-typedef int contingence3SNP[3][28];
-struct patternscore {
-  unsigned int snp1;
-  unsigned int snp2;
-  unsigned int snp3=NULL;
-  int idparent;
-  string pattern1;
-  string pattern2;
-  string pattern3;
+int main(int argc, char *argv[])
+{
+  if(argc < 3)
+  {
+      cerr << "Missing parameter :\n"
+           << "\t./path_relinking <path_to_genotypes> <path_to_phenotypes>"
+           << endl;
+      exit(-1);
+  }
 
-  float score = -1;
-};
+    // Arguments
+    string genos_file = argv[1];
+    string phenos_file = argv[2];
 
-struct parents_pairs {
-  patternscore parent1;
-  patternscore parent2;
-};
-
-vector<string> get_snp_list(string genos_file){
-  vector<string> tokens;
-  ifstream file;
-  file.open(genos_file);
-  string SNPheader;
-  getline(file,SNPheader);
-  file.close();
-  boost::algorithm::split(tokens, SNPheader, boost::is_any_of(","));
-  return tokens;
-}
+    parameters_file_parsing params;
+    int header = params.header;
+    char separator = params.separator;
 
 
-  void cout_list_indiv(vector<parents_pairs> list_to_cout_indiv){
-    for (vector<parents_pairs>::iterator it=list_to_cout_indiv.begin();it!=list_to_cout_indiv.end();it++){
-        cout<<"Parent"<<endl;
-        cout<<"parent1:"<<(*it).parent1.snp1<<","<<(*it).parent1.snp2<<"   "<<(*it).parent1.score<<endl;
-        cout<<"parent2:"<<(*it).parent2.snp1<<","<<(*it).parent2.snp2<<"   "<<(*it).parent2.score<<endl;
-      }
+  //  DATA IMPORTATION
+    CSVParser<int> genos_csv(genos_file, separator, header);
+    CSVParser<int> phenos_csv(phenos_file, separator, header);
+    blas_matrix genos = genos_csv.data();
+    blas_matrix phenos_m = phenos_csv.data();
+    blas_column phenos(phenos_m, 0);
+    cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
+    int l1,l2,l3;
+
+
+
+    vector<string> snpNameList;
+    snpNameList = get_snp_list(genos_file);
+
+    vector<patternscore>patternscoreList;
+    vector<patternscore>::iterator iterpatternscoreList;
+
+
+
+
+
+        for (l1=0;l1<int(genos.size2())-1;l1++){ //First SNP of the pattern
+          for (l2=l1+1;l2<int(genos.size2());l2++){ //Second SNP of the pattern
+            patternscore p1;
+            p1.pattern1=snpNameList[l1];
+            p1.pattern2=snpNameList[l2];
+            p1.pattern3="";
+            p1.snp1=l1;
+            p1.snp2=l2;
+            p1.snp3=NULL;
+            patternscoreList.push_back(p1);
+          }
+        }
+
+
+        for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
+          for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
+            for(l3=l2+1;l3<int(genos.size2());l3++){ //Third SNP of pattern
+              patternscore p1;
+              p1.snp1=l1;
+              p1.snp2=l2;
+              p1.snp3=l3;
+              p1.pattern1=snpNameList[l1];
+              p1.pattern2=snpNameList[l2];
+              p1.pattern3=snpNameList[l3];
+            //  patternscoreList.push_back(p1);
+            }
+          }
+        }
+
+
+
+    int prob_mutation = 100;
+    int n_it = 4;
+    int n = 100;
+    int h = 1;
+    int k = 10;
+
+    vector<patternscore>pop=initialize_population(n, patternscoreList);;
+    cout<<"pop initiale:"<<endl;
+    cout_list(pop);
+    vector<patternscore>* adr_pop = &pop;
+    for (int i=0;i<pop.size();i++){
+        pop[i].score=add_gtest_score(pop[i],genos,phenos_m);
     }
 
-    void cout_list(vector<patternscore> list_to_cout){
-      for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
-        if ((*it).pattern3==""){
-          cout<<(*it).snp1<<","<<(*it).snp2<<endl;
-          cout<<"idparent :"<<(*it).idparent<<" score:"<<(*it).score<<endl;
-          cout<<endl;
-        }
-        else{
-          cout<<(*it).snp1<<","<<(*it).snp2<<(*it).pattern3<<endl;
-          cout<<(*it).score<<endl;
-        }
-      }
+    for (int l=0;l<pop.size();l++){
+            patternscore s_opt=hill_climbing_lc2(pop[l],patternscoreList);
+            cout<<s_opt.snp1<<endl;
+            update(s_opt,adr_pop);
+          }
+
+      cout<<"pop après recherche:"<<endl;
+      cout_list(pop);
+    vector<patternscore>n_pairs_selected_parents=pop;
+    for (int i=0;i<n_pairs_selected_parents.size();i++){
+        n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
     }
+    while (h < n_it){
+      vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
+      //cout_list_indiv(pairs_of_parents);
+
+      vector<patternscore> children_parents;
+      children_parents=create_two_children_for_each_selected_pair_of_parents(pairs_of_parents);
+      //cout_list(children_parents);
 
 
-//
+      for (int j=0;j<children_parents.size();j++){
+        //  cout<<children_parents.size()<<"i"<<endl;
+          float score=add_gtest_score(children_parents[1],genos,phenos_m);
+      }
+      cout<<"enfant:"<<endl;
+      cout_list(children_parents);
+      vector<patternscore>* adr_children_parents = &children_parents;
+      perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
-
-
-
-    int main()
-    {
-        // Arguments
-        string genos_file;
-        genos_file="simu2_Genotype_1.csv";
-        string phenos_file;
-        phenos_file="simu2_Phenotype_1.csv";
-        int header = 1;
-        char separator = ',';
-
-    //  DATA IMPORTATION
-        CSVParser<int> genos_csv(genos_file, separator, header);
-        CSVParser<int> phenos_csv(phenos_file, separator, header);
-        blas_matrix genos = genos_csv.data();
-        blas_matrix phenos_m = phenos_csv.data();
-        blas_column phenos(phenos_m, 0);
-        cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
-        int l1,l2,l3;
-
-
-
-        vector<string> snpNameList;
-        snpNameList = get_snp_list(genos_file);
-
-        vector<patternscore>patternscoreList;
-        vector<patternscore>::iterator iterpatternscoreList;
-
-
-
-
-
-            for (l1=0;l1<int(genos.size2())-1;l1++){ //First SNP of the pattern
-              for (l2=l1+1;l2<int(genos.size2());l2++){ //Second SNP of the pattern
-                patternscore p1;
-                p1.pattern1=snpNameList[l1];
-                p1.pattern2=snpNameList[l2];
-                p1.pattern3="";
-                p1.snp1=l1;
-                p1.snp2=l2;
-                p1.snp3=NULL;
-                patternscoreList.push_back(p1);
-              }
+      for (int i=0;i<children_parents.size();i++){
+          children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
+      }
+      cout<<"enfant muté:"<<endl;
+      cout_list(children_parents);
+      update_population(children_parents, adr_pop,n);
+      cout<<"pop size:"<<pop.size()<<endl;
+      for (int o=0;o<pop.size();o++){
+              patternscore s_opt=hill_climbing_lc2(pop[o],patternscoreList);
+              update(s_opt,adr_pop);
             }
 
+      cout<<"pop finale:"<<endl;
+      cout_list(pop);
 
-            for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
-              for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
-                for(l3=l2+1;l3<int(genos.size2());l3++){ //Third SNP of pattern
-                  patternscore p1;
-                  p1.snp1=l1;
-                  p1.snp2=l2;
-                  p1.snp3=l3;
-                  p1.pattern1=snpNameList[l1];
-                  p1.pattern2=snpNameList[l2];
-                  p1.pattern3=snpNameList[l3];
-                //  patternscoreList.push_back(p1);
-                }
-              }
-            }
+      h=h+1;
+    }
+    vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
+    cout<<"pop finale trié:"<<endl;
+    cout_list(best_solutions);
 
-
-
-        int prob_mutation = 100;
-        int n_it = 4;
-        int n = 100;
-        int h = 1;
-        int k = 10;
-
-        vector<patternscore>pop=initialize_population(n, patternscoreList);;
-        cout<<"pop initiale:"<<endl;
-        cout_list(pop);
-        vector<patternscore>* adr_pop = &pop;
-        for (int i=0;i<pop.size();i++){
-            pop[i].score=add_gtest_score(pop[i],genos,phenos_m);
-        }
-
-        for (int l=0;l<pop.size();l++){
-                patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList);
-                cout<<s_opt.snp1<<endl;
-                update(s_opt,adr_pop);
-              }
-
-          cout<<"pop après recherche:"<<endl;
-          cout_list(pop);
-        vector<patternscore>n_pairs_selected_parents=pop;
-        for (int i=0;i<n_pairs_selected_parents.size();i++){
-            n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
-        }
-        while (h < n_it){
-          vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
-          //cout_list_indiv(pairs_of_parents);
-
-          vector<patternscore> children_parents;
-          children_parents=create_two_children_for_each_selected_pair_of_parents(pairs_of_parents);
-          //cout_list(children_parents);
-
-
-          for (int j=0;j<children_parents.size();j++){
-            //  cout<<children_parents.size()<<"i"<<endl;
-              float score=add_gtest_score(children_parents[1],genos,phenos_m);
-          }
-          cout<<"enfant:"<<endl;
-          cout_list(children_parents);
-          vector<patternscore>* adr_children_parents = &children_parents;
-          perform_one_mutation_per_child(adr_children_parents,prob_mutation);
-
-          for (int i=0;i<children_parents.size();i++){
-              children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
-          }
-          cout<<"enfant muté:"<<endl;
-          cout_list(children_parents);
-          update_population(children_parents, adr_pop,n);
-          cout<<"pop size:"<<pop.size()<<endl;
-          for (int o=0;o<pop.size();o++){
-                  patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList);
-                  update(s_opt,adr_pop);
-                }
-
-          cout<<"pop finale:"<<endl;
-          cout_list(pop);
-          h=h+1;
-        }
-        vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-        cout<<"pop finale trié:"<<endl;
-        cout_list(best_solutions);
-        return 0;
+    return 0;
 
 
 

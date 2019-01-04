@@ -15,4 +15,4 @@ autorise:
 g++ CSVParserantoine.cpp -o mainantoine -Wall -std=c++11 -I /Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0
 
 
-g++ CSVParser.cpp -o mainq -Wall -std=c++11 -I /Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0
+g++ memetic.cpp -o mainq -Wall -std=c++11 -I /Users/quentinclayssen/Desktop/Cours/C/project/project_c_sinoquet/include/boost_1_68_0
