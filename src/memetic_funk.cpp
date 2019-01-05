@@ -1,6 +1,8 @@
 #include "../include/memetic_funk.hpp"
 
 
+
+
 void cout_list(vector<patternscore> list_to_cout){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
     if ((*it).pattern3==""){
@@ -13,6 +15,25 @@ void cout_list(vector<patternscore> list_to_cout){
       cout<<(*it).score<<endl;
     }
   }
+}
+
+vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList){
+  vector<patternscore> pop;
+  vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
+  int i=0;
+  srand(time(0));
+  random_shuffle(nodes.begin(), nodes.end());
+  for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
+    if(pop.size()<n){
+      (*it).idparent=i;
+      pop.push_back(*it);
+      i=i+1;
+    }
+    else{
+      break;
+    }
+  }
+  return(pop);
 }
 
 vector<parents_pairs> select_pairs_of_individuals_to_be_crossed(vector<patternscore> n_pairs_selected_parents){
@@ -53,15 +74,26 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
           {int snp = rand() % (*adr_children_parents).size();
           //cout<<(*adr_children_parents)[i].snp1<<","<<(*adr_children_parents)[snp].snp1<<endl;
           if((*adr_children_parents)[i].snp1==(*adr_children_parents)[snp].snp1 || (*adr_children_parents)[i].snp2==(*adr_children_parents)[snp].snp2 || (*adr_children_parents)[i].snp3==(*adr_children_parents)[snp].snp3 ) {continue;}
-          if(parentpattern == 1 ){if(mutpattern == 1){
+          if(parentpattern == 1 ){if(mutpattern == 0){
             (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp1;}
-            else{
-              (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp2;}}
-          else{
+            if(mutpattern == 1){
+              (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp2;}
+            if(mutpattern == 2){
+              (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp3;}}
+          if(parentpattern == 2 ){
             if(mutpattern ==0){
             (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp1;}
-            else{
-              (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp2;}}}break;
+            if(mutpattern == 1){
+              (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp2;}
+            if(mutpattern == 2){
+              (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp3;}}
+          if(parentpattern == 3 ){
+            if(mutpattern ==0){
+            (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp1;}
+            if(mutpattern == 1){
+              (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp2;}
+            if(mutpattern == 2){
+              (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp3;}}}break;
         case 2:
           break;
         }
@@ -127,56 +159,39 @@ bool compareByLength(const patternscore &a, const patternscore &b){
   return a.score > b.score;
 }
 
-    vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n){
-      vector<patternscore> best_solutions;
-      std::sort(pop.begin(), pop.end(), compareByLength);
-      int i=0;
-      while(i<k){
-        best_solutions.push_back(pop[i]);
-        i=i+1;} return(best_solutions);
-      }
-
-
-    vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList){
-      vector<patternscore> pop;
-      vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
-      int i=0;
-      srand(time(0));
-      random_shuffle(nodes.begin(), nodes.end());
-      for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
-        if(pop.size()<n){
-          (*it).idparent=i;
-          pop.push_back(*it);
-          i=i+1;
-        }
-        else{
-          break;
-        }
-      }
-      return(pop);
+  vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n){
+    vector<patternscore> best_solutions;
+    std::sort(pop.begin(), pop.end(), compareByLength);
+    int i=0;
+    while(i<k){
+      best_solutions.push_back(pop[i]);
+      i=i+1;} return(best_solutions);
     }
 
-  void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
-        for (int i=0;i<children_parents.size();i++){
-          for (int j=0;j<(*adr_pop).size();j++){
-        if(children_parents[i].idparent==(*adr_pop)[j].idparent){
-          //cout<<"snp"<<(*it).snp1<<(*it).snp2<<endl;
-          //cout<<"size:"<<(*itp).snp1<<(*itp).snp2<<endl;
-          //cout<<(*itp).idparent<<" <-parent "<<(*itp).idparent<<endl;
-          (*adr_pop)[j]=children_parents[i];
-          break;
-          }
+
+
+
+void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
+      for (int i=0;i<children_parents.size();i++){
+        for (int j=0;j<(*adr_pop).size();j++){
+      if(children_parents[i].idparent==(*adr_pop)[j].idparent){
+        //cout<<"snp"<<(*it).snp1<<(*it).snp2<<endl;
+        //cout<<"size:"<<(*itp).snp1<<(*itp).snp2<<endl;
+        //cout<<(*itp).idparent<<" <-parent "<<(*itp).idparent<<endl;
+        (*adr_pop)[j]=children_parents[i];
+        break;
         }
       }
     }
+  }
 
-    patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
-      vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
-      patternscore actual_s = s_closest_neighbour;
-      for (int i=0;i<patternscoreList.size();i++){
-        if (s_neighbours[i].score>actual_s.score){
-          actual_s=s_neighbours[i];
-        }
+  patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
+    vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
+    patternscore actual_s = s_closest_neighbour;
+    for (int i=0;i<patternscoreList.size();i++){
+      if (s_neighbours[i].score>actual_s.score){
+        actual_s=s_neighbours[i];
       }
-      return(actual_s);
     }
+    return(actual_s);
+  }
