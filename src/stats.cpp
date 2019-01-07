@@ -420,8 +420,8 @@ if(test==1){
     scorekhi2  *= 2;
     boost::math::chi_squared_distribution<double> chi2_dist(df);
     pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
-    if(pval == 0){
-        pval = 2.0e-16;}
+    //if(pval == 0){
+    //    pval = 2.0e-16;}
     //cout<<"score: "<<scorekhi2<<endl;
     //cout<<"p: "<<pval<<endl;
   }
@@ -431,7 +431,7 @@ if(test==1){
     //cout<<"score: "<<scorekhi2<<endl;
     //cout<<"p: "<<pval<<endl;
   }
-  return(scorekhi2);
+  return(pval);
 }
 
 float g_test_3SNP(contingence3SNP contingence2){
@@ -544,8 +544,8 @@ if(test==1){
     scorekhi2  *= 2;
     boost::math::chi_squared_distribution<double> chi2_dist(df);
     pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
-    if(pval == 0){
-        pval = 2.0e-16;}
+    //if(pval == 0){
+    //    pval = 2.0e-16;}
     //cout<<"score: "<<scorekhi2<<endl;
     //cout<<"p: "<<pval<<endl;
   }
@@ -555,7 +555,7 @@ if(test==1){
     //cout<<"score: "<<scorekhi2<<endl;
     //cout<<"p: "<<pval<<endl;
   }
-  return(scorekhi2);
+  return(pval);
 }
 
 float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
