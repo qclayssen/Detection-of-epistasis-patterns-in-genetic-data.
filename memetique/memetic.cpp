@@ -100,12 +100,12 @@ int main(int argc, char *argv[])
         }
 
 
-
-    int prob_mutation = 100;
-    int n_it = 4;
-    int n = 100;
+    unsigned int k = params.k;
+    int prob_mutation = params.prob_mutation;
+    int n_it = params.n_it; // Nombre itération
+    int n = params.n; // Size Population initiale
     int h = 1;
-    int k = 10;
+
 
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
     cout<<"pop initiale:"<<endl;

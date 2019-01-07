@@ -61,12 +61,21 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       //cout<<"sheit"<<endl;
     }else{
 
-      //int type = rand() % 2 + 0;
-      int type = 1;
-      //int parentpattern = rand() % 1 + 0;
-      //int mutpattern = rand() % 1 + 0;
-      int parentpattern =1;
-      int mutpattern=1;
+      int type = rand() % 3;
+      int parentpattern;
+      int mutpattern;
+      //int type = 1;
+
+      if ((*adr_children_parents)[i].snp3 != NULL)
+        {parentpattern = rand() % 3 ;}
+      else{parentpattern = rand() % 2;}
+
+      if ((*adr_children_parents)[i].snp3 != NULL)
+        {mutpattern = rand() % 3 ;}
+      else{mutpattern = rand() % 2;}
+
+      //int parentpattern =1;
+      //int mutpattern=1;
       switch (type) {
         case 0:
           break;
