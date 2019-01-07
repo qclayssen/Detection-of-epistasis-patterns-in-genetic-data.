@@ -156,7 +156,7 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
 }*/
 
 bool compareByLength(const patternscore &a, const patternscore &b){
-  return a.score > b.score;
+  return a.score < b.score;
 }
 
   vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n){
@@ -189,7 +189,7 @@ void update_population(vector<patternscore> children_parents, vector<patternscor
     vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
     patternscore actual_s = s_closest_neighbour;
     for (int i=0;i<patternscoreList.size();i++){
-      if (s_neighbours[i].score>actual_s.score){
+      if (s_neighbours[i].score<actual_s.score){
         actual_s=s_neighbours[i];
       }
     }
