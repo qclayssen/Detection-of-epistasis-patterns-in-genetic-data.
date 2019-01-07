@@ -45,6 +45,5 @@ patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patterns
 
 bool compareByLength(const patternscore &a, const patternscore &b);
 
-void cout_list(vector<patternscore> list_to_cout);
 
 #endif

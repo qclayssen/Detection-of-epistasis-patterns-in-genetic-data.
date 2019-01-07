@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
     cout<<"pop initiale:"<<endl;
-    cout_list(pop);
+    cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
         pop[i].score=add_gtest_score(pop[i],genos,phenos_m);
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
           }
 
       cout<<"pop après recherche:"<<endl;
-      cout_list(pop);
+      cout_list(pop,snpNameList);
     vector<patternscore>n_pairs_selected_parents=pop;
     for (int i=0;i<n_pairs_selected_parents.size();i++){
         n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
           float score=add_gtest_score(children_parents[1],genos,phenos_m);
       }
       cout<<"enfant:"<<endl;
-      cout_list(children_parents);
+      cout_list(children_parents,snpNameList);
       vector<patternscore>* adr_children_parents = &children_parents;
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
           children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
       }
       cout<<"enfant muté:"<<endl;
-      cout_list(children_parents);
+      cout_list(children_parents,snpNameList);
       update_population(children_parents, adr_pop,n);
       cout<<"pop size:"<<pop.size()<<endl;
       for (int o=0;o<pop.size();o++){
@@ -158,13 +158,13 @@ int main(int argc, char *argv[])
             }
 
       cout<<"pop finale:"<<endl;
-      cout_list(pop);
+      cout_list(pop,snpNameList);
 
       h=h+1;
     }
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
     cout<<"pop finale trié:"<<endl;
-    cout_list(best_solutions);
+    cout_list(best_solutions,snpNameList);
 
     return 0;
 

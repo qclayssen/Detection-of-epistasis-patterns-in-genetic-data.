@@ -1,7 +1,7 @@
 #include "../include/memetic_funk.hpp"
 
 
-
+/*
 
 void cout_list(vector<patternscore> list_to_cout){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
@@ -16,7 +16,7 @@ void cout_list(vector<patternscore> list_to_cout){
     }
   }
 }
-
+*/
 vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList){
   vector<patternscore> pop;
   vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
