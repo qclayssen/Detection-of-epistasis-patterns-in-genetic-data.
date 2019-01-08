@@ -116,8 +116,8 @@ int main(int argc, char *argv[])
     }
 
     for (int l=0;l<pop.size();l++){
-            patternscore s_opt=hill_climbing_lc2(pop[l],patternscoreList);
-            cout<<s_opt.snp1<<endl;
+            patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m);
+            //cout<<s_opt.snp1<<endl;
             update(s_opt,adr_pop);
           }
 
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 
       for (int j=0;j<children_parents.size();j++){
         //  cout<<children_parents.size()<<"i"<<endl;
-          float score=add_gtest_score(children_parents[1],genos,phenos_m);
+          float score=add_gtest_score(children_parents[j],genos,phenos_m);
       }
       cout<<"enfant:"<<endl;
       cout_list(children_parents,snpNameList);
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
       update_population(children_parents, adr_pop,n);
       cout<<"pop size:"<<pop.size()<<endl;
       for (int o=0;o<pop.size();o++){
-              patternscore s_opt=hill_climbing_lc2(pop[o],patternscoreList);
+              patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m);
               update(s_opt,adr_pop);
             }
 

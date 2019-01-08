@@ -16,7 +16,7 @@ relinking_local_search_id basic
 ## memetique_algorithm
 
 #number of individuals (i.e., solutions) in each population
-n 10
+n 100
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)

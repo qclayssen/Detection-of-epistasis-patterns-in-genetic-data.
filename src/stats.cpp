@@ -381,7 +381,7 @@ float scorekhi2=0;
 
 int test;
 test=0;
-/*
+
 unsigned ncells = nbrligne*nbrcolonnes;
 int count_inf_5 = 0;
 for(unsigned i=0; i<nbrligne; ++i){
@@ -400,7 +400,7 @@ for(unsigned i=0; i<nbrligne; ++i){
       test=1;
     }
   }
-}
+}/*
 if(test==1){
   cout<<"The test isn't reliable"<<endl;
 }
@@ -505,7 +505,7 @@ float scorekhi2=0;
 
 int test;
 test=0;
-/*
+
 unsigned ncells = nbrligne*nbrcolonnes;
 int count_inf_5 = 0;
 for(unsigned i=0; i<nbrligne; ++i){
@@ -525,10 +525,11 @@ for(unsigned i=0; i<nbrligne; ++i){
     }
   }
 }
+/*
 if(test==1){
   cout<<"The test isn't reliable"<<endl;
-}
-*/
+}*/
+
   int df;
   df=(nbrligne-1)*(nbrcolonnes-1);
   float pval;

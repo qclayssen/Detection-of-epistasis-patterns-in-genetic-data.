@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm memetic
+
 # Compilation if needed
 make
 

@@ -6,13 +6,13 @@
 void cout_list(vector<patternscore> list_to_cout){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
     if ((*it).pattern3==""){
-      cout<<(*it).snp1<<","<<(*it).snp2<<endl;
+      hill_climbing_lc2<<(*it).snp1<<","<<(*it).snp2<<endl;
       cout<<"idparent :"<<(*it).idparent<<" score:"<<(*it).score<<endl;
       cout<<endl;
     }
     else{
       cout<<(*it).snp1<<","<<(*it).snp2<<(*it).pattern3<<endl;
-      cout<<(*it).score<<endl;
+
     }
   }
 }
@@ -25,6 +25,9 @@ vector<patternscore> initialize_population(int n,vector<patternscore> patternsco
   random_shuffle(nodes.begin(), nodes.end());
   for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
     if(pop.size()<n){
+      /*if ((*it).score < 0)
+        {continue;}*/
+      //cout<<(*it).score<<endl;
       (*it).idparent=i;
       pop.push_back(*it);
       i=i+1;
@@ -69,11 +72,9 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       if ((*adr_children_parents)[i].snp3 != NULL)
         {parentpattern = rand() % 3 ;}
       else{parentpattern = rand() % 2;}
-
       if ((*adr_children_parents)[i].snp3 != NULL)
         {mutpattern = rand() % 3 ;}
       else{mutpattern = rand() % 2;}
-
       //int parentpattern =1;
       //int mutpattern=1;
       switch (type) {
@@ -173,8 +174,12 @@ bool compareByLength(const patternscore &a, const patternscore &b){
     std::sort(pop.begin(), pop.end(), compareByLength);
     int i=0;
     while(i<k){
-      best_solutions.push_back(pop[i]);
-      i=i+1;} return(best_solutions);
+      /*if (best_solutions.score==-1)
+        {continue;}
+      else
+        {*/best_solutions.push_back(pop[i]);
+          i=i+1;}
+    return(best_solutions);
     }
 
 
@@ -183,7 +188,7 @@ bool compareByLength(const patternscore &a, const patternscore &b){
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
       for (int i=0;i<children_parents.size();i++){
         for (int j=0;j<(*adr_pop).size();j++){
-      if(children_parents[i].idparent==(*adr_pop)[j].idparent){
+          if(children_parents[i].idparent==(*adr_pop)[j].idparent){
         //cout<<"snp"<<(*it).snp1<<(*it).snp2<<endl;
         //cout<<"size:"<<(*itp).snp1<<(*itp).snp2<<endl;
         //cout<<(*itp).idparent<<" <-parent "<<(*itp).idparent<<endl;
@@ -194,6 +199,7 @@ void update_population(vector<patternscore> children_parents, vector<patternscor
     }
   }
 
+/*
   patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
     vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
     patternscore actual_s = s_closest_neighbour;
@@ -204,3 +210,4 @@ void update_population(vector<patternscore> children_parents, vector<patternscor
     }
     return(actual_s);
   }
+*/
