@@ -61,3 +61,10 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
   }
   return(actual_s);
 }
+
+
+void outfile(string filename, vector<patternscore> list_to_cout,vector<string> snpNameList){  ofstream filename;
+  filename.open ("example.txt");
+  filename << cout_list(best_solutions,snpNameList);
+  filename.close();
+  return 0;}

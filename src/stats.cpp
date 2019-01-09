@@ -406,6 +406,7 @@ if(test==1){
 }
 */
   int df;
+  test=0;
   df=(nbrligne-1)*(nbrcolonnes-1);
   float pval;
   if(test==0){
@@ -531,6 +532,7 @@ if(test==1){
 }*/
 
   int df;
+  test=0;
   df=(nbrligne-1)*(nbrcolonnes-1);
   float pval;
   if(test==0){
