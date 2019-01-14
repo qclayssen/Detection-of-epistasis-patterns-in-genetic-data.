@@ -69,36 +69,34 @@ int main(int argc, char *argv[])
 
 
 
+    for (l1=0;l1<int(genos.size2())-1;l1++){ //First SNP of the pattern
+      for (l2=l1+1;l2<int(genos.size2());l2++){ //Second SNP of the pattern
+        patternscore p1;
+        p1.pattern1=snpNameList[l1];
+        p1.pattern2=snpNameList[l2];
+        p1.pattern3="";
+        p1.snp1=l1;
+        p1.snp2=l2;
+        p1.snp3=-1;
+        patternscoreList.push_back(p1);
+      }
+    }
 
-        for (l1=0;l1<int(genos.size2())-1;l1++){ //First SNP of the pattern
-          for (l2=l1+1;l2<int(genos.size2());l2++){ //Second SNP of the pattern
-            patternscore p1;
-            p1.pattern1=snpNameList[l1];
-            p1.pattern2=snpNameList[l2];
-            p1.pattern3="";
-            p1.snp1=l1;
-            p1.snp2=l2;
-            p1.snp3=NULL;
-            patternscoreList.push_back(p1);
-          }
+
+    for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
+      for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
+        for(l3=l2+1;l3<int(genos.size2());l3++){ //Third SNP of pattern
+          patternscore p1;
+          p1.snp1=l1;
+          p1.snp2=l2;
+          p1.snp3=l3;
+          p1.pattern1=snpNameList[l1];
+          p1.pattern2=snpNameList[l2];
+          p1.pattern3=snpNameList[l3];
+          patternscoreList.push_back(p1);
         }
-
-
-        for (l1=0;l1<int(genos.size2())-2;l1++){ //First SNP of the pattern
-          for (l2=l1+1;l2<int(genos.size2())-1;l2++){ //Second SNP of the pattern
-            for(l3=l2+1;l3<int(genos.size2());l3++){ //Third SNP of pattern
-              patternscore p1;
-              p1.snp1=l1;
-              p1.snp2=l2;
-              p1.snp3=l3;
-              p1.pattern1=snpNameList[l1];
-              p1.pattern2=snpNameList[l2];
-              p1.pattern3=snpNameList[l3];
-            //  patternscoreList.push_back(p1);
-            }
-          }
-        }
-
+      }
+    }
 
     unsigned int k = params.k;
     int prob_mutation = params.prob_mutation;
@@ -136,10 +134,6 @@ int main(int argc, char *argv[])
       //cout_list(children_parents);
 
 
-      for (int j=0;j<children_parents.size();j++){
-        //  cout<<children_parents.size()<<"i"<<endl;
-          float score=add_gtest_score(children_parents[j],genos,phenos_m);
-      }
       cout<<"enfant:"<<endl;
       cout_list(children_parents,snpNameList);
       vector<patternscore>* adr_children_parents = &children_parents;
@@ -166,7 +160,7 @@ int main(int argc, char *argv[])
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
     cout<<"pop finale trié:"<<endl;
     cout_list(best_solutions,snpNameList);
-    outfile( snpNameList, best_solutions);
+    outfile(snpNameList, best_solutions);
     /*ofstream file( filename.c_str() );
     file << cout_list(best_solutions,snpNameList);
     file.close();

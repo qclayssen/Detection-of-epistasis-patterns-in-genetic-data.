@@ -25,9 +25,6 @@ vector<patternscore> initialize_population(int n,vector<patternscore> patternsco
   random_shuffle(nodes.begin(), nodes.end());
   for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
     if(pop.size()<n){
-      /*if ((*it).score < 0)
-        {continue;}*/
-      //cout<<(*it).score<<endl;
       (*it).idparent=i;
       pop.push_back(*it);
       i=i+1;
@@ -64,10 +61,10 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       //cout<<"sheit"<<endl;
     }else{
 
-      int type = rand() % 3;
+      //int type = rand() % 3;
       int parentpattern;
       int mutpattern;
-      //int type = 1;
+      int type = 1;
 
       if ((*adr_children_parents)[i].snp3 != NULL)
         {parentpattern = rand() % 3 ;}

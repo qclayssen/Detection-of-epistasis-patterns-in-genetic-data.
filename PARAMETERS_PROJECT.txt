@@ -7,7 +7,7 @@ separator ,
 ## PROCEDURE path-relinking
 
 # number of elite solutions (k ≥ 2)
-k 20
+k 10
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)
@@ -23,13 +23,13 @@ n 100
 memetique_local_search_id VNS
 
 #maximal number of iterations (i.e., successive populations)
-n_it 3
+n_it 1
 
 #number of parents to be selected in current population
-n_pairs_selected_parents 100
+n_pairs_selected_parents 10
 
 #probability that a child be subject to a mutation
 prob_mutation 70
 
 #maximal number of distinct best individuals in the last population
-best_k 20
+best_k 5
