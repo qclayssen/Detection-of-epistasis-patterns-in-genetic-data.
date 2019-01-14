@@ -32,6 +32,7 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
 
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m);
 
+void outfile(vector<string> snpNameList,vector<patternscore> best_solutions);
 
 
 #endif

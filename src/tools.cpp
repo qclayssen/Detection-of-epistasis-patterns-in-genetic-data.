@@ -15,12 +15,10 @@ vector<string> get_snp_list(string genos_file){
 void cout_list(vector<patternscore> list_to_cout,vector<string> snpNameList){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
     if ((*it).snp3==-1){
-      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<endl;
-      cout<<(*it).score<<endl;
+      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).score<<endl;
     }
     else{
-      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<endl;
-      cout<<(*it).score<<endl;
+      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).score<<endl;
     }
   }
 }
@@ -63,8 +61,15 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 }
 
 
-void outfile(string filename, vector<patternscore> list_to_cout,vector<string> snpNameList){  ofstream filename;
-  filename.open ("example.txt");
-  filename << cout_list(best_solutions,snpNameList);
-  filename.close();
-  return 0;}
+void outfile(vector<string> snpNameList,vector<patternscore> best_solutions){
+  if ((freopen("out.txt", "w", stdout)) != NULL)
+    {
+    cout_list(best_solutions,snpNameList);
+
+    fclose (stdout);
+    }
+  else
+  {
+    cout<<"fail"<<endl;
+  }
+}

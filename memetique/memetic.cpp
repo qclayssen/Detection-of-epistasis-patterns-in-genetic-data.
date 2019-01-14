@@ -162,10 +162,26 @@ int main(int argc, char *argv[])
 
       h=h+1;
     }
+    //char filename= "out.txt";
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
     cout<<"pop finale trié:"<<endl;
     cout_list(best_solutions,snpNameList);
+    outfile( snpNameList, best_solutions);
+    /*ofstream file( filename.c_str() );
+    file << cout_list(best_solutions,snpNameList);
+    file.close();
 
+
+      if ((freopen(filename, "w", stdout)) != NULL)
+  {
+      cout_list(best_solutions,snpNameList);
+
+      fclose (stdout);
+  }
+  else
+  {
+      cout<<"fail"<<endl;
+  }*/
     return 0;
 
 
