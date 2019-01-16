@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
     }
     cout<<endl<<"Solutions d'élite finales:"<<endl;
     cout_list(elite_sols,snpNameList);
-    outfile(snpNameList, elite_sols);
+    //outfile(snpNameList, elite_sols);
 
     return 0;
 }
