@@ -77,9 +77,14 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
 
   if (_results_handler.is_open())
     {
-    cout_list(best_solutions,snpNameList);
-
-    _results_handler.close();
+      for (vector<patternscore>::iterator it=best_solutions.begin();it!=best_solutions.end();it++){
+        if ((*it).snp3==-1){
+          _results_handler<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).score<<endl;
+        }
+        else{
+          _results_handler<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).score<<endl;
+        }
+      }
     }
   else
   {

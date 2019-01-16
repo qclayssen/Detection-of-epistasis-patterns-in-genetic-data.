@@ -1,0 +1,4 @@
+recall=1.0
+precision=1.0
+f-measure=1.0
+power=<_io.TextIOWrapper name='eval_genotypes_toy_dataset/power_RESULT_genotypes_toy_dataset.txt' mode='w' encoding='UTF-8'>
