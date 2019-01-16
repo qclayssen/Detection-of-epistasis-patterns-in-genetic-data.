@@ -1,6 +1,9 @@
 #!/bin/bash
 
 rm memetic
+rm -rf outputs
+
+mkdir outputs
 
 # Compilation if needed
 make
@@ -10,4 +13,4 @@ make
 #./memetic ./simupath3/simu2_Genotype_1.csv simupath3/simu2_Phenotype_1.csv
 ./memetic ./toy_dataset/genotypes_toy_dataset.txt ./toy_dataset/phenotypes_toy_dataset.txt
 
-python ../eval_simu.py genotypes_toy_dataset eval_genotypes_toy_dataset
+python ../eval_simu.py outputs eval_genotypes_toy_dataset

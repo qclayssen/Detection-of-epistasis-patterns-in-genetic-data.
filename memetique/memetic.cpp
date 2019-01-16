@@ -13,6 +13,8 @@
 #include <numeric>
 #include <random>
 #include <vector>
+#include <stdio.h>
+
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/algorithm/string.hpp>
 
