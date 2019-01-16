@@ -1,5 +1,10 @@
 #!/bin/bash
+rm path_relinking
+rm -rf outputs
+rm -rf results
 
+mkdir outputs
+mkdir results
 # Compilation if needed
 make
 

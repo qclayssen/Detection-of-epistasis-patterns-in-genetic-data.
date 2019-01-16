@@ -97,6 +97,7 @@ int main(int argc, char *argv[])
     elite_sols = initialize_elite_solutions(k,patternscoreList);
     for (unsigned int i=0;i<elite_sols.size();i++){
         elite_sols[i].score=add_gtest_score(elite_sols[i],genos,phenos_m);
+        elite_sols[i]=hill_climbing_lc(elite_sols[i],patternscoreList,genos,phenos_m);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
     cout<<"Elite solutions :"<<endl;
@@ -124,7 +125,7 @@ int main(int argc, char *argv[])
     }
     cout<<endl<<"Solutions d'élite finales:"<<endl;
     cout_list(elite_sols,snpNameList);
-    //outfile(snpNameList, elite_sols);
+    outfile(genos_file,snpNameList, elite_sols);
 
     return 0;
 }
