@@ -60,10 +60,7 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
   return(actual_s);
 }
 
-
 void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions){
-
-
   string file_basename = basename((char*)genos_file.c_str());
   string result_filename = "outputs/RESULT_" + file_basename;
   std::ofstream _results_handler;
