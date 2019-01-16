@@ -61,7 +61,7 @@ if (patternSize==2):
         header=""
         for j in range(1,nbVar-1):
             header=header+"N"+str(j)+","
-        header=header+"CAUS1,CAUS2\n"
+        header=header+"M0P1,M0P2\n"
         line=""
         countPosNeg=0
         incr=0
@@ -128,7 +128,7 @@ else:
         header=""
         for j in range(1,nbVar-2):
             header=header+"N"+str(j)+","
-        header=header+"CAUS1,CAUS2,CAUS3\n"
+        header=header+"M0P1,M0P2,M0P3\n"
         newFileGeno.write(header)
         countPosNeg=0
         incr=0
