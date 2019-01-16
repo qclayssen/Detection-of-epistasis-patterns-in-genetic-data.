@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
     cout<<"pop finale trié:"<<endl;
     cout_list(best_solutions,snpNameList);
-    outfile(string genos_file,snpNameList, best_solutions);
+    outfile(genos_file,snpNameList, best_solutions);
 
     return 0;
 

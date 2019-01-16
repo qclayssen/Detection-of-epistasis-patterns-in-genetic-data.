@@ -7,7 +7,7 @@ separator ,
 ## PROCEDURE path-relinking
 
 # number of elite solutions (k ≥ 2)
-k 10
+k 5
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)
@@ -16,7 +16,7 @@ relinking_local_search_id basic
 ## memetique_algorithm
 
 #number of individuals (i.e., solutions) in each population
-n 100
+n 50
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)
