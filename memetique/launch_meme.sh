@@ -16,12 +16,14 @@ simu=$(ls $1/*Genotype*)
 
 for genotype in ${simu};
 do
-  for i in `seq 1 2`;
+  for i in `seq 1 100`;
   do
 
   phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/')
-  ./memetic ${genotype} ${phenotype}
+  time $(./memetic ${genotype} ${phenotype})
 
-  python ../eval_simu.py outputs eval_${file}
+  #python ../eval_simu.py outputs eval_${file}
+
+  echo "fichier:"$i
   done
 done
