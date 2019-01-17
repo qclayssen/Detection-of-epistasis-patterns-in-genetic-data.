@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     blas_matrix genos = genos_csv.data();
     blas_matrix phenos_m = phenos_csv.data();
     blas_column phenos(phenos_m, 0);
-    cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
+    //cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
     int l1,l2,l3;
 
 
@@ -108,8 +108,8 @@ int main(int argc, char *argv[])
 
 
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
-    cout<<"pop initiale:"<<endl;
-    cout_list(pop,snpNameList);
+    //cout<<"pop initiale:"<<endl;
+    //cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
         pop[i].score=add_gtest_score(pop[i],genos,phenos_m);
@@ -121,8 +121,8 @@ int main(int argc, char *argv[])
             update(s_opt,adr_pop);
           }
 
-      cout<<"pop après recherche:"<<endl;
-      cout_list(pop,snpNameList);
+      //cout<<"pop après recherche:"<<endl;
+      //cout_list(pop,snpNameList);
     vector<patternscore>n_pairs_selected_parents=pop;
     for (int i=0;i<n_pairs_selected_parents.size();i++){
         n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
@@ -136,32 +136,32 @@ int main(int argc, char *argv[])
       //cout_list(children_parents);
 
 
-      cout<<"enfant:"<<endl;
-      cout_list(children_parents,snpNameList);
+      //cout<<"enfant:"<<endl;
+      //cout_list(children_parents,snpNameList);
       vector<patternscore>* adr_children_parents = &children_parents;
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
       for (int i=0;i<children_parents.size();i++){
           children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
       }
-      cout<<"enfant muté:"<<endl;
-      cout_list(children_parents,snpNameList);
-      update_population(children_parents, adr_pop,n);
-      cout<<"pop size:"<<pop.size()<<endl;
+      //cout<<"enfant muté:"<<endl;
+      //cout_list(children_parents,snpNameList);
+      //update_population(children_parents, adr_pop,n);
+    //  cout<<"pop size:"<<pop.size()<<endl;
       for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m);
               update(s_opt,adr_pop);
             }
 
-      cout<<"pop finale:"<<endl;
-      cout_list(pop,snpNameList);
+      //cout<<"pop finale:"<<endl;
+      //cout_list(pop,snpNameList);
 
       h=h+1;
     }
     //char filename= "out.txt";
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-    cout<<"pop finale trié:"<<endl;
-    cout_list(best_solutions,snpNameList);
+    //cout<<"pop finale trié:"<<endl;
+    //cout_list(best_solutions,snpNameList);
     outfile(genos_file,snpNameList, best_solutions);
 
     return 0;
