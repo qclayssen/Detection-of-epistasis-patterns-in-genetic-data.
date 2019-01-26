@@ -29,7 +29,9 @@ score_pval g_test_2SNP(contingence2SNP contingence2);
 
 score_pval g_test_3SNP(contingence3SNP contingence2);
 
-float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
+float add_gtest_pval(patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
+
+float add_gtest_score(patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
 
 
 #endif
