@@ -49,33 +49,77 @@ patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patterns
 
 int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols){
   int min_elite;
-  double min_score=0;
+  double min_score_pval=0;
+  double min_score=999999;
+  int score_or_pval=0;
   for (unsigned int i=0;i<elite_sols.size();i++){
-    if (elite_sols[i].pval>min_score){
-      min_score=elite_sols[i].pval;
-      min_elite=i;
+    if (elite_sols[i].pval==0){
+      score_or_pval=1;
     }
   }
-  if (elite_sols[min_elite].pval>s_closest_neighbour.pval){
-    return(1);
+  if (score_or_pval=0){
+    for (unsigned int i=0;i<elite_sols.size();i++){
+      if (elite_sols[i].pval>min_score_pval){
+        min_score_pval=elite_sols[i].pval;
+        min_elite=i;
+      }
+    }
+    if (elite_sols[min_elite].pval>s_closest_neighbour.pval){
+      return(1);
+    }
+    else{
+      return(0);
+    }
   }
   else{
-    return(0);
+    for (unsigned int i=0;i<elite_sols.size();i++){
+      if (elite_sols[i].score<min_score){
+        min_score=elite_sols[i].score;
+        min_elite=i;
+      }
+    }
+    if (elite_sols[min_elite].score<s_closest_neighbour.score){
+      return(1);
+    }
+    else{
+      return(0);
+    }
   }
 }
 
 
 void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
-  double min_score=0;
+  double min_score_pval=0;
+  double min_score=999999;
   int min_elite=0;
-  for(unsigned int i=0;i<(*adr_elite_sols).size();i++){
-    if ((*adr_elite_sols)[i].snp1==s_opt.snp1 && (*adr_elite_sols)[i].snp2==s_opt.snp2){
-      return;
-    }
-    if ((*adr_elite_sols)[i].pval>min_score){
-      min_score=(*adr_elite_sols)[i].pval;
-      min_elite=i;
+  int score_or_pval=0;
+  for (unsigned int i=0;i<(*adr_elite_sols).size();i++){
+    if ((*adr_elite_sols)[i].pval==0){
+      score_or_pval=1;
     }
   }
-  (*adr_elite_sols)[min_elite]=s_opt;
+  if (score_or_pval=0){
+    for(unsigned int i=0;i<(*adr_elite_sols).size();i++){
+      if ((*adr_elite_sols)[i].snp1==s_opt.snp1 && (*adr_elite_sols)[i].snp2==s_opt.snp2){
+        return;
+      }
+      if ((*adr_elite_sols)[i].pval>min_score_pval){
+        min_score_pval=(*adr_elite_sols)[i].pval;
+        min_elite=i;
+      }
+    }
+    (*adr_elite_sols)[min_elite]=s_opt;
+  }
+  else{
+    for(unsigned int i=0;i<(*adr_elite_sols).size();i++){
+      if ((*adr_elite_sols)[i].snp1==s_opt.snp1 && (*adr_elite_sols)[i].snp2==s_opt.snp2){
+        return;
+      }
+      if ((*adr_elite_sols)[i].score<min_score){
+        min_score=(*adr_elite_sols)[i].score;
+        min_elite=i;
+      }
+    }
+    (*adr_elite_sols)[min_elite]=s_opt;
+  }
 }

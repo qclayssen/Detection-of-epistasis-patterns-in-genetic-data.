@@ -15,10 +15,10 @@ vector<string> get_snp_list(string genos_file){
 void cout_list(vector<patternscore> list_to_cout,vector<string> snpNameList){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
     if ((*it).snp3==-1){
-      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).pval<<endl;
+      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
     }
     else{
-      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).pval<<endl;
+      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
     }
   }
 }
@@ -51,10 +51,20 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m){
   vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
   patternscore actual_s = s_closest_neighbour;
+  score_pval biScore;
   for (unsigned int i=0;i<s_neighbours.size();i++){
-    s_neighbours[i].pval=add_gtest_pval(s_neighbours[i],genos,phenos_m);
-    if (s_neighbours[i].pval<actual_s.pval){
-      actual_s=s_neighbours[i];
+    biScore=add_gtest_results(s_neighbours[i],genos,phenos_m);
+    s_neighbours[i].score=biScore.score;
+    s_neighbours[i].pval=biScore.pval;
+    if (s_neighbours[i].pval!=0){
+      if (s_neighbours[i].pval<actual_s.pval){
+        actual_s=s_neighbours[i];
+      }
+    }
+    else{
+      if (s_neighbours[i].score>actual_s.score){
+        actual_s=s_neighbours[i];
+      }
     }
   }
   return(actual_s);
