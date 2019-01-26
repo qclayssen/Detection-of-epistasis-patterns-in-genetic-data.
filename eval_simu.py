@@ -22,8 +22,7 @@ for filename in os.listdir(entFolder):
     with open(os.path.join(entFolder, filename), 'r') as results:
         ligne=results.readline()
         while ligne:
-            print(re.findall("M0P",ligne))
-            if len(re.findall("M0P",ligne))==patternSize:
+            if len(re.findall("M0P",ligne))>=patternSize:
                 countTP+=1
             else:
                 countFP+=1
@@ -40,12 +39,3 @@ else:
     FN+=1
     eval.write("FN"+'\n')
 eval.close()
-
-
-#recall = TP/(TP+FN)
-#precision = TP/(TP+FP)
-#fmeasure=2/(1/recall+1/precision)
-#power = TP/n_runs
-#power=open(os.path.join(sorFolder, "power_"+filename),'w')
-#power.write("Recall="+str(recall)+'\n'+"Precision="+str(precision)+'\n'+"F-measure="+str(fmeasure)+'\n'+"Power="+str(power))
-#power.close()
