@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
     for (unsigned int i=0;i<elite_sols.size();i++){
-        elite_sols[i].score=add_gtest_pval(elite_sols[i],genos,phenos_m);
+        elite_sols[i].pval=add_gtest_pval(elite_sols[i],genos,phenos_m);
         elite_sols[i]=hill_climbing_lc(elite_sols[i],patternscoreList,genos,phenos_m);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
     while (calculate_delta(s,sB)>0){
       patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList);
-      s_closest_neighbour.score=add_gtest_pval(s_closest_neighbour,genos,phenos_m);
+      s_closest_neighbour.pval=add_gtest_pval(s_closest_neighbour,genos,phenos_m);
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
         cout<<"Recherche locale"<<endl;
         patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList,genos,phenos_m);
