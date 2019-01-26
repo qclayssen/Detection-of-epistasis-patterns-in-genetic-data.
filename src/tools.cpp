@@ -52,7 +52,7 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
   vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
   patternscore actual_s = s_closest_neighbour;
   for (unsigned int i=0;i<s_neighbours.size();i++){
-    s_neighbours[i].score=add_gtest_score(s_neighbours[i],genos,phenos_m);
+    s_neighbours[i].score=add_gtest_pval(s_neighbours[i],genos,phenos_m);
     if (s_neighbours[i].score<actual_s.score){
       actual_s=s_neighbours[i];
     }

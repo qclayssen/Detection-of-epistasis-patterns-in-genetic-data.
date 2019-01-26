@@ -128,7 +128,7 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
  }
 
 /*
-float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
+float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   float score;
   if(pattern.snp3==NULL){
     contingence2SNP contingence2;

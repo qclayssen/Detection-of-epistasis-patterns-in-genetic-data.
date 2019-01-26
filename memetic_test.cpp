@@ -772,7 +772,7 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
     }
 
 
-    float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
+    float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
       float score;
       if(pattern.snp3==NULL){
         contingence2SNP contingence2;
@@ -861,7 +861,7 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
 
 
         for (int i=0;i<n_pairs_selected_parents.size();i++){
-            n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
+            n_pairs_selected_parents[i].score=add_gtest_pval(n_pairs_selected_parents[i],genos,phenos_m);
         }
         while (h < n_it){
           vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
@@ -874,14 +874,14 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
 
           for (int j=0;j<children_parents.size();j++){
             //  cout<<children_parents.size()<<"i"<<endl;
-              float score=add_gtest_score(children_parents[1],genos,phenos_m);
+              float score=add_gtest_pval(children_parents[1],genos,phenos_m);
           }
           cout<<"enfant:"<<endl;
           cout_list(children_parents);
           perform_one_mutation_per_child(children_parents,prob_mutation);
 
           for (int i=0;i<children_parents.size();i++){
-              children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
+              children_parents[i].score=add_gtest_pval(children_parents[i],genos,phenos_m);
           }
           cout<<"enfant muté:"<<endl;
           cout_list(children_parents);

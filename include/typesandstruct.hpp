@@ -23,11 +23,17 @@ struct patternscore {
   string pattern2;
   string pattern3;
   float score = -1;
+  float pval = -1;
 };
 
 struct parents_pairs {
   patternscore parent1;
   patternscore parent2;
+};
+
+struct score_pval {
+  float score=-1;
+  float pval=-1;
 };
 
 #endif

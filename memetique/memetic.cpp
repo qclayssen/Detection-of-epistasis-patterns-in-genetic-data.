@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     //cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
-        pop[i].score=add_gtest_score(pop[i],genos,phenos_m);
+        pop[i].score=add_gtest_pval(pop[i],genos,phenos_m);
     }
 
     for (int l=0;l<pop.size();l++){
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
       //cout_list(pop,snpNameList);
     vector<patternscore>n_pairs_selected_parents=pop;
     for (int i=0;i<n_pairs_selected_parents.size();i++){
-        n_pairs_selected_parents[i].score=add_gtest_score(n_pairs_selected_parents[i],genos,phenos_m);
+        n_pairs_selected_parents[i].score=add_gtest_pval(n_pairs_selected_parents[i],genos,phenos_m);
     }
     while (h < n_it){
       vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
       for (int i=0;i<children_parents.size();i++){
-          children_parents[i].score=add_gtest_score(children_parents[i],genos,phenos_m);
+          children_parents[i].score=add_gtest_pval(children_parents[i],genos,phenos_m);
       }
       //cout<<"enfant muté:"<<endl;
       //cout_list(children_parents,snpNameList);

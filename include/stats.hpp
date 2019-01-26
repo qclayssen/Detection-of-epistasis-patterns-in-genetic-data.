@@ -25,11 +25,11 @@ void create_contingency_table_pattern2(int l1,int l2,contingence2SNP* adr_contin
 
 void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m);
 
-float g_test_2SNP(contingence2SNP contingence2);
+score_pval g_test_2SNP(contingence2SNP contingence2);
 
-float g_test_3SNP(contingence3SNP contingence2);
+score_pval g_test_3SNP(contingence3SNP contingence2);
 
-float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
+float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
 
 
 #endif

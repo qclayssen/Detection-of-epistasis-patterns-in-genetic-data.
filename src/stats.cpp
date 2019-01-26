@@ -308,9 +308,10 @@ void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr
   }
 }
 
-float g_test_2SNP(contingence2SNP contingence2){
+score_pval g_test_2SNP(contingence2SNP contingence2){
   int const nbrcolonnes(9);
   int const nbrligne(2);
+  score_pval result_gtest;
   //cout<<nbrcolonnes<<endl;
 
   for(int j=0; j<(nbrcolonnes); ++j)
@@ -432,12 +433,15 @@ if(test==1){
     //cout<<"score: "<<scorekhi2<<endl;
     //cout<<"p: "<<pval<<endl;
   }
-  return(pval);
+  result_gtest.score=scorekhi2;
+  result_gtest.pval=pval;
+  return(result_gtest);
 }
 
-float g_test_3SNP(contingence3SNP contingence2){
+score_pval g_test_3SNP(contingence3SNP contingence2){
   int const nbrcolonnes(27);
   int const nbrligne(2);
+  score_pval result_gtest;
   //cout<<nbrcolonnes<<endl;
 
   for(int j=0; j<(nbrcolonnes); ++j)
@@ -558,22 +562,27 @@ if(test==1){
     //cout<<"score: "<<scorekhi2<<endl;
     //cout<<"p: "<<pval<<endl;
   }
-  return(pval);
+  result_gtest.score=scorekhi2;
+  result_gtest.pval=pval;
+  return(result_gtest);
 }
 
-float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
+float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
+  score_pval bi;
   float score;
   if(pattern.snp3==-1){
     contingence2SNP contingence2;
     contingence2SNP* adr_contingence2 = &contingence2;
     create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
-    score=g_test_2SNP(contingence2);
+    bi=g_test_2SNP(contingence2);
+    score=bi.pval;
   }
   else{
     contingence3SNP contingence3;
     contingence3SNP* adr_contingence3 = &contingence3;
     create_contingency_table_pattern3(pattern.snp1,pattern.snp2,pattern.snp3,adr_contingence3,genos,phenos_m);
-    score=g_test_3SNP(contingence3);
+    bi=g_test_3SNP(contingence3);
+    score=bi.pval;
   }
   return(score);
 }
