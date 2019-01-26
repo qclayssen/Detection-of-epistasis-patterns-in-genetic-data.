@@ -98,3 +98,27 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
     cout<<"fail"<<endl;
   }
 }
+
+bool compareByPval(const patternscore &a, const patternscore &b){
+  return a.pval < b.pval;
+}
+
+bool compareByScore(const patternscore &a, const patternscore &b){
+  return a.score > b.score;
+}
+
+vector<patternscore> sort_solutions(vector<patternscore> solutions){
+  int score_or_pval=0;
+  for (unsigned int i=0;i<solutions.size();i++){
+    if (solutions[i].pval==0){
+      score_or_pval=1;
+    }
+  }
+  if (score_or_pval=0){
+    std::sort(solutions.begin(), solutions.end(), compareByPval);
+  }
+  else{
+    std::sort(solutions.begin(), solutions.end(), compareByScore);
+  }
+  return(solutions);
+}

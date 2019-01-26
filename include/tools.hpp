@@ -36,5 +36,10 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 
 void outfile(string genos_file,vector<string> snpNameList,vector<patternscore> best_solutions);
 
+bool compareByPval(const patternscore &a, const patternscore &b);
+
+bool compareByScore(const patternscore &a, const patternscore &b);
+
+vector<patternscore> sort_solutions(vector<patternscore> solutions);
 
 #endif

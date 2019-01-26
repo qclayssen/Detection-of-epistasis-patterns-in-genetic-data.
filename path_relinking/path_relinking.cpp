@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
     }
     cout<<endl<<"Solutions d'élite finales:"<<endl;
     cout_list(elite_sols,snpNameList);
+    elite_sols=sort_solutions(elite_sols);
     outfile(genos_file,snpNameList, elite_sols);
 
     return 0;
