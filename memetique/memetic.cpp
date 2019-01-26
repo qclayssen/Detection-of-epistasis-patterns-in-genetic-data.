@@ -105,14 +105,16 @@ int main(int argc, char *argv[])
     int n_it = params.n_it; // Nombre itération
     int n = params.n; // Size Population initiale
     int h = 1;
-
+    score_pval biScore; //Holds the result of g-tests
 
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
     //cout<<"pop initiale:"<<endl;
     //cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
-        pop[i].pval=add_gtest_pval(pop[i],genos,phenos_m);
+        biScore=add_gtest_results(pop[i],genos,phenos_m);
+        pop[i].score=biScore.score;
+        pop[i].pval=biScore.pval;
     }
 
     for (int l=0;l<pop.size();l++){
@@ -125,7 +127,9 @@ int main(int argc, char *argv[])
       //cout_list(pop,snpNameList);
     vector<patternscore>n_pairs_selected_parents=pop;
     for (int i=0;i<n_pairs_selected_parents.size();i++){
-        n_pairs_selected_parents[i].pval=add_gtest_pval(n_pairs_selected_parents[i],genos,phenos_m);
+      biScore=add_gtest_results(n_pairs_selected_parents[i],genos,phenos_m);
+      n_pairs_selected_parents[i].score=biScore.score;
+      n_pairs_selected_parents[i].pval=biScore.pval;
     }
     while (h < n_it){
       vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
@@ -142,7 +146,9 @@ int main(int argc, char *argv[])
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
       for (int i=0;i<children_parents.size();i++){
-          children_parents[i].pval=add_gtest_pval(children_parents[i],genos,phenos_m);
+        biScore=add_gtest_results(children_parents[i],genos,phenos_m);
+        children_parents[i].score=biScore.score;
+        children_parents[i].pval=biScore.pval;
       }
       //cout<<"enfant muté:"<<endl;
       //cout_list(children_parents,snpNameList);
