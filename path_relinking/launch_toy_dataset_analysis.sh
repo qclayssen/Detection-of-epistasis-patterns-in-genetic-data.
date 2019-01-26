@@ -10,4 +10,4 @@ make
 
 # Path_relinking command line :
 # ./àath_relinking <path_to_genotypes> <path_to_phenotypes>
-./path_relinking ./toy_dataset/simu3_Genotype_1.csv ./toy_dataset/simu3_Phenotype_1.csv
+./path_relinking ./toy_dataset/genotypes_toy_dataset.txt ./toy_dataset/phenotypes_toy_dataset.txt
