@@ -1,5 +1,8 @@
 #!/bin/bash
 rm memetic
+rm -rf outputs
+
+mkdir outputs
 # Compilation if needed
 make
 
