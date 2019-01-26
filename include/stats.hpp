@@ -33,5 +33,6 @@ float add_gtest_pval(patternscore pattern,blas_matrix genos,blas_matrix phenos_m
 
 float add_gtest_score(patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
 
+score_pval add_gtest_results (patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
 
 #endif

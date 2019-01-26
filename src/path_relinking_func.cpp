@@ -22,7 +22,7 @@ vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_s
   vector<patternscore> nodes(elite_sols.begin(),elite_sols.end());
   srand(time(0));
   random_shuffle(nodes.begin(), nodes.end());
-  if(nodes[0].score > nodes[1].score){
+  if(nodes[0].pval > nodes[1].pval){
     sA_sB.push_back(nodes[0]);
     sA_sB.push_back(nodes[1]);
   }
@@ -51,12 +51,12 @@ int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_
   int min_elite;
   double min_score=0;
   for (unsigned int i=0;i<elite_sols.size();i++){
-    if (elite_sols[i].score>min_score){
-      min_score=elite_sols[i].score;
+    if (elite_sols[i].pval>min_score){
+      min_score=elite_sols[i].pval;
       min_elite=i;
     }
   }
-  if (elite_sols[min_elite].score>s_closest_neighbour.score){
+  if (elite_sols[min_elite].pval>s_closest_neighbour.pval){
     return(1);
   }
   else{
@@ -72,8 +72,8 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
     if ((*adr_elite_sols)[i].snp1==s_opt.snp1 && (*adr_elite_sols)[i].snp2==s_opt.snp2){
       return;
     }
-    if ((*adr_elite_sols)[i].score>min_score){
-      min_score=(*adr_elite_sols)[i].score;
+    if ((*adr_elite_sols)[i].pval>min_score){
+      min_score=(*adr_elite_sols)[i].pval;
       min_elite=i;
     }
   }

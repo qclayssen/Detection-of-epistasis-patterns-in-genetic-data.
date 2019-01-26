@@ -15,10 +15,10 @@ vector<string> get_snp_list(string genos_file){
 void cout_list(vector<patternscore> list_to_cout,vector<string> snpNameList){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
     if ((*it).snp3==-1){
-      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).score<<endl;
+      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).pval<<endl;
     }
     else{
-      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).score<<endl;
+      cout<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).pval<<endl;
     }
   }
 }
@@ -52,8 +52,8 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
   vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
   patternscore actual_s = s_closest_neighbour;
   for (unsigned int i=0;i<s_neighbours.size();i++){
-    s_neighbours[i].score=add_gtest_pval(s_neighbours[i],genos,phenos_m);
-    if (s_neighbours[i].score<actual_s.score){
+    s_neighbours[i].pval=add_gtest_pval(s_neighbours[i],genos,phenos_m);
+    if (s_neighbours[i].pval<actual_s.pval){
       actual_s=s_neighbours[i];
     }
   }
@@ -79,10 +79,10 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
     {
       for (vector<patternscore>::iterator it=best_solutions.begin();it!=best_solutions.end();it++){
         if ((*it).snp3==-1){
-          _results_handler<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).score<<endl;
+          _results_handler<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<"\t"<<(*it).pval<<endl;
         }
         else{
-          _results_handler<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).score<<endl;
+          _results_handler<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<"\t"<<(*it).pval<<endl;
         }
       }
     }

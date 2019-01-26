@@ -684,8 +684,8 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
   void cout_list_indiv(vector<parents_pairs> list_to_cout_indiv){
     for (vector<parents_pairs>::iterator it=list_to_cout_indiv.begin();it!=list_to_cout_indiv.end();it++){
         cout<<"Parent"<<endl;
-        cout<<"parent1:"<<(*it).parent1.pattern1<<","<<(*it).parent1.pattern2<<"   "<<(*it).parent1.score<<endl;
-        cout<<"parent2:"<<(*it).parent2.pattern1<<","<<(*it).parent2.pattern2<<"   "<<(*it).parent2.score<<endl;
+        cout<<"parent1:"<<(*it).parent1.pattern1<<","<<(*it).parent1.pattern2<<"   "<<(*it).parent1.pval<<endl;
+        cout<<"parent2:"<<(*it).parent2.pattern1<<","<<(*it).parent2.pattern2<<"   "<<(*it).parent2.pval<<endl;
       }
     }
 
@@ -693,11 +693,11 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
       for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
         if ((*it).pattern3==""){
           cout<<(*it).pattern1<<","<<(*it).pattern2<<endl;
-          cout<<(*it).score<<endl;
+          cout<<(*it).pval<<endl;
         }
         else{
           cout<<(*it).pattern1<<","<<(*it).pattern2<<(*it).pattern3<<endl;
-          cout<<(*it).score<<endl;
+          cout<<(*it).pval<<endl;
         }
       }
     }
@@ -748,7 +748,7 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
       vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
       patternscore actual_s = s_closest_neighbour;
       for (int i=0;i<patternscoreList.size();i++){
-        if (s_neighbours[i].score>actual_s.score){
+        if (s_neighbours[i].pval>actual_s.pval){
           actual_s=s_neighbours[i];
         }
       }
@@ -861,7 +861,7 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
 
 
         for (int i=0;i<n_pairs_selected_parents.size();i++){
-            n_pairs_selected_parents[i].score=add_gtest_pval(n_pairs_selected_parents[i],genos,phenos_m);
+            n_pairs_selected_parents[i].pval=add_gtest_pval(n_pairs_selected_parents[i],genos,phenos_m);
         }
         while (h < n_it){
           vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
@@ -881,7 +881,7 @@ void perform_one_mutation_per_child(vector<patternscore>children_parents,int pro
           perform_one_mutation_per_child(children_parents,prob_mutation);
 
           for (int i=0;i<children_parents.size();i++){
-              children_parents[i].score=add_gtest_pval(children_parents[i],genos,phenos_m);
+              children_parents[i].pval=add_gtest_pval(children_parents[i],genos,phenos_m);
           }
           cout<<"enfant muté:"<<endl;
           cout_list(children_parents);

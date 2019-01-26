@@ -7,7 +7,7 @@ void cout_list(vector<patternscore> list_to_cout){
   for (vector<patternscore>::iterator it=list_to_cout.begin();it!=list_to_cout.end();it++){
     if ((*it).pattern3==""){
       hill_climbing_lc2<<(*it).snp1<<","<<(*it).snp2<<endl;
-      cout<<"idparent :"<<(*it).idparent<<" score:"<<(*it).score<<endl;
+      cout<<"idparent :"<<(*it).idparent<<" score:"<<(*it).pval<<endl;
       cout<<endl;
     }
     else{
@@ -154,8 +154,8 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
     if ((*adr_elite_sols)[i].pattern1==s_opt.pattern1 && (*adr_elite_sols)[i].pattern2==s_opt.pattern2){
       return;
     }
-    if ((*adr_elite_sols)[i].score<min_score){
-      min_score=(*adr_elite_sols)[i].score;
+    if ((*adr_elite_sols)[i].pval<min_score){
+      min_score=(*adr_elite_sols)[i].pval;
       min_elite=i;
     }
   }
@@ -163,7 +163,7 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
 }*/
 
 bool compareByLength(const patternscore &a, const patternscore &b){
-  return a.score < b.score;
+  return a.pval < b.pval;
 }
 
   vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n){
@@ -171,7 +171,7 @@ bool compareByLength(const patternscore &a, const patternscore &b){
     std::sort(pop.begin(), pop.end(), compareByLength);
     int i=0;
     while(i<k){
-      /*if (best_solutions.score==-1)
+      /*if (best_solutions.pval==-1)
         {continue;}
       else
         {*/best_solutions.push_back(pop[i]);
@@ -201,7 +201,7 @@ void update_population(vector<patternscore> children_parents, vector<patternscor
     vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList);
     patternscore actual_s = s_closest_neighbour;
     for (int i=0;i<patternscoreList.size();i++){
-      if (s_neighbours[i].score<actual_s.score){
+      if (s_neighbours[i].pval<actual_s.pval){
         actual_s=s_neighbours[i];
       }
     }
