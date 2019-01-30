@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         }
       }
     }
-    int n_c = params.n_c;
+    int s_n = params.s_n;
     unsigned int k = params.k;
     int prob_mutation = params.prob_mutation;
     int n_it = params.n_it; // Nombre itération
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     }
 cout<<"1"<<endl;
     for (int l=0;l<pop.size();l++){
-            patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,n_c);
+            patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,s_n);
             //cout<<s_opt.snp1<<endl;
             update(s_opt,adr_pop);
           }
@@ -163,7 +163,7 @@ cout<<"1"<<endl;
       //update_population(children_parents, adr_pop,n);
     //  cout<<"pop size:"<<pop.size()<<endl;
       for (int o=0;o<pop.size();o++){
-              patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,n_c);
+              patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               update(s_opt,adr_pop);
             }
 
