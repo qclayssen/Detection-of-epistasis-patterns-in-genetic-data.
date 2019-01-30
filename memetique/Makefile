@@ -8,7 +8,7 @@ SRC=memetic.cpp\
 ../src/path_relinking_func.cpp\
 ../src/memetic_funk.cpp
 
-FLAG=-Wall -std=c++11 -I$(BOOST_FOLDER)
+FLAG=-Wall -std=c++11 -O2 -I$(BOOST_FOLDER)
 
 all: ./memetic
 

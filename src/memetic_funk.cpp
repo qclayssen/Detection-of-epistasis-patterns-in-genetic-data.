@@ -68,9 +68,13 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
 
       if ((*adr_children_parents)[i].snp3 != NULL)
         {parentpattern = rand() % 3 ;}
-      else{parentpattern = rand() % 2;}
+
+      else
+        {parentpattern = rand() % 2;}
+
       if ((*adr_children_parents)[i].snp3 != NULL)
         {mutpattern = rand() % 3 ;}
+
       else{mutpattern = rand() % 2;}
       //int parentpattern =1;
       //int mutpattern=1;

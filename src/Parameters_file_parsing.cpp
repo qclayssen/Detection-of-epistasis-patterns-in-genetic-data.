@@ -56,8 +56,12 @@ void parameters_file_parsing::import_line(string const& line)
 
         k = atof(value.c_str());
 
+
     else if(key == "relinking_local_search_id")
         relinking_local_search_id = value;
+
+    else if(key == "s_n")
+        s_n = atoi(value.c_str());
 
     else if(key == "n")
         n = atoi(value.c_str());
@@ -106,6 +110,7 @@ void parameters_file_parsing::list_parameters() const
     << "relinking_local_search_id => " << relinking_local_search_id << endl
     << "n => " << n << endl
     << "memetique_local_search_id => " << memetique_local_search_id << endl
+    << "s_n => " << s_n << endl
     << "n_it => " << n_it << endl
     << "n_pairs_selected_parents => " << n_pairs_selected_parents << endl
     << "prob_mutation => " << prob_mutation << endl

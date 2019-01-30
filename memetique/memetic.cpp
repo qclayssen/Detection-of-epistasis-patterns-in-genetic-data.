@@ -14,6 +14,7 @@
 #include <random>
 #include <vector>
 #include <stdio.h>
+#include <ctime>
 
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/algorithm/string.hpp>
@@ -108,7 +109,7 @@ int main(int argc, char *argv[])
     score_pval biScore; //Holds the result of g-tests
 
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
-    //cout<<"pop initiale:"<<endl;
+    cout<<"pop initiale:"<<endl;
     //cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
@@ -116,15 +117,18 @@ int main(int argc, char *argv[])
         pop[i].score=biScore.score;
         pop[i].pval=biScore.pval;
     }
-
+cout<<"1"<<endl;
     for (int l=0;l<pop.size();l++){
             patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m);
             //cout<<s_opt.snp1<<endl;
             update(s_opt,adr_pop);
           }
 
-      //cout<<"pop après recherche:"<<endl;
+      cout<<"pop après recherche:"<<endl;
+      //std::time_t result = std::time(nullptr);
+      //std::cout << std::asctime(std::localtime(&result))<<endl;
       //cout_list(pop,snpNameList);
+
     vector<patternscore>n_pairs_selected_parents=pop;
     for (int i=0;i<n_pairs_selected_parents.size();i++){
       biScore=add_gtest_results(n_pairs_selected_parents[i],genos,phenos_m);
@@ -140,7 +144,9 @@ int main(int argc, char *argv[])
       //cout_list(children_parents);
 
 
-      //cout<<"enfant:"<<endl;
+      cout<<"enfant:"<<endl;
+      //std::time_t result1 = std::time(nullptr);
+      //std::cout << std::asctime(std::localtime(&result1))<<endl;
       //cout_list(children_parents,snpNameList);
       vector<patternscore>* adr_children_parents = &children_parents;
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
@@ -150,7 +156,9 @@ int main(int argc, char *argv[])
         children_parents[i].score=biScore.score;
         children_parents[i].pval=biScore.pval;
       }
-      //cout<<"enfant muté:"<<endl;
+      cout<<"enfant muté:"<<endl;
+      //std::time_t result2 = std::time(nullptr);
+      //std::cout << std::asctime(std::localtime(&result2))<<endl;
       //cout_list(children_parents,snpNameList);
       //update_population(children_parents, adr_pop,n);
     //  cout<<"pop size:"<<pop.size()<<endl;
@@ -166,8 +174,10 @@ int main(int argc, char *argv[])
     }
     //char filename= "out.txt";
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-    //cout<<"pop finale trié:"<<endl;
+    cout<<"pop finale trié:"<<endl;
     //cout_list(best_solutions,snpNameList);
+    //std::time_t result3 = std::time(nullptr);
+    //std::cout << std::asctime(std::localtime(&result3))<<endl;
     outfile(genos_file,snpNameList, best_solutions);
 
     return 0;

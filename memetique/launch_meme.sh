@@ -14,15 +14,17 @@ make
 #../simu_Damien/Simu_naive_2snp_0.5/
 simu=$(ls $1/*Genotype*)
 
+
 for genotype in ${simu};
 do
-  for i in `seq 1 100`;
+  for i in `seq 1 1`;
   do
 
   phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/')
   time $(./memetic ${genotype} ${phenotype})
-
-  #python ../eval_simu.py outputs eval_${file}
+  #HEAPPROFILE=/tmp/netheap ./memetic ${genotype} ${phenotype}
+  #HEAPCHECK=normal ./memetic ${genotype} ${phenotype}
+  #valgrind --tool=callgrind --trace-children=yes ./memetic ${genotype} ${phenotype}
 
   echo "fichier:"$i
   done

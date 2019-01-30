@@ -21,6 +21,7 @@ public:
     char separator;
     int k;
     string relinking_local_search_id;
+    unsigned s_n;
     unsigned n;
     string memetique_local_search_id;
     int n_it;
