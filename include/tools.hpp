@@ -32,7 +32,7 @@ int calculate_delta(patternscore s, patternscore sB);
 
 vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList);
 
-patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m);
+patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m, int s_n);
 
 void outfile(string genos_file,vector<string> snpNameList,vector<patternscore> best_solutions);
 

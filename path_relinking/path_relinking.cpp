@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     parameters_file_parsing params;
     int header = params.header;
     char separator = params.separator;
-
+    int s_n = params.s_n;
 //  DATA IMPORTATION
     CSVParser<int> genos_csv(genos_file, separator, header);
     CSVParser<int> phenos_csv(phenos_file, separator, header);
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         biScore=add_gtest_results(elite_sols[i],genos,phenos_m);
         elite_sols[i].score=biScore.score;
         elite_sols[i].pval=biScore.pval;
-        elite_sols[i]=hill_climbing_lc(elite_sols[i],patternscoreList,genos,phenos_m);
+        elite_sols[i]=hill_climbing_lc(elite_sols[i],patternscoreList,genos,phenos_m,n_c);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
     cout<<"Elite solutions :"<<endl;
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
       s_closest_neighbour.pval=biScore.pval;
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
         cout<<"Recherche locale"<<endl;
-        patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList,genos,phenos_m);
+        patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList,genos,phenos_m,n_c);
         update(s_opt,adr_elite_sols);
       }
       else{
