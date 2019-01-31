@@ -137,7 +137,7 @@ float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_
   if(pattern.snp3==NULL){
     contingence2SNP contingence2;
     contingence2SNP* adr_contingence2 = &contingence2;
-    /*cout<<pattern.pattern1<<", "<<pattern.pattern2<<endl;
+    cout<<pattern.pattern1<<", "<<pattern.pattern2<<endl;
     cout<<pattern.snp1<<":pattern.snp1 "<<pattern.snp2<<":pattern.snp2"<<endl;
     create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
     score=g_test_2SNP(contingence2);

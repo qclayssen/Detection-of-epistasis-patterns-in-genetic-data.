@@ -37,12 +37,14 @@ int calculate_delta(patternscore s, patternscore sB){
   return(diff);
 }
 
-vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList){
+vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList,int s_n){
   vector<patternscore> s_neighbours;
+  int j;
   for (unsigned int i=0;i<patternscoreList.size();i++){
     int delta=calculate_delta(s,patternscoreList[i]);
-    if (delta==1){
+    if (delta==1 && j > s_n){
       s_neighbours.push_back(patternscoreList[i]);
+      j=j+1;
     }
   }
   return(s_neighbours);
@@ -50,8 +52,8 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
 
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
   vector<patternscore> s_neighbours2 = neighbours(s_closest_neighbour,patternscoreList);
-  srand(time(0));
-  random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
+  //srand(time(0));
+  //random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
   vector<patternscore> s_neighbours;
   for (unsigned int i=0;i<s_n;i++){
     s_neighbours.push_back(s_neighbours2[i]);

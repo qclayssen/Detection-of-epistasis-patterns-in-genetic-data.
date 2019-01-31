@@ -41,7 +41,6 @@ vector<patternscore> initialize_population(int n,vector<patternscore> patternsco
 
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n);
 
-patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList);
 
 bool compareByLength(const patternscore &a, const patternscore &b);
 

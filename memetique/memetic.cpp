@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
     int prob_mutation = params.prob_mutation;
     int n_it = params.n_it; // Nombre itération
     int n = params.n; // Size Population initiale
-    int h = 1;
+    int h = 0;
     score_pval biScore; //Holds the result of g-tests
 
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
@@ -118,11 +118,12 @@ int main(int argc, char *argv[])
         pop[i].pval=biScore.pval;
     }
 cout<<"1"<<endl;
-    for (int l=0;l<pop.size();l++){
+  /*  for (int l=0;l<pop.size();l++){
             patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,s_n);
+            //cout<<"1"<<endl;
             //cout<<s_opt.snp1<<endl;
-            update(s_opt,adr_pop);
-          }
+            pop[l]=s_opt;
+          }*/
 
       cout<<"pop après recherche:"<<endl;
       //std::time_t result = std::time(nullptr);
@@ -135,7 +136,10 @@ cout<<"1"<<endl;
       n_pairs_selected_parents[i].score=biScore.score;
       n_pairs_selected_parents[i].pval=biScore.pval;
     }
-    while (h < n_it){
+    int z=0;
+    while (h < n_it && z < 5){
+      vector<patternscore> pop_init=pop;
+      cout<<"start"<<endl;
       vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
       //cout_list_indiv(pairs_of_parents);
 
@@ -162,14 +166,20 @@ cout<<"1"<<endl;
       //cout_list(children_parents,snpNameList);
       //update_population(children_parents, adr_pop,n);
     //  cout<<"pop size:"<<pop.size()<<endl;
-      for (int o=0;o<pop.size();o++){
+      /*for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
-              update(s_opt,adr_pop);
-            }
+              pop[o]=s_opt;
+            }*/
 
       //cout<<"pop finale:"<<endl;
       //cout_list(pop,snpNameList);
 
+      /*bool result = std::equal(pop_init.begin(), pop_init.end(), pop.begin());
+
+      if (result)
+        {z=z+1;}
+      else
+       {pop_init = pop;}*/
       h=h+1;
     }
     //char filename= "out.txt";
