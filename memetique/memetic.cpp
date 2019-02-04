@@ -110,9 +110,9 @@ int main(int argc, char *argv[])
 
 
     auto t1 = Clock::now();
-
+    cout << "start:"<<endl;
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
-    cout<<"pop initiale:"<<endl;
+
     //cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
@@ -120,7 +120,10 @@ int main(int argc, char *argv[])
         pop[i].score=biScore.score;
         pop[i].pval=biScore.pval;
     }
-cout<<"1"<<endl;
+    auto t15 = Clock::now();
+    std::cout << "initialisation:"
+              << duration_cast<duration<double>>(t15 - t1).count()
+              << " seconds" << std::endl;
     for (int l=0;l<pop.size();l++){
             patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,s_n);
             //cout<<"1"<<endl;
@@ -128,9 +131,8 @@ cout<<"1"<<endl;
             pop[l]=s_opt;
           }
 
-      cout<<"pop après recherche:"<<endl;
       auto t2 = Clock::now();
-      std::cout << "Delta t2-t1: "
+      std::cout << "pop après recherche:"
                 << duration_cast<duration<double>>(t2 - t1).count()
                 << " seconds" << std::endl;
 
@@ -140,10 +142,14 @@ cout<<"1"<<endl;
       n_pairs_selected_parents[i].score=biScore.score;
       n_pairs_selected_parents[i].pval=biScore.pval;
     }
+    auto t25 = Clock::now();
+    std::cout << "pop après recherche:"
+              << duration_cast<duration<double>>(t25 - t2).count()
+              << " seconds" << std::endl;
     int z=0;
     while (h < n_it && z < 5){
       vector<patternscore> pop_init=pop;
-      cout<<"start"<<endl;
+      cout<<"start loop: "<<h<<endl;
       vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
       //cout_list_indiv(pairs_of_parents);
 
@@ -152,10 +158,9 @@ cout<<"1"<<endl;
       //cout_list(children_parents);
 
 
-      cout<<"enfant:"<<endl;
       auto t3 = Clock::now();
-      std::cout << "Delta t2-t1: "
-                << duration_cast<duration<double>>(t3 - t1).count()
+      std::cout << "enfant:"
+                << duration_cast<duration<double>>(t3 - t2).count()
                 << " seconds" << std::endl;
       vector<patternscore>* adr_children_parents = &children_parents;
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
@@ -165,10 +170,9 @@ cout<<"1"<<endl;
         children_parents[i].score=biScore.score;
         children_parents[i].pval=biScore.pval;
       }
-      cout<<"enfant muté:"<<endl;
       auto t4 = Clock::now();
-      std::cout << "Delta t4-t1: "
-                << duration_cast<duration<double>>(t4 - t1).count()
+      std::cout << "enfant muté:"
+                << duration_cast<duration<double>>(t4 - t3).count()
                 << " seconds" << std::endl;
       //cout_list(children_parents,snpNameList);
       //update_population(children_parents, adr_pop,n);
@@ -191,10 +195,9 @@ cout<<"1"<<endl;
     }
     //char filename= "out.txt";
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-    cout<<"pop finale trié:"<<endl;
     //cout_list(best_solutions,snpNameList);
     auto t5 = Clock::now();
-    std::cout << "Delta t5-t1: "
+    std::cout << "temps total: "
               << duration_cast<duration<double>>(t5 - t1).count()
               << " seconds" << std::endl;
     outfile(genos_file,snpNameList, best_solutions);
