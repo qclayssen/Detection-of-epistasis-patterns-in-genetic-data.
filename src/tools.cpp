@@ -1,5 +1,6 @@
 #include "../include/tools.hpp"
 
+typedef std::chrono::high_resolution_clock Clock;
 
 vector<string> get_snp_list(string genos_file){
   vector<string> tokens;
@@ -42,7 +43,7 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
   int j;
   for (unsigned int i=0;i<patternscoreList.size();i++){
     int delta=calculate_delta(s,patternscoreList[i]);
-    if (j < s_n){
+    if (j < 1){
       if (delta==1){
         s_neighbours.push_back(patternscoreList[i]);
         j=j+1;}
@@ -53,6 +54,8 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
 }
 
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
+  auto h1 = Clock::now();
+
   vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList,s_n);
 /*  srand(time(0));
   random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
@@ -62,6 +65,10 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
   }*/
   patternscore actual_s = s_closest_neighbour;
   score_pval biScore;
+  auto h2 = Clock::now();
+  std::cout << "neighbours: "
+            << duration_cast<duration<double>>(h2 - h1).count()
+            << " seconds" << std::endl;
   for (unsigned int i=0;i<s_neighbours.size();i++){
     biScore=add_gtest_results(s_neighbours[i],genos,phenos_m);
     s_neighbours[i].score=biScore.score;
@@ -77,6 +84,52 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
       }
     }
   }
+  auto h3 = Clock::now();
+  std::cout << "actual_s: "
+            << duration_cast<duration<double>>(h3 - h2).count()
+            << " seconds" << std::endl;
+
+  return(actual_s);
+}
+
+
+
+patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
+  auto h1 = Clock::now();
+
+  vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList,s_n);
+/*  srand(time(0));
+  random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
+  vector<patternscore> s_neighbours;
+  for (unsigned int i=0;i<s_n;i++){
+    s_neighbours.push_back(s_neighbours2[i]);
+  }*/
+  patternscore actual_s = s_closest_neighbour;
+  score_pval biScore;
+  auto h2 = Clock::now();
+  std::cout << "neighbours: "
+            << duration_cast<duration<double>>(h2 - h1).count()
+            << " seconds" << std::endl;
+  for (unsigned int i=0;i<s_neighbours.size();i++){
+    biScore=add_gtest_results(s_neighbours[i],genos,phenos_m);
+    s_neighbours[i].score=biScore.score;
+    s_neighbours[i].pval=biScore.pval;
+    if (s_neighbours[i].pval!=0){
+      if (s_neighbours[i].pval<actual_s.pval){
+        actual_s=s_neighbours[i];
+      }
+    }
+    else{
+      if (s_neighbours[i].score>actual_s.score){
+        actual_s=s_neighbours[i];
+      }
+    }
+  }
+  auto h3 = Clock::now();
+  std::cout << "actual_s: "
+            << duration_cast<duration<double>>(h3 - h2).count()
+            << " seconds" << std::endl;
+
   return(actual_s);
 }
 

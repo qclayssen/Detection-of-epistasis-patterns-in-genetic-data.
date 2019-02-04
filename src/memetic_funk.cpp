@@ -64,27 +64,60 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       //int type = rand() % 3;
       int parentpattern;
       int mutpattern;
-      int type = 1;
-
       if ((*adr_children_parents)[i].snp3 != NULL)
         {parentpattern = rand() % 3 ;}
-
       else
         {parentpattern = rand() % 2;}
 
       if ((*adr_children_parents)[i].snp3 != NULL)
         {mutpattern = rand() % 3 ;}
-
-      else{mutpattern = rand() % 2;}
-      //int parentpattern =1;
-      //int mutpattern=1;
-      switch (type) {
-        case 0:
-          break;
-        case 1:
-          {int snp = rand() % (*adr_children_parents).size();
+      else
+        {mutpattern = rand() % 2;}
+          int snp = rand() % (*adr_children_parents).size();
           //cout<<(*adr_children_parents)[i].snp1<<","<<(*adr_children_parents)[snp].snp1<<endl;
-          if((*adr_children_parents)[i].snp1==(*adr_children_parents)[snp].snp1 || (*adr_children_parents)[i].snp2==(*adr_children_parents)[snp].snp2 || (*adr_children_parents)[i].snp3==(*adr_children_parents)[snp].snp3 ) {continue;}
+
+
+
+      if((*adr_children_parents)[i].snp1==(*adr_children_parents)[snp].snp1 || (*adr_children_parents)[i].snp2==(*adr_children_parents)[snp].snp2 || (*adr_children_parents)[i].snp3==(*adr_children_parents)[snp].snp3 )
+        {continue;}
+
+        switch (parentpattern) {
+          case 1:
+           switch (mutpattern) {
+             case 0:
+             (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp1;
+             break;
+             case 1:
+             (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp2;
+             break;
+             case 2:
+             (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp3;
+             break;}
+          case 2:
+            switch (mutpattern) {
+              case 0:
+              (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp1;
+              break;
+              case 1:
+              (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp2;
+              break;
+              case 2:
+              (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp3;
+              break;}
+          case 3:
+            switch (mutpattern) {
+             case 0:
+             (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp1;
+             break;
+             case 1:
+             (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp2;
+             break;
+             case 2:
+             (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp3;
+             break;}
+          }
+
+            /*
           if(parentpattern == 1 ){if(mutpattern == 0){
             (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp1;}
             if(mutpattern == 1){
@@ -104,13 +137,14 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
             if(mutpattern == 1){
               (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp2;}
             if(mutpattern == 2){
-              (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp3;}}}break;
-        case 2:
-          break;
-        }
+              (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp3;}}*/
       }
     }
   }
+
+
+
+
 
 
 vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vector<parents_pairs> pairs_of_parents){
