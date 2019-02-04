@@ -12,8 +12,7 @@ make
 # ./SMMB <path_to_genotypes> <path_to_phenotypes>
 #./memetic ./simupath3/simu2_Genotype_1.csv simupath3/simu2_Phenotype_1.csv
 #../simu_Damien/Simu_naive_2snp_0.5/
-simu=$(ls $1/*Genotype*)
-
+simu=$(ls $1 | grep -i genotype)
 
 for genotype in ${simu};
 do

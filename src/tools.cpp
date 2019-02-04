@@ -42,24 +42,24 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
   int j;
   for (unsigned int i=0;i<patternscoreList.size();i++){
     int delta=calculate_delta(s,patternscoreList[i]);
-    if (j > s_n){
+    if (j < s_n){
       if (delta==1){
         s_neighbours.push_back(patternscoreList[i]);
         j=j+1;}
     }
-    else (break;)
+    else {break;}
   }
   return(s_neighbours);
 }
 
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
-  vector<patternscore> s_neighbours2 = neighbours(s_closest_neighbour,patternscoreList);
-  //srand(time(0));
-  //random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
+  vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList,s_n);
+/*  srand(time(0));
+  random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
   vector<patternscore> s_neighbours;
   for (unsigned int i=0;i<s_n;i++){
     s_neighbours.push_back(s_neighbours2[i]);
-  }
+  }*/
   patternscore actual_s = s_closest_neighbour;
   score_pval biScore;
   for (unsigned int i=0;i<s_neighbours.size();i++){

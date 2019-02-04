@@ -24,12 +24,12 @@
 #include "../include/CSVParser.hpp"
 #include "../include/stats.hpp"
 #include "../include/tools.hpp"
-#include "../include/path_relinking_func.hpp"
 #include "../include/memetic_funk.hpp"
 #include "../include/common.h"
 
 using namespace std;
 using namespace std::chrono;
+typedef std::chrono::high_resolution_clock Clock;
 
 
 
@@ -108,6 +108,9 @@ int main(int argc, char *argv[])
     int h = 0;
     score_pval biScore; //Holds the result of g-tests
 
+
+    auto t1 = Clock::now();
+
     vector<patternscore>pop=initialize_population(n, patternscoreList);;
     cout<<"pop initiale:"<<endl;
     //cout_list(pop,snpNameList);
@@ -118,17 +121,18 @@ int main(int argc, char *argv[])
         pop[i].pval=biScore.pval;
     }
 cout<<"1"<<endl;
-  /*  for (int l=0;l<pop.size();l++){
+    for (int l=0;l<pop.size();l++){
             patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,s_n);
             //cout<<"1"<<endl;
             //cout<<s_opt.snp1<<endl;
             pop[l]=s_opt;
-          }*/
+          }
 
       cout<<"pop après recherche:"<<endl;
-      //std::time_t result = std::time(nullptr);
-      //std::cout << std::asctime(std::localtime(&result))<<endl;
-      //cout_list(pop,snpNameList);
+      auto t2 = Clock::now();
+      std::cout << "Delta t2-t1: "
+                << duration_cast<duration<double>>(t2 - t1).count()
+                << " seconds" << std::endl;
 
     vector<patternscore>n_pairs_selected_parents=pop;
     for (int i=0;i<n_pairs_selected_parents.size();i++){
@@ -149,9 +153,10 @@ cout<<"1"<<endl;
 
 
       cout<<"enfant:"<<endl;
-      //std::time_t result1 = std::time(nullptr);
-      //std::cout << std::asctime(std::localtime(&result1))<<endl;
-      //cout_list(children_parents,snpNameList);
+      auto t3 = Clock::now();
+      std::cout << "Delta t2-t1: "
+                << duration_cast<duration<double>>(t3 - t1).count()
+                << " seconds" << std::endl;
       vector<patternscore>* adr_children_parents = &children_parents;
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
@@ -161,15 +166,17 @@ cout<<"1"<<endl;
         children_parents[i].pval=biScore.pval;
       }
       cout<<"enfant muté:"<<endl;
-      //std::time_t result2 = std::time(nullptr);
-      //std::cout << std::asctime(std::localtime(&result2))<<endl;
+      auto t4 = Clock::now();
+      std::cout << "Delta t4-t1: "
+                << duration_cast<duration<double>>(t4 - t1).count()
+                << " seconds" << std::endl;
       //cout_list(children_parents,snpNameList);
       //update_population(children_parents, adr_pop,n);
     //  cout<<"pop size:"<<pop.size()<<endl;
-      /*for (int o=0;o<pop.size();o++){
+      for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               pop[o]=s_opt;
-            }*/
+            }
 
       //cout<<"pop finale:"<<endl;
       //cout_list(pop,snpNameList);
@@ -186,8 +193,10 @@ cout<<"1"<<endl;
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
     cout<<"pop finale trié:"<<endl;
     //cout_list(best_solutions,snpNameList);
-    //std::time_t result3 = std::time(nullptr);
-    //std::cout << std::asctime(std::localtime(&result3))<<endl;
+    auto t5 = Clock::now();
+    std::cout << "Delta t5-t1: "
+              << duration_cast<duration<double>>(t5 - t1).count()
+              << " seconds" << std::endl;
     outfile(genos_file,snpNameList, best_solutions);
 
     return 0;
