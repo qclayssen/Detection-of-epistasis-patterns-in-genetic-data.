@@ -137,11 +137,11 @@ int main(int argc, char *argv[])
                 << " seconds" << std::endl;
 
     vector<patternscore>n_pairs_selected_parents=pop;
-    for (int i=0;i<n_pairs_selected_parents.size();i++){
+    /*for (int i=0;i<n_pairs_selected_parents.size();i++){
       biScore=add_gtest_results(n_pairs_selected_parents[i],genos,phenos_m);
       n_pairs_selected_parents[i].score=biScore.score;
       n_pairs_selected_parents[i].pval=biScore.pval;
-    }
+    }*/
     auto t25 = Clock::now();
     std::cout << "gscore"
               << duration_cast<duration<double>>(t25 - t2).count()

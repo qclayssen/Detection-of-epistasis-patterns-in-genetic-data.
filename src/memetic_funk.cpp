@@ -60,7 +60,6 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       break;
       //cout<<"sheit"<<endl;
     }else{
-
       //int type = rand() % 3;
       int parentpattern;
       int mutpattern;
