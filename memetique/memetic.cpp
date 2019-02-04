@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
       n_pairs_selected_parents[i].pval=biScore.pval;
     }
     auto t25 = Clock::now();
-    std::cout << "pop après recherche:"
+    std::cout << "gscore"
               << duration_cast<duration<double>>(t25 - t2).count()
               << " seconds" << std::endl;
     int z=0;
@@ -181,7 +181,10 @@ int main(int argc, char *argv[])
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               pop[o]=s_opt;
             }
-
+      auto t45 = Clock::now();
+      std::cout << "hill climning:"
+                << duration_cast<duration<double>>(t45 - t4).count()
+                << " seconds" << std::endl;
       //cout<<"pop finale:"<<endl;
       //cout_list(pop,snpNameList);
 
