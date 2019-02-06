@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
     std::cout << "temps total: "
               << duration_cast<duration<double>>(t5 - t1).count()
               << " seconds" << std::endl;
-    int duree=duration_cast<duration<double>>(t5 - t1).count();
+    float duree =duration_cast<duration<double>>(t5 - t1).count();
     outfile(genos_file,snpNameList, best_solutions,s_n,n,duree,n_it);
 
     return 0;

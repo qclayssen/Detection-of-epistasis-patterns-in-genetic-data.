@@ -85,7 +85,7 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 }
 
 
-void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n, int duree ,int n_it){
+void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n, float duree ,int n_it){
   string file_basename = basename((char*)genos_file.c_str());
   string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_n_it_"+to_string(n_it)+"_"+file_basename;
   std::ofstream _results_handler;
@@ -102,12 +102,12 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
       _results_handler<<"Pattern"<<"\t"<<"p-value"<<"\t"<<"score"<<endl;
       for (vector<patternscore>::iterator it=best_solutions.begin();it!=best_solutions.end();it++){
         if ((*it).snp3==-1){
-          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl<<"durée: "<<duree<<" seconde";
+          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl<<"durée: "<<duree<<" seconde"<<endl;
         }
         else{
-          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl<<"durée: "<<duree<<" seconde";
+          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
         }
-      }
+      }_results_handler<<endl<<"durée: "<<duree<<" seconde"<<endl;
     }
   else
   {
