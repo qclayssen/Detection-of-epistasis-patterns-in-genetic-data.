@@ -56,7 +56,6 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
     s_neighbours.push_back(s_neighbours2[i]);
   }*/
   patternscore actual_s = s_closest_neighbour;
-  score_pval biScore;
   /*auto h2 = Clock::now();
   std::cout << "neighbours: "
             << duration_cast<duration<double>>(h2 - h1).count()
@@ -90,7 +89,6 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
   string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_n_it_"+to_string(n_it)+"_"+file_basename;
   std::ofstream _results_handler;
   _results_handler.open(result_filename.c_str(), ios::trunc);
-
 
   if(!_results_handler)
   {

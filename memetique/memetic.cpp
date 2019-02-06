@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   if(argc < 3)
   {
       cerr << "Missing parameter :\n"
-           << "\t./path_relinking <path_to_genotypes> <path_to_phenotypes>"
+           << "\t./memetic <path_to_genotypes> <path_to_phenotypes>"
            << endl;
       exit(-1);
   }
@@ -198,12 +198,13 @@ int main(int argc, char *argv[])
     }
     //char filename= "out.txt";
     vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-    //cout_list(best_solutions,snpNameList);
+    cout_list(best_solutions,snpNameList);
     auto t5 = Clock::now();
-    std::cout << "temps total: "
-              << duration_cast<duration<double>>(t5 - t1).count()
-              << " seconds" << std::endl;
     float duree =duration_cast<duration<double>>(t5 - t1).count();
+    std::cout << "temps total: "
+              << duree
+              << " seconds" << std::endl;
+
     outfile(genos_file,snpNameList, best_solutions,s_n,n,duree,n_it);
 
     return 0;

@@ -47,9 +47,9 @@ vector<parents_pairs> select_pairs_of_individuals_to_be_crossed(vector<patternsc
 
 void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,int prob_mutation){
   for (int i=0;i<(*adr_children_parents).size();++i){
-    int mutation = rand() % 100;
-    //cout<<mutation<<endl;
-    if (mutation > prob_mutation){
+    int mutation = rand() % 100 + 0;
+    cout<<mutation<<endl;
+    if (mutation >= prob_mutation){
       break;
       //cout<<"sheit"<<endl;
     }else{
@@ -57,7 +57,7 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       int parentpattern;
       int mutpattern;
       if ((*adr_children_parents)[i].snp3 != NULL)
-        {parentpattern = rand() % 3 ;}
+        {parentpattern = rand() % 3;}
       else
         {parentpattern = rand() % 2;}
 
@@ -65,16 +65,13 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
         {mutpattern = rand() % 3 ;}
       else
         {mutpattern = rand() % 2;}
-          int snp = rand() % (*adr_children_parents).size();
-          //cout<<(*adr_children_parents)[i].snp1<<","<<(*adr_children_parents)[snp].snp1<<endl;
-
-
-
-      if((*adr_children_parents)[i].snp1==(*adr_children_parents)[snp].snp1 || (*adr_children_parents)[i].snp2==(*adr_children_parents)[snp].snp2 || (*adr_children_parents)[i].snp3==(*adr_children_parents)[snp].snp3 )
+      int snp = rand() % (*adr_children_parents).size();
+          //cout<<(*adr_children_parents)[i].snp1<<","<<(*adr_children_parents)[snp].snp1<<endl
+      //if((*adr_children_parents)[i].snp1==(*adr_children_parents)[snp].snp1 || (*adr_children_parents)[i].snp2==(*adr_children_parents)[snp].snp2 || (*adr_children_parents)[i].snp3==(*adr_children_parents)[snp].snp3 )
         {continue;}
 
         switch (parentpattern) {
-          case 1:
+          case 0:
            switch (mutpattern) {
              case 0:
              (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp1;
@@ -85,7 +82,7 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
              case 2:
              (*adr_children_parents)[i].snp1=(*adr_children_parents)[snp].snp3;
              break;}
-          case 2:
+          case 1:
             switch (mutpattern) {
               case 0:
               (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp1;
@@ -96,7 +93,7 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
               case 2:
               (*adr_children_parents)[i].snp2=(*adr_children_parents)[snp].snp3;
               break;}
-          case 3:
+          case 2:
             switch (mutpattern) {
              case 0:
              (*adr_children_parents)[i].snp3=(*adr_children_parents)[snp].snp1;
@@ -144,13 +141,22 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
    patternscore daugther;
    vector<patternscore> children_parents;
    for (int i=0;i<pairs_of_parents.size();++i){
-     if(pairs_of_parents[i].parent1.snp1==pairs_of_parents[i].parent2.snp1){continue;}
+     if(pairs_of_parents[i].parent1.snp1==pairs_of_parents[i].parent2.snp1)
+       {     daugther=pairs_of_parents[i].parent2;
+            daugther.snp2=pairs_of_parents[i].parent1.snp2;
+            children_parents.push_back(daugther);}
+
      son=pairs_of_parents[i].parent1;
      son.snp2=pairs_of_parents[i].parent2.snp1;
      children_parents.push_back(son);
-     if(pairs_of_parents[i].parent1.snp2==pairs_of_parents[i].parent2.snp2){continue;}
+
+     if(pairs_of_parents[i].parent1.snp2==pairs_of_parents[i].parent2.snp2)
+      {son=pairs_of_parents[i].parent1;
+          son.snp2=pairs_of_parents[i].parent2.snp1;
+          children_parents.push_back(son);}
+
      daugther=pairs_of_parents[i].parent2;
-     daugther.snp2=pairs_of_parents[i].parent2.snp2;
+     daugther.snp2=pairs_of_parents[i].parent1.snp2;
      children_parents.push_back(daugther);
    } return(children_parents);
 
