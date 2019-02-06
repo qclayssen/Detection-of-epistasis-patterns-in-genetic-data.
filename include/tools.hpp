@@ -23,6 +23,7 @@
 
 using namespace std;
 using namespace std::chrono;
+typedef std::chrono::high_resolution_clock Clock;
 
 vector<string> get_snp_list(string genos_file);
 
