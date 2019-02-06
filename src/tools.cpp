@@ -39,7 +39,6 @@ int calculate_delta(patternscore s, patternscore sB){
 
 vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList,int s_n){
   vector<patternscore> s_neighbours;
-  int j;
   for (unsigned int i=0 ; i<s_n ; i++){
     int delta=calculate_delta(s,patternscoreList[i]);
       if (delta==1){
@@ -86,9 +85,9 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 }
 
 
-void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n){
+void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n, int duree ,int n_it){
   string file_basename = basename((char*)genos_file.c_str());
-  string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_"+file_basename;
+  string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_n_it_"+to_string(n_it)+"_"+file_basename;
   std::ofstream _results_handler;
   _results_handler.open(result_filename.c_str(), ios::trunc);
 
@@ -103,10 +102,10 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
       _results_handler<<"Pattern"<<"\t"<<"p-value"<<"\t"<<"score"<<endl;
       for (vector<patternscore>::iterator it=best_solutions.begin();it!=best_solutions.end();it++){
         if ((*it).snp3==-1){
-          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
+          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl<<"durée: "<<duree<<" seconde";
         }
         else{
-          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
+          _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl<<"durée: "<<duree<<" seconde";
         }
       }
     }
