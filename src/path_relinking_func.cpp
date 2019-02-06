@@ -33,9 +33,9 @@ vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_s
   return(sA_sB);
 }
 
-patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList, int s_n){
+patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList){
   patternscore s_closest_neighbour;
-  vector<patternscore> s_neighbours=neighbours(s,patternscoreList,s_n);
+  vector<patternscore> s_neighbours=neighbours(s,patternscoreList);
   int min_delta=999;
   for (unsigned int i=0;i<s_neighbours.size();i++){
     int delta=calculate_delta(s_neighbours[i],sB);
@@ -57,7 +57,7 @@ int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_
       score_or_pval=1;
     }
   }
-  if (score_or_pval=0){
+  if (score_or_pval==0){
     for (unsigned int i=0;i<elite_sols.size();i++){
       if (elite_sols[i].pval>min_score_pval){
         min_score_pval=elite_sols[i].pval;
@@ -98,7 +98,7 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
       score_or_pval=1;
     }
   }
-  if (score_or_pval=0){
+  if (score_or_pval==0){
     for(unsigned int i=0;i<(*adr_elite_sols).size();i++){
       if ((*adr_elite_sols)[i].snp1==s_opt.snp1 && (*adr_elite_sols)[i].snp2==s_opt.snp2){
         return;

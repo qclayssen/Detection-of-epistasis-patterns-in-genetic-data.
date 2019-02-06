@@ -1,6 +1,5 @@
 #include "../include/tools.hpp"
 
-typedef std::chrono::high_resolution_clock Clock;
 
 vector<string> get_snp_list(string genos_file){
   vector<string> tokens;
@@ -38,39 +37,27 @@ int calculate_delta(patternscore s, patternscore sB){
   return(diff);
 }
 
-vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList,int s_n){
+vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList){
   vector<patternscore> s_neighbours;
-  int j;
-  srand(time(0));
- random_shuffle(patternscoreList.begin(), patternscoreList.end());
   for (unsigned int i=0;i<patternscoreList.size();i++){
     int delta=calculate_delta(s,patternscoreList[i]);
-    if (j < 1){
-      if (delta==1){
-        s_neighbours.push_back(patternscoreList[i]);
-        j=j+1;}
+    if (delta==1){
+      s_neighbours.push_back(patternscoreList[i]);
     }
-    else {break;}
   }
   return(s_neighbours);
 }
 
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
-  auto h1 = Clock::now();
-
-  vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList,s_n);
-/*  srand(time(0));
+  vector<patternscore> s_neighbours2 = neighbours(s_closest_neighbour,patternscoreList);
+  srand(time(0));
   random_shuffle(s_neighbours2.begin(), s_neighbours2.end());
   vector<patternscore> s_neighbours;
   for (unsigned int i=0;i<s_n;i++){
     s_neighbours.push_back(s_neighbours2[i]);
-  }*/
+  }
   patternscore actual_s = s_closest_neighbour;
   score_pval biScore;
-  /*auto h2 = Clock::now();
-  std::cout << "neighbours: "
-            << duration_cast<duration<double>>(h2 - h1).count()
-            << " seconds" << std::endl;*/
   for (unsigned int i=0;i<s_neighbours.size();i++){
     biScore=add_gtest_results(s_neighbours[i],genos,phenos_m);
     s_neighbours[i].score=biScore.score;
@@ -86,62 +73,6 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
       }
     }
   }
-  /*auto h3 = Clock::now();
-  std::cout << "actual_s: "
-            << duration_cast<duration<double>>(h3 - h2).count()
-            << " seconds" << std::endl;*/
-
-  return(actual_s);
-}
-
-
-
-
-patternscore neighbours2(patternscore s,vector<patternscore> patternscoreList,int s_n){
-  int j;
-  //cout<< "2.5" <<endl;
-  for (unsigned int i=0;i<patternscoreList.size();i++){
-    int delta=calculate_delta(s,patternscoreList[i]);
-      if (delta==1){
-        patternscore s_neighbours=patternscoreList[i];
-        return(patternscoreList[i]);
-        break;}
-      else {continue;}
-      }
-  }
-
-
-patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
-  //cout<< "1" <<endl;
-  srand(time(0));
-  random_shuffle(patternscoreList.begin(), patternscoreList.end());
-  patternscore actual_s = s_closest_neighbour;
-  patternscore s_neighbours;
-  for (unsigned int i=0;i<s_n;i++){
-    int delta=calculate_delta(s_closest_neighbour,patternscoreList[i]);
-      if (delta==1){
-        s_neighbours=patternscoreList[i];}
-      else
-       {continue;}
-  //patternscore s_neighbours = neighbours2(s_closest_neighbour,patternscoreList,s_n);
-  score_pval biScore=add_gtest_results(s_neighbours,genos,phenos_m);
-  s_neighbours.score=biScore.score;
-  s_neighbours.pval=biScore.pval;
-  //cout<< "2" <<endl;
-  if (s_neighbours.pval!=0){
-    if (s_neighbours.pval<actual_s.pval){
-      actual_s=s_neighbours;
-      break;
-    }
-  }
-  else{
-    if (s_neighbours.score>actual_s.score){
-      actual_s=s_neighbours;
-      break;
-      }
-    }
-  }
-  //cout<< "3" <<endl;
   return(actual_s);
 }
 
@@ -189,7 +120,7 @@ vector<patternscore> sort_solutions(vector<patternscore> solutions){
       score_or_pval=1;
     }
   }
-  if (score_or_pval=0){
+  if (score_or_pval==0){
     std::sort(solutions.begin(), solutions.end(), compareByPval);
   }
   else{

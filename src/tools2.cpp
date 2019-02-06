@@ -114,7 +114,7 @@ vector<patternscore> sort_solutions(vector<patternscore> solutions){
       score_or_pval=1;
     }
   }
-  if (score_or_pval=0){
+  if (score_or_pval==0){
     std::sort(solutions.begin(), solutions.end(), compareByPval);
   }
   else{
