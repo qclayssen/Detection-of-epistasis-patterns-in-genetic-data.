@@ -26,10 +26,12 @@
 
 using namespace std;
 using namespace std::chrono;
+typedef std::chrono::high_resolution_clock Clock;
 
 
 int main(int argc, char *argv[])
 {
+  auto tinit = Clock::now();
   if(argc < 3)
   {
       cerr << "Missing parameter :\n"
@@ -103,13 +105,13 @@ int main(int argc, char *argv[])
         elite_sols[i]=hill_climbing_lc(elite_sols[i],patternscoreList,genos,phenos_m,s_n);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
-    cout<<"Elite solutions :"<<endl;
-    cout_list(elite_sols,snpNameList);
+    //cout<<"Elite solutions :"<<endl;
+    //cout_list(elite_sols,snpNameList);
 
     vector<patternscore> sA_sB;
     sA_sB=select_two_solutions_at_random(elite_sols);
-    cout<<"Two random : (sA, sB)"<<endl;
-    cout_list(sA_sB,snpNameList);
+    //cout<<"Two random : (sA, sB)"<<endl;
+    //cout_list(sA_sB,snpNameList);
     patternscore s = sA_sB[0];
     patternscore sB = sA_sB[1];
 
@@ -119,19 +121,21 @@ int main(int argc, char *argv[])
       s_closest_neighbour.score=biScore.score;
       s_closest_neighbour.pval=biScore.pval;
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
-        cout<<"Recherche locale"<<endl;
+        //cout<<"Recherche locale"<<endl;
         patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList,genos,phenos_m,s_n);
         update(s_opt,adr_elite_sols);
       }
       else{
-        cout<<"Pas de recherche locale"<<endl;
+        //cout<<"Pas de recherche locale"<<endl;
       }
       s=s_closest_neighbour;
     }
-    cout<<endl<<"Solutions d'élite finales:"<<endl;
-    cout_list(elite_sols,snpNameList);
+    //cout<<endl<<"Solutions d'élite finales:"<<endl;
+    //cout_list(elite_sols,snpNameList);
     elite_sols=sort_solutions(elite_sols);
     outfile(genos_file,snpNameList, elite_sols);
 
+    auto tend = Clock::now();
+    cout << "Time:"<< duration_cast<duration<double>>(tend - tinit).count()<< " seconds" << std::endl;
     return 0;
 }
