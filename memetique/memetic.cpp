@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
                 << duration_cast<duration<double>>(t4 - t3).count()
                 << " seconds" << std::endl;
       //cout_list(children_parents,snpNameList);
-      //update_population(children_parents, adr_pop,n);
+      update_population(children_parents, adr_pop,n);
     //  cout<<"pop size:"<<pop.size()<<endl;
       for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
@@ -203,7 +203,8 @@ int main(int argc, char *argv[])
     std::cout << "temps total: "
               << duration_cast<duration<double>>(t5 - t1).count()
               << " seconds" << std::endl;
-    outfile(genos_file,snpNameList, best_solutions);
+    int duree=duration_cast<duration<double>>(t5 - t1).count();
+    outfile(genos_file,snpNameList, best_solutions,s_n,n,duree);
 
     return 0;
 

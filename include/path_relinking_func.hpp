@@ -28,7 +28,7 @@ vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternsco
 
 vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols);
 
-patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList);
+patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList, int s_n);
 
 int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols);
 

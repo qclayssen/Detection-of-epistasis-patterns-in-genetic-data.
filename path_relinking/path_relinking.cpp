@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     patternscore sB = sA_sB[1];
 
     while (calculate_delta(s,sB)>0){
-      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList);
+      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList, s_n);
       biScore=add_gtest_results(s_closest_neighbour,genos,phenos_m);
       s_closest_neighbour.score=biScore.score;
       s_closest_neighbour.pval=biScore.pval;
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     //cout<<endl<<"Solutions d'élite finales:"<<endl;
     //cout_list(elite_sols,snpNameList);
     elite_sols=sort_solutions(elite_sols);
-    outfile(genos_file,snpNameList, elite_sols);
+    outfile(genos_file,snpNameList, elite_sols,s_n,n);
 
     auto tend = Clock::now();
     cout << "Time:"<< duration_cast<duration<double>>(tend - tinit).count()<< " seconds" << std::endl;

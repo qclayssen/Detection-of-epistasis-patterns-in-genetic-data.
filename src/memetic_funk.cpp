@@ -19,19 +19,12 @@ void cout_list(vector<patternscore> list_to_cout){
 */
 vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList){
   vector<patternscore> pop;
-  vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
   int i=0;
   srand(time(0));
-  random_shuffle(nodes.begin(), nodes.end());
-  for (vector<patternscore>::iterator it=nodes.begin(); it!=nodes.end(); ++it){
-    if(pop.size()<n){
-      (*it).idparent=i;
-      pop.push_back(*it);
-      i=i+1;
-    }
-    else{
-      break;
-    }
+  random_shuffle(patternscoreList.begin(), patternscoreList.end());
+  for (unsigned int i=0;i<n;i++){
+      patternscoreList[i].idparent=i;
+      pop.push_back(patternscoreList[i]);
   }
   return(pop);
 }
@@ -39,15 +32,15 @@ vector<patternscore> initialize_population(int n,vector<patternscore> patternsco
 vector<parents_pairs> select_pairs_of_individuals_to_be_crossed(vector<patternscore> n_pairs_selected_parents){
   parents_pairs couple;
   vector<parents_pairs>pairs_of_parents;
-  vector<patternscore>nodes(n_pairs_selected_parents.begin(),n_pairs_selected_parents.end());
+  //vector<patternscore>nodes(n_pairs_selected_parents.begin(),n_pairs_selected_parents.end());
   srand(time(0));
-  random_shuffle(nodes.begin(), nodes.end());
+  random_shuffle(n_pairs_selected_parents.begin(), n_pairs_selected_parents.end());
   for (int i=0;i<n_pairs_selected_parents.size();i+=2){
     if(i+2>n_pairs_selected_parents.size() || i+1>n_pairs_selected_parents.size()){
       break;
     }
-    couple.parent1=nodes[i];
-    couple.parent2=nodes[i+1];
+    couple.parent1=n_pairs_selected_parents[i];
+    couple.parent2=n_pairs_selected_parents[i+1];
     pairs_of_parents.push_back(couple);
   }return(pairs_of_parents);
 }

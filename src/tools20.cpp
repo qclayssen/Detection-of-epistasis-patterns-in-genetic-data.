@@ -1,5 +1,6 @@
 #include "../include/tools.hpp"
 
+typedef std::chrono::high_resolution_clock Clock;
 
 vector<string> get_snp_list(string genos_file){
   vector<string> tokens;
@@ -86,12 +87,42 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 }
 
 
-void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n){
+
+
+patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
+  //cout<< "1" <<endl;
+  //srand(time(0));
+  //random_shuffle(patternscoreList.begin(), patternscoreList.end());
+  patternscore actual_s = s_closest_neighbour;
+  vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList,s_n);
+  for (unsigned int i=0;i<s_neighbours.size();i++){
+  //patternscore s_neighbours = neighbours2(s_closest_neighbour,patternscoreList,s_n);
+  score_pval biScore=add_gtest_results(s_neighbours[i],genos,phenos_m);
+  s_neighbours[i].score=biScore.score;
+  s_neighbours[i].pval=biScore.pval;
+  //cout<< "2" <<endl;
+  if (s_neighbours[i].pval!=0){
+    if (s_neighbours[i].pval<actual_s.pval){
+      actual_s=s_neighbours[i];
+      break;
+    }
+  }
+  else{
+    if (s_neighbours[i].score>actual_s.score){
+      actual_s=s_neighbours[i];
+      break;
+      }
+    }
+  }
+  //cout<< "3" <<endl;
+  return(actual_s);
+}
+
+void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions){
   string file_basename = basename((char*)genos_file.c_str());
-  string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_"+file_basename;
+  string result_filename = "outputs/RESULT_" + file_basename;
   std::ofstream _results_handler;
   _results_handler.open(result_filename.c_str(), ios::trunc);
-
 
   if(!_results_handler)
   {
@@ -131,7 +162,7 @@ vector<patternscore> sort_solutions(vector<patternscore> solutions){
       score_or_pval=1;
     }
   }
-  if (score_or_pval==0){
+  if (score_or_pval=0){
     std::sort(solutions.begin(), solutions.end(), compareByPval);
   }
   else{

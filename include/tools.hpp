@@ -31,11 +31,14 @@ void cout_list(vector<patternscore> list_to_cout,vector<string> snpNameList);
 
 int calculate_delta(patternscore s, patternscore sB);
 
-vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList);
+vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList, int s_n);
 
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m, int s_n);
 
-void outfile(string genos_file,vector<string> snpNameList,vector<patternscore> best_solutions);
+
+void outfile(string genos_file,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n,int n);
+
+
 
 bool compareByPval(const patternscore &a, const patternscore &b);
 

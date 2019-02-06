@@ -33,9 +33,9 @@ vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_s
   return(sA_sB);
 }
 
-patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList){
+patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList,int s_n){
   patternscore s_closest_neighbour;
-  vector<patternscore> s_neighbours=neighbours(s,patternscoreList);
+  vector<patternscore> s_neighbours=neighbours(s,patternscoreList,s_n);
   int min_delta=999;
   for (unsigned int i=0;i<s_neighbours.size();i++){
     int delta=calculate_delta(s_neighbours[i],sB);

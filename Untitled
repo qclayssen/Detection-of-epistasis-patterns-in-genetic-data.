@@ -1,0 +1,9 @@
+void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n){
+  string file_basename = basename((char*)genos_file.c_str());
+  string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_"+file_basename;
+  std::ofstream _results_handler;
+  _results_handler.open(result_filename.c_str(), ios::trunc);
+
+
+
+outfile(genos_file,snpNameList, best_solutions,s_n,n);
