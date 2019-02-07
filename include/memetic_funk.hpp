@@ -37,7 +37,7 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols);
 
 vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n);
 
-vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList);
+vector<patternscore> initialize_population(int n,vector<patternscore>* adr_patternscoreList);
 
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n);
 

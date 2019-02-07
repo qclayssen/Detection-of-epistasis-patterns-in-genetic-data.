@@ -111,7 +111,8 @@ int main(int argc, char *argv[])
 
     auto t1 = Clock::now();
     cout << "start:"<<endl;
-    vector<patternscore>pop=initialize_population(n, patternscoreList);;
+    vector<patternscore>* adr_patternscoreList = &patternscoreList;
+    vector<patternscore>pop=initialize_population(n, adr_patternscoreList);;
 
     //cout_list(pop,snpNameList);
     vector<patternscore>* adr_pop = &pop;
@@ -120,23 +121,28 @@ int main(int argc, char *argv[])
         pop[i].score=biScore.score;
         pop[i].pval=biScore.pval;
     }
+
+    vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
+    cout_list(best_solutions,snpNameList);
     auto t15 = Clock::now();
     std::cout << "initialisation:"
               << duration_cast<duration<double>>(t15 - t1).count()
               << " seconds" << std::endl;
+
     for (int l=0;l<pop.size();l++){
             patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,s_n);
             //cout<<"1"<<endl;
             //cout<<s_opt.snp1<<endl;
             pop[l]=s_opt;
           }
-
+      best_solutions = identify_best_solutions(pop,k,n);
+      cout_list(best_solutions,snpNameList);
       auto t2 = Clock::now();
       std::cout << "pop après recherche:"
                 << duration_cast<duration<double>>(t2 - t1).count()
                 << " seconds" << std::endl;
 
-    vector<patternscore>n_pairs_selected_parents=pop;
+    //vector<patternscore>n_pairs_selected_parents=pop;
     /*for (int i=0;i<n_pairs_selected_parents.size();i++){
       biScore=add_gtest_results(n_pairs_selected_parents[i],genos,phenos_m);
       n_pairs_selected_parents[i].score=biScore.score;
@@ -150,14 +156,22 @@ int main(int argc, char *argv[])
     while (h < n_it && z < 5){
       vector<patternscore> pop_init=pop;
       cout<<"start loop: "<<h<<endl;
-      vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(n_pairs_selected_parents);
+
+      for (int l=0;l<pop.size();l++){
+              pop[l].idparent=l;
+              //cout<<"1"<<endl;
+              //cout<<s_opt.snp1<<endl;
+            }
+
+      vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(pop);
       //cout_list_indiv(pairs_of_parents);
 
       vector<patternscore> children_parents;
       children_parents=create_two_children_for_each_selected_pair_of_parents(pairs_of_parents);
       //cout_list(children_parents);
 
-
+      best_solutions = identify_best_solutions(pop,k,n);
+      cout_list(best_solutions,snpNameList);
       auto t3 = Clock::now();
       std::cout << "enfant:"
                 << duration_cast<duration<double>>(t3 - t2).count()
@@ -166,10 +180,13 @@ int main(int argc, char *argv[])
       perform_one_mutation_per_child(adr_children_parents,prob_mutation);
 
       for (int i=0;i<children_parents.size();i++){
-        biScore=add_gtest_results(children_parents[i],genos,phenos_m);
+        if (children_parents[i].score==0 && children_parents[i].pval==0)
+        {biScore=add_gtest_results(children_parents[i],genos,phenos_m);
         children_parents[i].score=biScore.score;
-        children_parents[i].pval=biScore.pval;
+        children_parents[i].pval=biScore.pval;}
       }
+      best_solutions = identify_best_solutions(pop,k,n);
+      cout_list(best_solutions,snpNameList);
       auto t4 = Clock::now();
       std::cout << "enfant muté:"
                 << duration_cast<duration<double>>(t4 - t3).count()
@@ -177,12 +194,15 @@ int main(int argc, char *argv[])
       //cout_list(children_parents,snpNameList);
       update_population(children_parents, adr_pop,n);
     //  cout<<"pop size:"<<pop.size()<<endl;
+    best_solutions = identify_best_solutions(pop,k,n);
+    cout_list(best_solutions,snpNameList);
+    std::cout << "update_population:"<<endl;
       for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               pop[o]=s_opt;
             }
-      vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-      cout_list(best_solutions,snpNameList);
+      //best_solutions = identify_best_solutions(pop,k,n);
+      //cout_list(best_solutions,snpNameList);
       auto t45 = Clock::now();
       std::cout << "hill climning:"
                 << duration_cast<duration<double>>(t45 - t4).count()
@@ -199,7 +219,8 @@ int main(int argc, char *argv[])
       h=h+1;
     }
     //char filename= "out.txt";
-    vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
+    //vector<patternscore>
+    best_solutions = identify_best_solutions(pop,k,n);
     cout_list(best_solutions,snpNameList);
     auto t5 = Clock::now();
     float duree =duration_cast<duration<double>>(t5 - t1).count();

@@ -17,14 +17,15 @@ void cout_list(vector<patternscore> list_to_cout){
   }
 }
 */
-vector<patternscore> initialize_population(int n,vector<patternscore> patternscoreList){
+vector<patternscore> initialize_population(int n,vector<patternscore>* adr_patternscoreList){
   vector<patternscore> pop;
   int i=0;
   srand(time(0));
-  random_shuffle(patternscoreList.begin(), patternscoreList.end());
+  random_shuffle((*adr_patternscoreList).begin(), (*adr_patternscoreList).end());
   for (unsigned int i=0;i<n;i++){
-      patternscoreList[i].idparent=i;
-      pop.push_back(patternscoreList[i]);
+      /*(*adr_patternscoreList)[i].idparent=i;
+      cout<<"IDparent:"<<(*adr_patternscoreList)[i].idparent<<endl;*/
+      pop.push_back((*adr_patternscoreList)[i]);
   }
   return(pop);
 }
@@ -217,9 +218,10 @@ bool compareByLength(const patternscore &a, const patternscore &b){
 
 
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
-      for (int i=0;i<children_parents.size();i++){
-        for (int j=0;j<(*adr_pop).size();j++){
-          if(children_parents[i].idparent==(*adr_pop)[j].idparent){
+      for (int j=0;j<(*adr_pop).size();j++){
+        for (int i=0;i<children_parents.size();i++){
+          cout<<"IDparent:"<<(*adr_pop)[j].idparent<<"  id enfant"<<children_parents[i].idparent<<endl;
+          if((*adr_pop)[j].idparent==children_parents[i].idparent){
             if ((*adr_pop)[j].pval!=0){
               if (children_parents[i].pval>(*adr_pop)[j].pval){
                 (*adr_pop)[j]=children_parents[i];
