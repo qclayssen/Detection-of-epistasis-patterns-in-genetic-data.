@@ -19,7 +19,6 @@ void cout_list(vector<patternscore> list_to_cout){
 */
 vector<patternscore> initialize_population(int n,vector<patternscore>* adr_patternscoreList){
   vector<patternscore> pop;
-  int i=0;
   srand(time(0));
   random_shuffle((*adr_patternscoreList).begin(), (*adr_patternscoreList).end());
   for (unsigned int i=0;i<n;i++){
@@ -57,12 +56,12 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
       //int type = rand() % 3;
       int parentpattern;
       int mutpattern;
-      if ((*adr_children_parents)[i].snp3 != NULL)
+      if ((*adr_children_parents)[i].snp3 != -1)
         {parentpattern = rand() % 3;}
       else
         {parentpattern = rand() % 2;}
 
-      if ((*adr_children_parents)[i].snp3 != NULL)
+      if ((*adr_children_parents)[i].snp3 != -1)
         {mutpattern = rand() % 3 ;}
       else
         {mutpattern = rand() % 2;}

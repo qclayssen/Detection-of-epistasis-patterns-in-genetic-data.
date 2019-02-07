@@ -31,11 +31,7 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
 
 vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vector<parents_pairs> pairs_of_parents);
 
-float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m);
-
-void update(patternscore s_opt, vector<patternscore>* adr_elite_sols);
-
-vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n);
+vector<patternscore> identify_best_solutions(vector<patternscore> pop, int best_k, int n);
 
 vector<patternscore> initialize_population(int n,vector<patternscore>* adr_patternscoreList);
 
