@@ -113,7 +113,8 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
         else{
           _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
         }
-      }_results_handler<<endl<<"durée: "<<duree<<" seconde"<<endl;
+      }
+      _results_handler<<endl<<"durée: "<<duree<<" seconde"<<endl;
     }
   else
   {

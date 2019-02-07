@@ -1,14 +1,20 @@
-rm path_relinking
+#rm path_relinking
 rm -rf outputs
 rm -rf results
 
 mkdir outputs
 mkdir results
 
-make
-for i in `seq 1 10`;
+#make
+simu=$(ls $1 | grep -i genotype)
+
+for genotype in ${simu};
 do
-  ./path_relinking ./toy_dataset/genotype_model1_1_01p_0005h_01m_002.txt ./toy_dataset/phenotype_model1_1_01p_0005h_01m_002.txt
-  ../eval_simu.py outputs results 2
+  for i in `seq 1 10`;
+  do
+    phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/' | sed 's/genotype/phenotype/')
+    ./path_relinking ./toy_dataset/${genotype} ./toy_dataset/${phenotype}
+    ../eval_simu.py outputs results 2
+  done
+  ../eval_simuStep2.py results
 done
-../eval_simuStep2.py results
