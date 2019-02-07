@@ -220,7 +220,7 @@ bool compareByLength(const patternscore &a, const patternscore &b){
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
       for (int j=0;j<(*adr_pop).size();j++){
         for (int i=0;i<children_parents.size();i++){
-          cout<<"IDparent:"<<(*adr_pop)[j].idparent<<"  id enfant"<<children_parents[i].idparent<<endl;
+          //cout<<"IDparent:"<<(*adr_pop)[j].idparent<<"  id enfant"<<children_parents[i].idparent<<endl;
           if((*adr_pop)[j].idparent==children_parents[i].idparent){
             if ((*adr_pop)[j].pval!=0){
               if (children_parents[i].pval>(*adr_pop)[j].pval){

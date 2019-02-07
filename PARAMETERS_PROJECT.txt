@@ -14,26 +14,26 @@ k 5
 relinking_local_search_id basic
 
 #number of neighbours search
-s_n 1000
+s_n 1
 
 ## memetique_algorithm
 
 
 #number of individuals (i.e., solutions) in each population
-n 15
+n 5
 
 #the identifier for a given strategy based on local search
 (basic local search, VND, VNS, ...)
 memetique_local_search_id VNS
 
 #maximal number of iterations (i.e., successive populations)
-n_it 10
+n_it 1
 
 #number of parents to be selected in current population
-n_pairs_selected_parents 7
+n_pairs_selected_parents 2
 
 #probability that a child be subject to a mutation
-prob_mutation 99
+prob_mutation 25
 
 #maximal number of distinct best individuals in the last population
 best_k 5

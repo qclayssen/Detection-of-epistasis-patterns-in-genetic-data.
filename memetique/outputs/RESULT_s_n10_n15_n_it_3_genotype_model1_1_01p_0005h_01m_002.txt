@@ -1,0 +1,13 @@
+Pattern	p-value	score
+<M0P3,M0P4>	2.83859e-10	61.0969
+durée: 25.5509 seconde
+<M0P3,M0P4>	2.83859e-10	61.0969
+durée: 25.5509 seconde
+<M0P3,M0P4>	2.83859e-10	61.0969
+durée: 25.5509 seconde
+<M0P3,M0P4>	2.83859e-10	61.0969
+durée: 25.5509 seconde
+<M0P3,M0P4>	2.83859e-10	61.0969
+durée: 25.5509 seconde
+
+durée: 25.5509 seconde
