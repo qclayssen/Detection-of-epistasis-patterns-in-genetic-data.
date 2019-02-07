@@ -98,6 +98,9 @@ int main(int argc, char *argv[])
     score_pval biScore;
     vector<patternscore> elite_sols;
     elite_sols = initialize_elite_solutions(k,patternscoreList);
+    //cout<<"Elite solutions pré-hc :"<<endl;
+    //cout_list(elite_sols,snpNameList);
+
     for (unsigned int i=0;i<elite_sols.size();i++){
         biScore=add_gtest_results(elite_sols[i],genos,phenos_m);
         elite_sols[i].score=biScore.score;
@@ -105,27 +108,28 @@ int main(int argc, char *argv[])
         elite_sols[i]=hill_climbing_lc(elite_sols[i],patternscoreList,genos,phenos_m,s_n);
     }
     vector<patternscore>* adr_elite_sols = &elite_sols;
-    //cout<<"Elite solutions :"<<endl;
+
+    cout<<"Elite solutions post-hc :"<<endl;
     //cout_list(elite_sols,snpNameList);
 
     vector<patternscore> sA_sB;
     sA_sB=select_two_solutions_at_random(elite_sols);
-    //cout<<"Two random : (sA, sB)"<<endl;
+    cout<<"Two random : (sA, sB)"<<endl;
     //cout_list(sA_sB,snpNameList);
     patternscore s = sA_sB[0];
     patternscore sB = sA_sB[1];
     while (calculate_delta(s,sB)>0){
-      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList, s_n);
+      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList, 1000);
       biScore=add_gtest_results(s_closest_neighbour,genos,phenos_m);
       s_closest_neighbour.score=biScore.score;
       s_closest_neighbour.pval=biScore.pval;
       if (promizing_score(s_closest_neighbour,elite_sols)==1){
-        //cout<<"Recherche locale"<<endl;
+        cout<<"Recherche locale"<<endl;
         patternscore s_opt=hill_climbing_lc(s_closest_neighbour,patternscoreList,genos,phenos_m,s_n);
         update(s_opt,adr_elite_sols);
       }
       else{
-        //cout<<"Pas de recherche locale"<<endl;
+        cout<<"Pas de recherche locale"<<endl;
       }
       s=s_closest_neighbour;
 

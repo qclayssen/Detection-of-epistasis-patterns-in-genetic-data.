@@ -45,12 +45,13 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
   for (unsigned int i=0 ; i<patternscoreList.size() ; i++){
     int delta=calculate_delta(s,patternscoreList[i]);
     if (delta==1){
-        s_neighbours.push_back(patternscoreList[i]);}
-        countForBreak++;
+        s_neighbours.push_back(patternscoreList[i]);
+        countForBreak+=1;
     }
     if (countForBreak==s_n){
-      return(s_neighbours);
+      break;
     }
+  }
   return(s_neighbours);
 }
 
