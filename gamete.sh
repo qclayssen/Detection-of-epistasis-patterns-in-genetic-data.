@@ -1,7 +1,12 @@
 #!/bin/bash
 
+#./gamete.sh ./repository/model1/model1_0_01p_0005h_005m/
 
 b=$(basename $1)
-mkdir file_$1
-awk '{print $NF}' $1 > ./file_$1/phenotype_${b}
-awk '{$NF=""; print $0}' $1 | sed 's/[[:space:]]/,/g'> ./file_$1/genotype_${b}
+mkdir data_gametes_${b}
+model=$(ls $1)
+for file in $model
+do
+awk '{print $NF}' $1/${file} > ./data_gametes/phenotype_${file}
+awk '{$NF=""; print $0}' $1/${file} | sed 's/[[:space:]]/,/g' | sed 's/,$//' > ./data_gametes/genotype_${file}
+done
