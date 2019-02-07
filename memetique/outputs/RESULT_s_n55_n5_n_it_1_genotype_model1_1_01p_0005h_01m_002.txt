@@ -5,4 +5,4 @@ Pattern	p-value	score
 <N28,N87,M0P3>	0.00137183	52.9553
 <N22,N47,N54>	0.00311817	50.0302
 
-durée: 1.37805 seconde
+durée: 1.55186 seconde
