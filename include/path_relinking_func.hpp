@@ -34,6 +34,6 @@ int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_
 
 void update(patternscore s_opt, vector<patternscore>* adr_elite_sols);
 
-
+void outfilePR(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, float duree);
 
 #endif

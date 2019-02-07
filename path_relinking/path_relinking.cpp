@@ -114,7 +114,6 @@ int main(int argc, char *argv[])
     //cout_list(sA_sB,snpNameList);
     patternscore s = sA_sB[0];
     patternscore sB = sA_sB[1];
-
     while (calculate_delta(s,sB)>0){
       patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList, s_n);
       biScore=add_gtest_results(s_closest_neighbour,genos,phenos_m);
@@ -129,13 +128,17 @@ int main(int argc, char *argv[])
         //cout<<"Pas de recherche locale"<<endl;
       }
       s=s_closest_neighbour;
+
     }
-    //cout<<endl<<"Solutions d'élite finales:"<<endl;
+    cout<<endl<<"Solutions d'élite finales:"<<endl;
     //cout_list(elite_sols,snpNameList);
     elite_sols=sort_solutions(elite_sols);
-    outfile(genos_file,snpNameList, elite_sols,s_n,n);
 
     auto tend = Clock::now();
-    cout << "Time:"<< duration_cast<duration<double>>(tend - tinit).count()<< " seconds" << std::endl;
+    float duree = duration_cast<duration<double>>(tend - tinit).count();
+    cout << "Total execution time: "<<duree<< " seconds"<<endl;
+
+    outfilePR(genos_file,snpNameList,elite_sols,s_n,duree);
+
     return 0;
 }

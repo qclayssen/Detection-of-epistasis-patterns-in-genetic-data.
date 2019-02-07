@@ -39,12 +39,17 @@ int calculate_delta(patternscore s, patternscore sB){
 
 vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList,int s_n){
   vector<patternscore> s_neighbours;
+  int countForBreak=0;
   srand(time(0));
   random_shuffle(patternscoreList.begin(), patternscoreList.end());
-  for (unsigned int i=0 ; i<s_n ; i++){
+  for (unsigned int i=0 ; i<patternscoreList.size() ; i++){
     int delta=calculate_delta(s,patternscoreList[i]);
-      if (delta==1){
+    if (delta==1){
         s_neighbours.push_back(patternscoreList[i]);}
+        countForBreak++;
+    }
+    if (countForBreak==s_n){
+      return(s_neighbours);
     }
   return(s_neighbours);
 }
