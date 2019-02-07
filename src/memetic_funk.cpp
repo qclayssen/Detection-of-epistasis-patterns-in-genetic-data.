@@ -221,16 +221,23 @@ bool compareByLength(const patternscore &a, const patternscore &b){
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
       for (int i=0;i<children_parents.size();i++){
         for (int j=0;j<(*adr_pop).size();j++){
-          if(children_parents[i].idparent==(*adr_pop)[j].idparent){
+            if (children_parents[i].pval!=0){
+              if (children_parents[i].pval>(*adr_pop)[j].pval){
+                (*adr_pop)[j]=children_parents[i];
+              }
+            }
+            else{
+              if (children_parents[i].score>(*adr_pop)[j].score){
+                (*adr_pop)[j]=children_parents[i];
+              }
+            }
+
         //cout<<"snp"<<(*it).snp1<<(*it).snp2<<endl;
         //cout<<"size:"<<(*itp).snp1<<(*itp).snp2<<endl;
         //cout<<(*itp).idparent<<" <-parent "<<(*itp).idparent<<endl;
-        (*adr_pop)[j]=children_parents[i];
-        break;
         }
       }
     }
-  }
 
 /*
   patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
