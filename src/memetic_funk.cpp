@@ -48,7 +48,7 @@ vector<parents_pairs> select_pairs_of_individuals_to_be_crossed(vector<patternsc
 void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,int prob_mutation){
   for (int i=0;i<(*adr_children_parents).size();++i){
     int mutation = rand() % 100 + 0;
-    cout<<mutation<<endl;
+    //cout<<mutation<<endl;
     if (mutation >= prob_mutation){
       break;
       //cout<<"sheit"<<endl;
