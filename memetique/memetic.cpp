@@ -181,6 +181,8 @@ int main(int argc, char *argv[])
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               pop[o]=s_opt;
             }
+      vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
+      cout_list(best_solutions,snpNameList);
       auto t45 = Clock::now();
       std::cout << "hill climning:"
                 << duration_cast<duration<double>>(t45 - t4).count()

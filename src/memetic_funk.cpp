@@ -145,7 +145,6 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
        {     daugther=pairs_of_parents[i].parent2;
             daugther.snp2=pairs_of_parents[i].parent1.snp2;
             children_parents.push_back(daugther);}
-
      son=pairs_of_parents[i].parent1;
      son.snp2=pairs_of_parents[i].parent2.snp1;
      children_parents.push_back(son);
@@ -154,7 +153,6 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
       {son=pairs_of_parents[i].parent1;
           son.snp2=pairs_of_parents[i].parent2.snp1;
           children_parents.push_back(son);}
-
      daugther=pairs_of_parents[i].parent2;
      daugther.snp2=pairs_of_parents[i].parent1.snp2;
      children_parents.push_back(daugther);
@@ -221,23 +219,25 @@ bool compareByLength(const patternscore &a, const patternscore &b){
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n){
       for (int i=0;i<children_parents.size();i++){
         for (int j=0;j<(*adr_pop).size();j++){
-            if (children_parents[i].pval!=0){
+          if(children_parents[i].idparent==(*adr_pop)[j].idparent){
+            if ((*adr_pop)[j].pval!=0){
               if (children_parents[i].pval>(*adr_pop)[j].pval){
                 (*adr_pop)[j]=children_parents[i];
               }
             }
             else{
-              if (children_parents[i].score>(*adr_pop)[j].score){
-                (*adr_pop)[j]=children_parents[i];
-              }
+              if (children_parents[i].score>(*adr_pop)[j].score)
+              {(*adr_pop)[j]=children_parents[i];}
             }
-
+          }
         //cout<<"snp"<<(*it).snp1<<(*it).snp2<<endl;
         //cout<<"size:"<<(*itp).snp1<<(*itp).snp2<<endl;
         //cout<<(*itp).idparent<<" <-parent "<<(*itp).idparent<<endl;
+        //break;
         }
       }
     }
+
 
 /*
   patternscore hill_climbing_lc2(patternscore s_closest_neighbour, vector<patternscore> patternscoreList){
