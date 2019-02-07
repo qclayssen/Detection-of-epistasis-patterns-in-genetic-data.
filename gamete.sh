@@ -8,5 +8,5 @@ model=$(ls $1)
 for file in $model
 do
 awk '{print $NF}' $1/${file} > ./data_gametes/phenotype_${file}
-awk '{$NF=""; print $0}' $1/${file} | sed 's/[[:space:]]/,/g' | sed 's/,$//' > ./data_gametes/genotype_${file}
+awk '{$NF=""; print $0}' $1/${file} | sed 's/[[:space:]]/,/g' | sed 's/,$//' > ./data_gametes_${b}/genotype_${file}
 done
