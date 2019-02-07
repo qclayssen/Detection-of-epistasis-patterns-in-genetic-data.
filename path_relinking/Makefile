@@ -7,7 +7,7 @@ SRC=path_relinking.cpp\
 ../src/tools.cpp\
 ../src/path_relinking_func.cpp
 
-FLAG=-Wall -std=c++11 -I$(BOOST_FOLDER) -O2
+FLAG=-Wall -std=c++11 -isystem$(BOOST_FOLDER) -O2
 
 all: ./path_relinking
 

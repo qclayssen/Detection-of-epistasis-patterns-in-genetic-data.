@@ -48,7 +48,7 @@ patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patterns
 }
 
 int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols){
-  int min_elite;
+  int min_elite=0;
   double min_score_pval=0;
   double min_score=999999;
   int score_or_pval=0;
