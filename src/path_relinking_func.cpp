@@ -127,7 +127,7 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
 
 void outfilePR(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, float duree){
   string file_basename = basename((char*)genos_file.c_str());
-  string result_filename = "outputs/RESULT_s_n"+to_string(s_n)+"_"+file_basename;
+  string result_filename = "outputs/s_n"+to_string(s_n)+"_"+file_basename;
   std::ofstream _results_handler;
   _results_handler.open(result_filename.c_str(), ios::trunc);
 
@@ -146,7 +146,7 @@ void outfilePR(string genos_file ,vector<string> snpNameList,vector<patternscore
         else{
           _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
         }
-      }_results_handler<<endl<<"durée: "<<duree<<" seconde"<<endl;
+      }_results_handler<<endl<<"durée: "<<duree<<" seconds"<<endl;
     }
   else
   {

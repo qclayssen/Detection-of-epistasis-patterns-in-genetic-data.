@@ -94,7 +94,7 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 
 void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n, float duree ,int n_it){
   string file_basename = basename((char*)genos_file.c_str());
-  string result_filename = "outputs/RESULT_s_n"+to_string(s_n) +"_n"+to_string(n)+"_n_it_"+to_string(n_it)+"_"+file_basename;
+  string result_filename = "outputs/s_n"+to_string(s_n) +"_n"+to_string(n)+"_n_it_"+to_string(n_it)+"_"+file_basename;
   std::ofstream _results_handler;
   _results_handler.open(result_filename.c_str(), ios::trunc);
 
@@ -114,7 +114,7 @@ void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> 
           _results_handler<<"<"<<snpNameList[(*it).snp1]<<","<<snpNameList[(*it).snp2]<<","<<snpNameList[(*it).snp3]<<">"<<"\t"<<(*it).pval<<"\t"<<(*it).score<<endl;
         }
       }
-      _results_handler<<endl<<"durée: "<<duree<<" seconde"<<endl;
+      _results_handler<<endl<<"durée: "<<duree<<" seconds"<<endl;
     }
   else
   {

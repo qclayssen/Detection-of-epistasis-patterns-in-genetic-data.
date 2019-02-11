@@ -9,8 +9,10 @@ import sys
 import warnings
 
 entFolder=sys.argv[1]
-sorFolder=sys.argv[2]
-patternSize=int(sys.argv[3])
+entFile=sys.argv[2]
+sorFolder=sys.argv[3]
+patternSize=int(sys.argv[4])
+causID=sys.argv[5]
 
 TP=0
 FN=0
@@ -18,17 +20,17 @@ FP=0
 countTP=0
 countFP=0
 
-for filename in os.listdir(entFolder):
-    with open(os.path.join(entFolder, filename), 'r') as results:
-        ligne=results.readline()
-        while ligne:
-            if len(re.findall("M0P",ligne))>=patternSize:
-                countTP+=1
-            else:
-                countFP+=1
-            ligne=results.readline()
 
-eval=open(os.path.join(sorFolder, "eval_"+filename),'a')
+with open(os.path.join(entFolder,entFile), 'r') as results:
+    ligne=results.readline()
+    while ligne:
+        if len(re.findall(str(causID),ligne))>=patternSize:
+            countTP+=1
+        else:
+            countFP+=1
+        ligne=results.readline()
+
+eval=open(os.path.join(sorFolder, "results_"+entFile),'a')
 if countTP!=0:
     TP+=1
     eval.write("TP"+'\n')
