@@ -14,4 +14,4 @@ k 5
 relinking_local_search_id basic
 
 #number of neighbours search
-s_n 55
+s_n 100
