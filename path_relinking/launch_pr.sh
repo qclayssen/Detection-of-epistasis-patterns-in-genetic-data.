@@ -30,8 +30,8 @@ do
     phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/' | sed 's/genotype/phenotype/')
     ./path_relinking $1/${genotype} $1/${phenotype} #Execuction of the Method
     evalFile=$(ls ./outputs |grep ${genotype}) #First part of the evalutation : Creation of the 'results' file filed with TP/FP/FN
-    ../eval_simu.py outputs ${evalFile} results $2 $3
+    ../eval.py outputs ${evalFile} results $2 $3
   done
   powerFile=$(ls ./results |grep ${genotype})
-  ../eval_simuStep2.py results ${powerFile} #Second part of the evaluation : For each file
+  ../eval_Step2.py results ${powerFile} #Second part of the evaluation : For each file
 done
