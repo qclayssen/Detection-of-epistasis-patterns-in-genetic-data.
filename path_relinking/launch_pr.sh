@@ -25,7 +25,7 @@ simu=$(ls $1 | grep -i genotype)
 
 for genotype in ${simu};
 do
-  for i in `seq 1 10`;
+  for i in `seq 1 100`;
   do
     phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/' | sed 's/genotype/phenotype/')
     ./path_relinking $1/${genotype} $1/${phenotype} #Execuction of the Method

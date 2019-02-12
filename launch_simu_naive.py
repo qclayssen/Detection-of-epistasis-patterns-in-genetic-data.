@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import os
-os.system("python3 simu_naive.py simupath3 1 simu2 50 1000 1000 3 5")
+os.system("python3 simu_naive.py simupath3 5 simu 100 2000 2000 2 5")
 
 # 7 Arguments :
 # python3 simu_naive.py {1} {2} {3} {4} {5} {6} {7}

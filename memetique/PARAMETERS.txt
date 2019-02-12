@@ -4,17 +4,6 @@ header 1
 # separation between fields in the genotype file
 separator ,
 
-## PROCEDURE path-relinking
-
-# number of elite solutions (k ≥ 2)
-k 5
-
-#the identifier for a given strategy based on local search
-(basic local search, VND, VNS, ...)
-relinking_local_search_id basic
-
-#number of neighbours search
-s_n 55
 
 ## memetique_algorithm
 
@@ -37,3 +26,6 @@ prob_mutation 90
 
 #maximal number of distinct best individuals in the last population
 best_k 5
+
+#number of neighbours search
+s_n 55

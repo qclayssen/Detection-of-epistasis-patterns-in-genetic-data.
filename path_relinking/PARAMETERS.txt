@@ -1,0 +1,17 @@
+# number of header lines in the genotype file
+header 1
+
+# separation between fields in the genotype file
+separator ,
+
+## Path-relinking specific
+
+# number of elite solutions (k ≥ 2)
+k 5
+
+#the identifier for a given strategy based on local search
+(basic local search, VND, VNS, ...)
+relinking_local_search_id basic
+
+#number of neighbours search
+s_n 55

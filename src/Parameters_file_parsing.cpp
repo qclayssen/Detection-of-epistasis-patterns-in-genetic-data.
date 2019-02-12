@@ -12,7 +12,7 @@ using namespace std;
 
 parameters_file_parsing::parameters_file_parsing()
 {
-    ifstream file("../PARAMETERS_PROJECT.txt");
+    ifstream file("PARAMETERS.txt");
     if(file)
     {
         string line;
@@ -27,7 +27,7 @@ parameters_file_parsing::parameters_file_parsing()
     }
     else
     {
-        std::cerr << "Error while opening PARAMETERS_PROJECT.txt !\n";
+        std::cerr << "Error while opening PARAMETERS.txt !\n";
     }
 }
 
