@@ -1,30 +1,37 @@
 #!/bin/bash
 
+##############################
+
+#This scripts takes 3 arguments :
+#     {1} : Path to the Folder where are placed all data Files
+#     {2} : Size of the pattern you're looking for (2 or 3)
+#     {3} : The identifier of Causal Patterns in the genotype file (for the evaluation) ex:CAUS,M0P,X,...
+
+##############################
+
+#Example of command line :
+# ./launch_meme.sh toy_dataset 2 M0P
+
+
 rm memetic
 rm -rf outputs
+rm -rf results
 
 mkdir outputs
+mkdir results
 
-# Compilation if needed
 make
-
-# SMMB command line :
-# ./SMMB <path_to_genotypes> <path_to_phenotypes>
-#./memetic ./simupath3/simu2_Genotype_1.csv simupath3/simu2_Phenotype_1.csv
-#../simu_Damien/Simu_naive_2snp_0.5/
 simu=$(ls $1 | grep -i genotype)
 
 for genotype in ${simu};
 do
   for i in `seq 1 10`;
   do
-
-  phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/')
-  ./memetic ${genotype} ${phenotype}
-  ../eval_simu.py outputs results 2
-  #HEAPPROFILE=/tmp/netheap ./memetic ${genotype} ${phenotype}
-  #HEAPCHECK=normal ./memetic ${genotype} ${phenotype}
-  #valgrind --tool=callgrind --trace-children=yes ./memetic ${genotype} ${phenotype}
-
+    phenotype=$(echo ${genotype} | sed 's/Genotype/Phenotype/' | sed 's/genotype/phenotype/')
+    ./memetic $1/${genotype} $1/${phenotype} #Execuction of the Method
+    evalFile=$(ls ./outputs |grep ${genotype}) #First part of the evalutation : Creation of the 'results' file filed with TP/FP/FN
+    ../eval.py outputs ${evalFile} results $2 $3
   done
+  powerFile=$(ls ./results |grep ${genotype})
+  ../eval_Step2.py results ${powerFile} #Second part of the evaluation : For each file
 done

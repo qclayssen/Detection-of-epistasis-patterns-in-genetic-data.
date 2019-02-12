@@ -24,10 +24,9 @@
 using namespace std;
 using namespace std::chrono;
 
-vector<parents_pairs> select_pairs_of_individuals_to_be_crossed(vector<patternscore> n_pairs_selected_parents);
+vector<parents_pairs> select_pairs_of_individuals_to_be_crossed(vector<patternscore> n_pairs_selected_parents, int n_p);
 
-
-void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,int prob_mutation);
+void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,int prob_mutation,vector<patternscore> patternscoreList);
 
 vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vector<parents_pairs> pairs_of_parents);
 
@@ -38,7 +37,9 @@ vector<patternscore> initialize_population(int n,vector<patternscore>* adr_patte
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n);
 
 
-bool compareByLength(const patternscore &a, const patternscore &b);
+bool comparebypval(const patternscore &a, const patternscore &b);
+
+bool comparebyscore(const patternscore &a, const patternscore &b);
 
 
 #endif

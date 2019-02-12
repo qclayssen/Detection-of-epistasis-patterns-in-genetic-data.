@@ -1,7 +1,7 @@
 //Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
 //Parsing of CSV Files for Epistasis detection
-//Created :
-//Modified :
+//Created :09/11/18
+//Modified :11/02/2019
 
 #include <iostream>
 #include <stdlib.h>
@@ -35,7 +35,8 @@ typedef std::chrono::high_resolution_clock Clock;
 
 int main(int argc, char *argv[])
 {
-  if(argc < 3)
+  auto t1 = Clock::now();//Initialize the timer
+  if(argc < 3) //Verify that 2 files where given as parameters
   {
       cerr << "Missing parameter :\n"
            << "\t./memetic <path_to_genotypes> <path_to_phenotypes>"
@@ -43,13 +44,23 @@ int main(int argc, char *argv[])
       exit(-1);
   }
 
-    // Arguments
+  // Arguments / Parameters set
     string genos_file = argv[1];
     string phenos_file = argv[2];
 
     parameters_file_parsing params;
     int header = params.header;
     char separator = params.separator;
+    int s_n = params.s_n;
+    int n_p = params.n_pairs_selected_parents;
+    unsigned int best_k = params.best_k;
+    int prob_mutation = params.prob_mutation;// probability of mutation
+    int n_it = params.n_it; // Nombre itération
+    int n = params.n; // Size Population initiale
+    int h = 0;
+    score_pval biScore; //Holds the result of g-tests
+
+
 
 
   //  DATA IMPORTATION
@@ -58,7 +69,6 @@ int main(int argc, char *argv[])
     blas_matrix genos = genos_csv.data();
     blas_matrix phenos_m = phenos_csv.data();
     blas_column phenos(phenos_m, 0);
-    //cout << endl << "Data imported : " << genos.size1() << " individuals X " << genos.size2() << " SNPs" << endl;
     int l1,l2,l3;
 
 
@@ -71,7 +81,9 @@ int main(int argc, char *argv[])
 
 
 
-
+    // Here is the main tool we use in our method : a vector of structure, with each structure corresponding to a solution(pattern).
+    //The structure is names patternscore, and the vector is pattentscoreList
+    //For now, we don't touch the score/p-value, as we only need to calculate them on solutions that we will use.
     for (l1=0;l1<int(genos.size2())-1;l1++){ //First SNP of the pattern
       for (l2=l1+1;l2<int(genos.size2());l2++){ //Second SNP of the pattern
         patternscore p1;
@@ -100,21 +112,16 @@ int main(int argc, char *argv[])
         }
       }
     }
-    int s_n = params.s_n;
-    unsigned int best_k = params.best_k;
-    int prob_mutation = params.prob_mutation;
-    int n_it = params.n_it; // Nombre itération
-    int n = params.n; // Size Population initiale
-    int h = 0;
-    score_pval biScore; //Holds the result of g-tests
 
 
-    auto t1 = Clock::now();
-    //cout << "start:"<<endl;
+
+
     vector<patternscore>* adr_patternscoreList = &patternscoreList;
+
+    //create population
     vector<patternscore>pop=initialize_population(n, adr_patternscoreList);;
 
-    //cout_list(pop,snpNameList);
+    // add score/pval to individues of population
     vector<patternscore>* adr_pop = &pop;
     for (int i=0;i<pop.size();i++){
         biScore=add_gtest_results(pop[i],genos,phenos_m);
@@ -122,62 +129,28 @@ int main(int argc, char *argv[])
         pop[i].pval=biScore.pval;
     }
 
-    //vector<patternscore> best_solutions = identify_best_solutions(pop,k,n);
-    //cout_list(best_solutions,snpNameList);
-  /*  auto t15 = Clock::now();
-    std::cout << "initialisation:"
-              << duration_cast<duration<double>>(t15 - t1).count()
-              << " seconds" << std::endl;*/
 
+    //local search for each individues of population
     for (int l=0;l<pop.size();l++){
             patternscore s_opt=hill_climbing_lc(pop[l],patternscoreList,genos,phenos_m,s_n);
-            //cout<<"1"<<endl;
-            //cout<<s_opt.snp1<<endl;
             pop[l]=s_opt;
           }
-      //best_solutions = identify_best_solutions(pop,k,n);
-      //cout_list(best_solutions,snpNameList);
-    /*auto t2 = Clock::now();
-      std::cout << "pop après recherche:"
-                << duration_cast<duration<double>>(t2 - t1).count()
-                << " seconds" << std::endl;*/
 
-    //vector<patternscore>n_pairs_selected_parents=pop;
-    /*for (int i=0;i<n_pairs_selected_parents.size();i++){
-      biScore=add_gtest_results(n_pairs_selected_parents[i],genos,phenos_m);
-      n_pairs_selected_parents[i].score=biScore.score;
-      n_pairs_selected_parents[i].pval=biScore.pval;
-    }*/
-    /*auto t25 = Clock::now();
-    std::cout << "gscore"
-              << duration_cast<duration<double>>(t25 - t2).count()
-              << " seconds" << std::endl;*/
-    int z=0;
-    while (h < n_it && z < 5){
+//stop condition for evolution of population
+    while (h < n_it){
+
       vector<patternscore> pop_init=pop;
-      //cout<<"start loop: "<<h<<endl;
-
       for (int l=0;l<pop.size();l++){
               pop[l].idparent=l;
-              //cout<<"1"<<endl;
-              //cout<<s_opt.snp1<<endl;
             }
 
-      vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(pop);
-      //cout_list_indiv(pairs_of_parents);
+            
+      vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(pop,n_p);
 
       vector<patternscore> children_parents;
       children_parents=create_two_children_for_each_selected_pair_of_parents(pairs_of_parents);
-      //cout_list(children_parents);
-
-      /*best_solutions = identify_best_solutions(pop,k,n);
-      cout_list(best_solutions,snpNameList);
-      auto t3 = Clock::now();
-      std::cout << "enfant:"
-                << duration_cast<duration<double>>(t3 - t2).count()
-                << " seconds" << std::endl;*/
       vector<patternscore>* adr_children_parents = &children_parents;
-      perform_one_mutation_per_child(adr_children_parents,prob_mutation);
+      perform_one_mutation_per_child(adr_children_parents,prob_mutation,patternscoreList);
 
       for (int i=0;i<children_parents.size();i++){
         if (children_parents[i].score==0 && children_parents[i].pval==0)
@@ -185,50 +158,18 @@ int main(int argc, char *argv[])
         children_parents[i].score=biScore.score;
         children_parents[i].pval=biScore.pval;}
       }
-      //best_solutions = identify_best_solutions(pop,k,n);
-      //cout_list(best_solutions,snpNameList);
-      /*auto t4 = Clock::now();
-      std::cout << "enfant muté:"
-                << duration_cast<duration<double>>(t4 - t3).count()
-                << " seconds" << std::endl;*/
-      //cout_list(children_parents,snpNameList);
+
       update_population(children_parents, adr_pop,n);
-    //  cout<<"pop size:"<<pop.size()<<endl;
-    //best_solutions = identify_best_solutions(pop,k,n);
-    //cout_list(best_solutions,snpNameList);
-    /*auto t42 = Clock::now();
-    //std::cout << "update_population:"
-              << duration_cast<duration<double>>(t42 - t4).count()
-              << " seconds" << std::endl;*/
+
       for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               pop[o]=s_opt;
             }
-      //best_solutions = identify_best_solutions(pop,k,n);
-      //cout_list(best_solutions,snpNameList);
-      /*auto t45 = Clock::now();
-      //std::cout << "hill climning:"
-                << duration_cast<duration<double>>(t45 - t42).count()
-                << " seconds" << std::endl;*/
-      //cout<<"pop finale:"<<endl;
-      //cout_list(pop,snpNameList);
-
-      /*bool result = std::equal(pop_init.begin(), pop_init.end(), pop.begin());
-
-      if (result)
-        {z=z+1;}
-      else
-       {pop_init = pop;}*/
       h=h+1;
     }
-    //char filename= "out.txt";
     vector<patternscore> best_solutions = identify_best_solutions(pop,best_k,n);
-    //cout_list(best_solutions,snpNameList);
     auto t5 = Clock::now();
     float duree =duration_cast<duration<double>>(t5 - t1).count();
-    /*std::cout << "temps total: "
-              << duree
-              << " seconds" << std::endl;*/
 
     outfile(genos_file,snpNameList, best_solutions,s_n,n,duree,n_it);
 
