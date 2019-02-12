@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
               pop[l].idparent=l;
             }
 
-            
+
       vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(pop,n_p);
 
       vector<patternscore> children_parents;
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
     vector<patternscore> best_solutions = identify_best_solutions(pop,best_k,n);
     auto t5 = Clock::now();
     float duree =duration_cast<duration<double>>(t5 - t1).count();
-
+    cout << "Total execution time: "<<duree<< " seconds"<<endl;
     outfile(genos_file,snpNameList, best_solutions,s_n,n,duree,n_it);
 
     return 0;

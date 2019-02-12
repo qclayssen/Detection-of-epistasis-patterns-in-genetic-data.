@@ -13,14 +13,14 @@
 # ./launch_meme.sh toy_dataset 2 M0P
 
 
-rm memetic
+#rm memetic
 rm -rf outputs
 rm -rf results
 
 mkdir outputs
 mkdir results
 
-make
+#make
 simu=$(ls $1 | grep -i genotype)
 
 for genotype in ${simu};
