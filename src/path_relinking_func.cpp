@@ -1,3 +1,8 @@
+//Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
+//Parsing of CSV Files for Epistasis detection
+//Created :09/11/18
+//Modified :11/02/2019
+
 #include "../include/path_relinking_func.hpp"
 
 ////////////////////////////////////////////////
