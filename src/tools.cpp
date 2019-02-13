@@ -8,7 +8,7 @@
 //=================================================
 //get_snp_list
 //=================================================
-//get snp from the genotype file
+//Gets snp names from the header of genotype file
 vector<string> get_snp_list(string genos_file){
   vector<string> tokens;
   ifstream file;
@@ -37,9 +37,9 @@ void cout_list(vector<patternscore> list_to_cout,vector<string> snpNameList){
 }
 
 //=================================================
-//cout_list
+//calculate_delta
 //=================================================
-//Return a distance between solution for neighbours fonction
+//Returns the distance between two solutions
 int calculate_delta(patternscore s, patternscore sB){
   int diff=0;
   if (s.snp1!=sB.snp1 && s.snp1!=sB.snp2 && s.snp1!=sB.snp3){
@@ -56,9 +56,9 @@ int calculate_delta(patternscore s, patternscore sB){
 
 
 //=================================================
-//cout_list
+//neighbours
 //=================================================
-// Return a vector size s_n of closest neighbor
+// Returns a vector of size s_n containing close neighbours
 vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscoreList,int s_n){
   vector<patternscore> s_neighbours;
   int countForBreak=0;
@@ -80,7 +80,7 @@ vector<patternscore> neighbours(patternscore s,vector<patternscore> patternscore
 //=================================================
 //hill_climbing_lc
 //=================================================
-// Locale search return solution with gscore/pvalue >= of solution input, search on s_n neighbours
+// Local search : Returns solution with the highest gscore/pvalue localy, searching step by step
 patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternscore> patternscoreList,blas_matrix genos,blas_matrix phenos_m,int s_n){
   vector<patternscore> s_neighbours = neighbours(s_closest_neighbour,patternscoreList,s_n);
   patternscore actual_s = s_closest_neighbour;
@@ -105,8 +105,7 @@ patternscore hill_climbing_lc(patternscore s_closest_neighbour, vector<patternsc
 //=================================================
 //outfile
 //=================================================
-
-//creat the output file
+//Creates the output file
 void outfile(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, int n, float duree ,int n_it){
   string file_basename = basename((char*)genos_file.c_str());
   string result_filename = "outputs/s_n"+to_string(s_n) +"_n"+to_string(n)+"_n_it_"+to_string(n_it)+"_"+file_basename;

@@ -9,7 +9,7 @@
 //=================================================
 //create contingency table pattern2
 //=================================================
-//goes through the genotype and completes a contingency table
+//Goes through the genotype matrix and completes a contingency table for a pattern of size 2
 void create_contingency_table_pattern2(int l1,int l2,contingence2SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
   int k;
   for (int i=0;i<3;i++){ //Set contingency matrix to 0
@@ -98,8 +98,7 @@ void create_contingency_table_pattern2(int l1,int l2,contingence2SNP* adr_contin
 //=================================================
 //create contingency table pattern3
 //=================================================
-
-//goes through the genotype and completes a contingency table
+//Goes through the genotype matrix and completes a contingency table for a pattern of size 3
 
 void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
   int k;
@@ -332,7 +331,7 @@ void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr
 //=================================================
 //g test 2SNP
 //=================================================
-//calculates gscore with the containgence table and boost
+//Calculates gscore and p-value thanks to contingency table and boost
 //for a pattern with 2 snp
 score_pval g_test_2SNP(contingence2SNP contingence2){
   int const nbrcolonnes(9);
@@ -425,7 +424,7 @@ for(unsigned i=0; i<nbrligne; ++i){
 //=================================================
 //g test 3SNP
 //=================================================
-//calculates gscore with the containgence table and boost
+//Calculates gscore and p-value thanks to contingency table and boost
 //for a pattern with 3 snp
 score_pval g_test_3SNP(contingence3SNP contingence2){
   int const nbrcolonnes(27);
@@ -517,7 +516,7 @@ for(unsigned i=0; i<nbrligne; ++i){
 //=================================================
 //add_gtest_pval
 //=================================================
-//add pval in the structure of solution
+//Adds pval in the structure of solution
 float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   score_pval bi;
   float score;
@@ -541,7 +540,7 @@ float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_
 //=================================================
 //add_gtest_score
 //=================================================
-//add pval in the structure of solution
+//Adds pval in the structure of solution
 float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   score_pval bi;
   float score;
@@ -566,7 +565,7 @@ float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos
 //=================================================
 //add_gtest_results
 //=================================================
-//add pval in the structure of solution
+//Returns both pval and score of a given pattern
 score_pval add_gtest_results (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   score_pval bi;
   if(pattern.snp3==-1){
