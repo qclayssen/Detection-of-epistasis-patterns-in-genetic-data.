@@ -5,12 +5,12 @@
 
 #include "../include/path_relinking_func.hpp"
 
-////////////////////////////////////////////////
+//=================================================
 /*
 Initialisation of the elite solutions : they are selected at random among all possible solutions.
 Returns a vector of k solutions, with k being set in the Parameters file.
 */
-
+//=================================================
 vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternscore> patternscoreList){
   vector<patternscore> elite_sols;
   vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
@@ -28,11 +28,12 @@ vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternsco
 }
 
 
-////////////////////////////////////////////////
+//=================================================
 /*
 Select the two solutions sA and sB : they are selected at random among the elite solutions.
 Returns a vector of 2 solutions, the first one considered as sA, the second one considered as sB.
 */
+//=================================================
 vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols){
   vector<patternscore> sA_sB;
   vector<patternscore> nodes(elite_sols.begin(),elite_sols.end());
@@ -49,11 +50,12 @@ vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_s
   return(sA_sB);
 }
 
-////////////////////////////////////////////////
+//=================================================
 /*
 Select in the neighbourhood of sA the solution that is the closest to sB.
 Returns a unique solution.
 */
+//=================================================
 patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList,int s_n){
   patternscore s_closest_neighbour;
   vector<patternscore> s_neighbours=neighbours(s,patternscoreList,s_n); //Create a vector containing s_n neighbours of sA
@@ -68,11 +70,12 @@ patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patterns
   return(s_closest_neighbour);
 }
 
-////////////////////////////////////////////////
+//=================================================
 /*
 Check if the p-value/score of the input solution is better than any of the values in the elite solutions
 Returns 1 if the solution is better than an elite solution, returns 0 if it isn't.
 */
+//=================================================
 int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols){
   int min_elite=0;
   double min_score_pval=0;
@@ -113,11 +116,12 @@ int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_
   }
 }
 
-////////////////////////////////////////////////
+//=================================================
 /*
 Replace the value with the lowest score among the elite solution by an optimized solution.
 The vector of elite solutions is given by adress, so there is no return.
 */
+//=================================================
 void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
   double min_score_pval=0;
   double min_score=999999;
@@ -154,11 +158,12 @@ void update(patternscore s_opt, vector<patternscore>* adr_elite_sols){
   }
 }
 
-////////////////////////////////////////////////
+//=================================================
 /*
 Out File Manager, formating the results and writing them in a file located in the outputs directory.
 On this file, the elite solutions with there scores and p-value, plus the time that was necessary for this execution of the method.
 */
+//=================================================
 void outfilePR(string genos_file ,vector<string> snpNameList,vector<patternscore> best_solutions,int s_n, float duree){
   //The name of the file is generated with the name of the genotype file that was in input of the method.
   string file_basename = basename((char*)genos_file.c_str());
