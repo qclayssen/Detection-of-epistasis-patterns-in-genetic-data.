@@ -28,7 +28,7 @@ with open(os.path.join(entFolder,entFile), 'r') as results:
             countTP+=1
         else:
             countFP+=1
-
+        ligne=results.readline()
 eval=open(os.path.join(sorFolder, "results_"+entFile),'a')
 if countTP!=0:
     TP+=1
