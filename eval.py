@@ -28,6 +28,8 @@ with open(os.path.join(entFolder,entFile), 'r') as results:
             countTP+=1
         else:
             countFP+=1
+        if len(re.findall("seconds",ligne))>=0:
+            timer=ligne
         ligne=results.readline()
 
 eval=open(os.path.join(sorFolder, "results_"+entFile),'a')
@@ -41,3 +43,7 @@ else:
     FN+=1
     eval.write("FN"+'\n')
 eval.close()
+
+time=open(os.path.join(sorFolder, "time"),'a')
+time.write(timer)
+time.close()

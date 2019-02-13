@@ -10,7 +10,7 @@
 ##############################
 
 #Example of command line :
-# ./launch_pr.sh toy_dataset 2 M0P
+# ./launch_pr.sh toy_example/data/ 2 M0P
 
 
 rm path_relinking
