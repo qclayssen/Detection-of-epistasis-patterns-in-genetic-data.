@@ -10,18 +10,21 @@
 ##############################
 
 #Example of command line :
-# ./launch_meme.sh toy_dataset 2 M0P
+# ./launch_meme.sh ../simu_Damien/Simu_naive_2snp_0.25 2 X
 
 
-#rm memetic
+rm memetic
 rm -rf outputs
 rm -rf results
 
 mkdir outputs
 mkdir results
 
-#make
+make
 simu=$(ls $1 | grep -i genotype)
+
+
+
 
 for genotype in ${simu};
 do

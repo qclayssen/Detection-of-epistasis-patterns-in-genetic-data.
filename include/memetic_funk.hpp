@@ -37,9 +37,4 @@ vector<patternscore> initialize_population(int n,vector<patternscore>* adr_patte
 void update_population(vector<patternscore> children_parents, vector<patternscore>* adr_pop,int n);
 
 
-bool comparebypval(const patternscore &a, const patternscore &b);
-
-bool comparebyscore(const patternscore &a, const patternscore &b);
-
-
 #endif

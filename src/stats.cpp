@@ -312,18 +312,14 @@ score_pval g_test_2SNP(contingence2SNP contingence2){
   int const nbrcolonnes(9);
   int const nbrligne(2);
   score_pval result_gtest;
-  //cout<<nbrcolonnes<<endl;
 
   for(int j=0; j<(nbrcolonnes); ++j)
   {    for(int i=0; i<(nbrligne); ++i)
       {
-
-         //cout<<contingence2[nbrligne][j]<<"+"<<contingence2[i][j]<<"=";
          contingence2[nbrligne][j] += contingence2[i][j];
-         //cout<<contingence2[nbrligne][j]<<" ";
 
       }
-      //cout<<";"<<endl;
+
   }
 
   for(int j=0; j<(nbrcolonnes); ++j)
@@ -336,15 +332,7 @@ score_pval g_test_2SNP(contingence2SNP contingence2){
       {
          contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
       }
-/*
-  for (int i=0;i<3;i++){
-    for (int j=0;j<10;j++){
-      cout<<contingence2[i][j]<<" ";
-    }
-    cout<<endl;
-  }
-  cout<<endl;
-*/
+
   float contingencetheo[nbrligne][nbrcolonnes];
   for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
     for (int j=0;j<(nbrcolonnes);j++){
@@ -353,33 +341,11 @@ score_pval g_test_2SNP(contingence2SNP contingence2){
   }
   for(int i=0; i<(nbrligne); ++i){
     for(int j=0; j<(nbrcolonnes); ++j){
-       //cout<<contingence2[i][nbrcolonnes]<<"*"<<contingence2[nbrligne][j]<<"/"<<contingence2[nbrligne][nbrcolonnes];
       contingencetheo[i][j] = (float) contingence2[i][nbrcolonnes]* (float)contingence2[nbrligne][j]/(float)contingence2[nbrligne][nbrcolonnes];
-      // cout<<"="<<contingencetheo[i][j]<<endl;
     }
   }
-
-/*
-  for (int i=0;i<2;i++){
-    for (int j=0;j<9;j++){
-      cout<<contingencetheo[i][j]<<" ";
-    }
-    cout<<endl;
-  }
-  cout<<endl;
-*/
 
 float scorekhi2=0;
-/*
-  for(int i(0); i<(nbrligne); ++i)
-  {    for(int j(0); j<(nbrcolonnes); ++j)
-      {
-         scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
-         //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
-      }
-  }
-  */
-
 int test;
 test=0;
 
@@ -401,11 +367,8 @@ for(unsigned i=0; i<nbrligne; ++i){
       test=1;
     }
   }
-}/*
-if(test==1){
-  cout<<"The test isn't reliable"<<endl;
 }
-*/
+
   int df;
   test=0;
   df=(nbrligne-1)*(nbrcolonnes-1);
@@ -422,16 +385,10 @@ if(test==1){
     scorekhi2  *= 2;
     boost::math::chi_squared_distribution<double> chi2_dist(df);
     pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
-    //if(pval == 0){
-    //    pval = 2.0e-16;}
-    //cout<<"score: "<<scorekhi2<<endl;
-    //cout<<"p: "<<pval<<endl;
   }
   else{
     scorekhi2=0;
     pval=1;
-    //cout<<"score: "<<scorekhi2<<endl;
-    //cout<<"p: "<<pval<<endl;
   }
   result_gtest.score=scorekhi2;
   result_gtest.pval=pval;
@@ -442,18 +399,12 @@ score_pval g_test_3SNP(contingence3SNP contingence2){
   int const nbrcolonnes(27);
   int const nbrligne(2);
   score_pval result_gtest;
-  //cout<<nbrcolonnes<<endl;
 
   for(int j=0; j<(nbrcolonnes); ++j)
   {    for(int i=0; i<(nbrligne); ++i)
       {
-
-         //cout<<contingence2[nbrligne][j]<<"+"<<contingence2[i][j]<<"=";
          contingence2[nbrligne][j] += contingence2[i][j];
-         //cout<<contingence2[nbrligne][j]<<" ";
-
       }
-      //cout<<";"<<endl;
   }
 
   for(int j=0; j<(nbrcolonnes); ++j)
@@ -466,15 +417,7 @@ score_pval g_test_3SNP(contingence3SNP contingence2){
       {
          contingence2[nbrligne][nbrcolonnes] += contingence2[i][nbrcolonnes];
       }
-/*
-  for (int i=0;i<3;i++){
-    for (int j=0;j<28;j++){
-      cout<<contingence2[i][j]<<" ";
-    }
-    cout<<endl;
-  }
-  cout<<endl;
-*/
+
   float contingencetheo[nbrligne][nbrcolonnes];
   for (int i=0;i<(nbrligne);i++){ //Set contingency matrix to 0
     for (int j=0;j<(nbrcolonnes);j++){
@@ -483,30 +426,11 @@ score_pval g_test_3SNP(contingence3SNP contingence2){
   }
   for(int i=0; i<(nbrligne); ++i){
     for(int j=0; j<(nbrcolonnes); ++j){
-       //cout<<contingence2[i][nbrcolonnes]<<"*"<<contingence2[nbrligne][j]<<"/"<<contingence2[nbrligne][nbrcolonnes];
       contingencetheo[i][j] = (float) contingence2[i][nbrcolonnes]* (float)contingence2[nbrligne][j]/(float)contingence2[nbrligne][nbrcolonnes];
-      // cout<<"="<<contingencetheo[i][j]<<endl;
     }
   }
-/*
-  for (int i=0;i<2;i++){
-    for (int j=0;j<27;j++){
-      cout<<contingencetheo[i][j]<<" ";
-    }
-    cout<<endl;
-  }
-  cout<<endl;
-*/
+
 float scorekhi2=0;
-/*
-  for(int i(0); i<(nbrligne); ++i)
-  {    for(int j(0); j<(nbrcolonnes); ++j)
-      {
-         scorekhi2 += (pow(((contingence2[i][j]-(contingencetheo[i][j]))),2)/contingencetheo[i][j]);
-         //cout<<scorekhi2<<"="<<contingence2[i][j]<<"-"<<contingencetheo[i][j]<<"^2"<<"/"<<contingencetheo[i][j]<<endl;
-      }
-  }
-  */
 
 int test;
 test=0;
@@ -530,10 +454,6 @@ for(unsigned i=0; i<nbrligne; ++i){
     }
   }
 }
-/*
-if(test==1){
-  cout<<"The test isn't reliable"<<endl;
-}*/
 
   int df;
   test=0;
@@ -551,16 +471,10 @@ if(test==1){
     scorekhi2  *= 2;
     boost::math::chi_squared_distribution<double> chi2_dist(df);
     pval = 1 - boost::math::cdf(chi2_dist, scorekhi2);
-    //if(pval == 0){
-    //    pval = 2.0e-16;}
-    //cout<<"score: "<<scorekhi2<<endl;
-    //cout<<"p: "<<pval<<endl;
   }
   else{
     scorekhi2=0;
     pval=1;
-    //cout<<"score: "<<scorekhi2<<endl;
-    //cout<<"p: "<<pval<<endl;
   }
   result_gtest.score=scorekhi2;
   result_gtest.pval=pval;

@@ -56,8 +56,9 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
 
    vector<patternscore> children_parents;
    for (int i=0;i<pairs_of_parents.size();++i){
+
      if(pairs_of_parents[i].parent1.snp1==pairs_of_parents[i].parent2.snp1) //the son inherits from the father and an snp from the mother
-       { son=pairs_of_parents[i].parent1;
+       {son=pairs_of_parents[i].parent1;
         son.snp2=pairs_of_parents[i].parent2.snp2;
         children_parents.push_back(son);}
      son=pairs_of_parents[i].parent1;
@@ -71,6 +72,7 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
      daugther=pairs_of_parents[i].parent2;
      daugther.snp2=pairs_of_parents[i].parent1.snp2;
      children_parents.push_back(daugther);
+
    } return(children_parents);
 
 
@@ -146,22 +148,14 @@ void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,i
 //Sort of solutions
 //=================================================
 
-bool comparebypval(const patternscore &a, const patternscore &b){
-
-  return a.pval < b.pval;
-}
-
-bool comparebyscore(const patternscore &a, const patternscore &b){
-  return a.score > b.score;
-}
 
 vector<patternscore> identify_best_solutions(vector<patternscore> pop, int k, int n){
   vector<patternscore> best_solutions;
   if (pop[1].pval!=0){
-    std::sort(pop.begin(), pop.end(), comparebypval);
+    std::sort(pop.begin(), pop.end(), compareByScore);
   }
   else{
-    std::sort(pop.begin(), pop.end(), compareByScore);
+    std::sort(pop.begin(), pop.end(), compareByPval);
   }
   int i=0;
   while(i<k){

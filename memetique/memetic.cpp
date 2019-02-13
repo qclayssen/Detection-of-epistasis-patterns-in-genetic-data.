@@ -159,8 +159,11 @@ int main(int argc, char *argv[])
         children_parents[i].pval=biScore.pval;}
       }
 
+      //replace parent by children with higher score
       update_population(children_parents, adr_pop,n);
 
+
+      //local search on new population
       for (int o=0;o<pop.size();o++){
               patternscore s_opt=hill_climbing_lc(pop[o],patternscoreList,genos,phenos_m,s_n);
               pop[o]=s_opt;
@@ -170,8 +173,9 @@ int main(int argc, char *argv[])
     vector<patternscore> best_solutions = identify_best_solutions(pop,best_k,n);
     auto t5 = Clock::now();
     float duree =duration_cast<duration<double>>(t5 - t1).count();
-    cout << "Total execution time: "<<duree<< " seconds"<<endl;
-    outfile(genos_file,snpNameList, best_solutions,s_n,n,duree,n_it);
+    //Checks timer, and calculates the difference between initial timer and actual timer
+
+    outfile(genos_file,snpNameList, best_solutions,s_n,n,duree,n_it);//Prints all the results in a file
 
     return 0;
 
