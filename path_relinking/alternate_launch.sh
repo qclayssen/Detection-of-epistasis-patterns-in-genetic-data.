@@ -22,7 +22,7 @@ foo(){
     ./path_relinking ${genotypeFolder}/$1 ${genotypeFolder}/${phenotype} #Execuction of the Method
     end=`date +%s`
     diff=$((end-start))
-    runtime=$(runtime+diff)
+    runtime=$((runtime+diff))
     evalFile=$(ls ./outputs |grep $1) #First part of the evalutation : Creation of the 'results' file filed with TP/FP/FN
     ../eval.py outputs ${evalFile} results $2 $3
   done
