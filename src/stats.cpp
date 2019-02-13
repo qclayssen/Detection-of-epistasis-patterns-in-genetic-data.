@@ -1,5 +1,15 @@
+//Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
+//Statistique fonction for Epistasis detection
+//Created :09/11/18
+//Modified :11/02/2019
+
 #include "../include/stats.hpp"
 
+
+//=================================================
+//create contingency table pattern2
+//=================================================
+//goes through the genotype and completes a contingency table
 void create_contingency_table_pattern2(int l1,int l2,contingence2SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
   int k;
   for (int i=0;i<3;i++){ //Set contingency matrix to 0
@@ -81,6 +91,15 @@ void create_contingency_table_pattern2(int l1,int l2,contingence2SNP* adr_contin
     }
   }
 }
+
+
+
+
+//=================================================
+//create contingency table pattern3
+//=================================================
+
+//goes through the genotype and completes a contingency table
 
 void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr_contingence,blas_matrix genos, blas_matrix phenos_m){
   int k;
@@ -308,6 +327,13 @@ void create_contingency_table_pattern3(int l1,int l2,int l3,contingence3SNP* adr
   }
 }
 
+
+
+//=================================================
+//g test 2SNP
+//=================================================
+//calculates gscore with the containgence table and boost
+//for a pattern with 2 snp
 score_pval g_test_2SNP(contingence2SNP contingence2){
   int const nbrcolonnes(9);
   int const nbrligne(2);
@@ -395,6 +421,12 @@ for(unsigned i=0; i<nbrligne; ++i){
   return(result_gtest);
 }
 
+
+//=================================================
+//g test 3SNP
+//=================================================
+//calculates gscore with the containgence table and boost
+//for a pattern with 3 snp
 score_pval g_test_3SNP(contingence3SNP contingence2){
   int const nbrcolonnes(27);
   int const nbrligne(2);
@@ -481,17 +513,22 @@ for(unsigned i=0; i<nbrligne; ++i){
   return(result_gtest);
 }
 
+
+//=================================================
+//add_gtest_pval
+//=================================================
+//add pval in the structure of solution
 float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   score_pval bi;
   float score;
-  if(pattern.snp3==-1){
+  if(pattern.snp3==-1){//for a pattern with 2 snp
     contingence2SNP contingence2;
     contingence2SNP* adr_contingence2 = &contingence2;
     create_contingency_table_pattern2(pattern.snp1,pattern.snp2,adr_contingence2,genos,phenos_m);
     bi=g_test_2SNP(contingence2);
     score=bi.pval;
   }
-  else{
+  else{//for a pattern with 3 snp
     contingence3SNP contingence3;
     contingence3SNP* adr_contingence3 = &contingence3;
     create_contingency_table_pattern3(pattern.snp1,pattern.snp2,pattern.snp3,adr_contingence3,genos,phenos_m);
@@ -501,6 +538,10 @@ float add_gtest_pval (patternscore pattern,blas_matrix genos,blas_matrix phenos_
   return(score);
 }
 
+//=================================================
+//add_gtest_score
+//=================================================
+//add pval in the structure of solution
 float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   score_pval bi;
   float score;
@@ -521,6 +562,11 @@ float add_gtest_score (patternscore pattern,blas_matrix genos,blas_matrix phenos
   return(score);
 }
 
+
+//=================================================
+//add_gtest_results
+//=================================================
+//add pval in the structure of solution
 score_pval add_gtest_results (patternscore pattern,blas_matrix genos,blas_matrix phenos_m){
   score_pval bi;
   if(pattern.snp3==-1){

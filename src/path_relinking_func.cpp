@@ -1,16 +1,17 @@
 //Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
-//Parsing of CSV Files for Epistasis detection
+//Fonction of Path Relinking for Epistasis detection
 //Created :09/11/18
 //Modified :11/02/2019
 
 #include "../include/path_relinking_func.hpp"
 
 //=================================================
+//initialize_elite_solutions
+//=================================================
 /*
 Initialisation of the elite solutions : they are selected at random among all possible solutions.
 Returns a vector of k solutions, with k being set in the Parameters file.
 */
-//=================================================
 vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternscore> patternscoreList){
   vector<patternscore> elite_sols;
   vector<patternscore> nodes(patternscoreList.begin(),patternscoreList.end());
@@ -29,11 +30,12 @@ vector<patternscore> initialize_elite_solutions(unsigned int k,vector<patternsco
 
 
 //=================================================
+//select_two_solutions_at_random
+//=================================================
 /*
 Select the two solutions sA and sB : they are selected at random among the elite solutions.
 Returns a vector of 2 solutions, the first one considered as sA, the second one considered as sB.
 */
-//=================================================
 vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_sols){
   vector<patternscore> sA_sB;
   vector<patternscore> nodes(elite_sols.begin(),elite_sols.end());
@@ -51,11 +53,12 @@ vector<patternscore> select_two_solutions_at_random(vector<patternscore> elite_s
 }
 
 //=================================================
+//select_closest_neighbor_to_guiding_solution
+//=================================================
 /*
 Select in the neighbourhood of sA the solution that is the closest to sB.
 Returns a unique solution.
 */
-//=================================================
 patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patternscore sB, vector<patternscore> patternscoreList,int s_n){
   patternscore s_closest_neighbour;
   vector<patternscore> s_neighbours=neighbours(s,patternscoreList,s_n); //Create a vector containing s_n neighbours of sA
@@ -71,11 +74,13 @@ patternscore select_closest_neighbor_to_guiding_solution(patternscore s,patterns
 }
 
 //=================================================
+//promizing_score
+//=================================================
+
 /*
 Check if the p-value/score of the input solution is better than any of the values in the elite solutions
 Returns 1 if the solution is better than an elite solution, returns 0 if it isn't.
 */
-//=================================================
 int promizing_score(patternscore s_closest_neighbour,vector<patternscore> elite_sols){
   int min_elite=0;
   double min_score_pval=0;

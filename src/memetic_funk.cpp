@@ -1,3 +1,9 @@
+//Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
+//Fonction of memetic algorithm for Epistasis detection
+//Created :09/11/18
+//Modified :11/02/2019
+
+
 #include "../include/memetic_funk.hpp"
 
 
@@ -84,6 +90,7 @@ vector<patternscore> create_two_children_for_each_selected_pair_of_parents(vecto
 // perform_one_mutation_per_child: mutation of child base on random
 //=================================================
 
+// Change a snp of child randomly
 void perform_one_mutation_per_child(vector<patternscore>* adr_children_parents,int prob_mutation,vector<patternscore> patternscoreList){
  for (int i=0;i<(*adr_children_parents).size();++i){
    int mutation = rand() % 100 + 0;

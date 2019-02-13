@@ -1,3 +1,8 @@
+//Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
+//Parsing of CSV Files for Epistasis detection
+//Created :09/11/18
+//Modified :11/02/2019
+
 #include "../include/Parameters_file_parsing.hpp"
 
 #include <sstream>
@@ -117,17 +122,3 @@ void parameters_file_parsing::list_parameters() const
     << "best_k => " << best_k << endl
     << "#################################" << endl;
 }
-//=================================================
-// parameters_file_parsing : update_subset_size_large
-//=================================================
-/*void parameters_file_parsing::update_subset_size_large(unsigned const& n_genos)
-{
-    if(aco_set_size == 0)
-        aco_set_size = sqrt(n_genos);
-}*/
-
-/*
-int main(){
- parameters_file_parsing a;
- a.list_parameters();
-} */
