@@ -1,0 +1,9 @@
+Pattern	p-value	score
+<N19,N66,X1>	0	415.096
+<N1,N66,X1>	0	405.481
+<N83,X1,X3>	0	696.825
+<N79,X1>	0	366.679
+durée: 40.4387 seconde
+<N9,X1,X3>	0	718.136
+
+durée: 40.4387 seconds

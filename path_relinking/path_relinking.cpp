@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
       //If the neighbour is better than the lowest value, a local search is used.
       //The solution outputted of local search replaces the lowest elite solution.
       //Even if the elite solutions stay the same, s is replaced by the neighbour, until s equal sB.
-      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList, patternscoreList.size()); //C.F path_relinking_func.cpp
+      patternscore s_closest_neighbour=select_closest_neighbor_to_guiding_solution(s,sB,patternscoreList, 100); //C.F path_relinking_func.cpp
       biScore=add_gtest_results(s_closest_neighbour,genos,phenos_m);
       s_closest_neighbour.score=biScore.score;
       s_closest_neighbour.pval=biScore.pval;

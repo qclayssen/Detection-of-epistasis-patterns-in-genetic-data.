@@ -11,11 +11,10 @@ simu=$(ls $1 | grep -i genotype)
 genotypeFolder=$1
 sizePattern=$2
 identifierGen=$3
-runtime=0
 
 foo(){
   local run=$1
-  for i in `seq 1 10`;
+  for i in `seq 1 100`;
   do
     phenotype=$(echo $1 | sed 's/Genotype/Phenotype/' | sed 's/genotype/phenotype/')
     start=`date +%s%6N`
@@ -28,7 +27,7 @@ foo(){
   done
   powerFile=$(ls ./results |grep ${genotype})
   ../eval_Step2.py results ${powerFile} #Second part of the evaluation : For each file
-  echo ${runtime}
+  sed 's/.\{6\}$/.&/' <<< "${runtime}" > results/exec_time.txt
 }
 
 for genotype in ${simu};

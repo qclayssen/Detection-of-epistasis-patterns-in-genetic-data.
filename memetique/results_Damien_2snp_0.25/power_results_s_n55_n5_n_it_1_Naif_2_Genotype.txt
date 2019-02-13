@@ -1,0 +1,4 @@
+Recall=1.0
+Precision=0.83
+F-measure=0.907103825136612
+Power=0.8217821782178217
