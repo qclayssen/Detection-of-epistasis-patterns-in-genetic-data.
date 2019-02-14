@@ -1,4 +1,4 @@
-This path-relinking algorithm was realized during a Master 2 project, and it's purpose was to be applied to epistasy, and to judge of it's efficiency on this kind of datas.
+This memetic algorithm was realized during a Master 2 project, and it's purpose was to be applied to epistasy, and to judge of it's efficiency on this kind of datas.
 
 *Main contributors :*
 Quentin Clayssen and Antoine Lainé, Master 2 students at University of Nantes, in Bioinformatics.
@@ -18,16 +18,16 @@ Every C++/Python library used to run the method should be installed natively.
 Note : The Boost library is directly in the archive, so it doesn't need to be installed.
 
 *2-Compilation*
-Be sure you are in the path-relinking directory. Here you should be able to use the command :
+Be sure you are in the memetic directory. Here you should be able to use the command :
     make
 
 *3-Execution*
 The method can be launched simply by using the command :
-    ./launch_pr.sh genotype_file.txt phenotype_file.txt
+    ./launch_meme.sh genotype_file.txt phenotype_file.txt
 Replacing the parameters with the path to your genotype and phenotype files.
 
 Exectution on toy example :
-    ./launch_pr.sh toy_example/data/genotype_model1_0_01p_0005h_005m_001.txt toy_example/data/phenotype_model1_0_01p_0005h_005m_001.txt
+    ./launch_meme.sh toy_example/data/genotype_model1_0_01p_0005h_005m_001.txt toy_example/data/phenotype_model1_0_01p_0005h_005m_001.txt
 
 *4-Results*
 The results can be found in the 'outputs' folder, under this format :

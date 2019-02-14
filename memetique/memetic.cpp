@@ -139,19 +139,24 @@ int main(int argc, char *argv[])
 //stop condition for evolution of population
     while (h < n_it){
 
+      //attribution id parent
       vector<patternscore> pop_init=pop;
       for (int l=0;l<pop.size();l++){
               pop[l].idparent=l;
             }
 
-
+            //Create parents couple
       vector<parents_pairs> pairs_of_parents=select_pairs_of_individuals_to_be_crossed(pop,n_p);
 
+        //Create 2 children per couple
       vector<patternscore> children_parents;
       children_parents=create_two_children_for_each_selected_pair_of_parents(pairs_of_parents);
+
+      //mutation of children
       vector<patternscore>* adr_children_parents = &children_parents;
       perform_one_mutation_per_child(adr_children_parents,prob_mutation,patternscoreList);
 
+      // ad gscore/pvalue to children
       for (int i=0;i<children_parents.size();i++){
         if (children_parents[i].score==0 && children_parents[i].pval==0)
         {biScore=add_gtest_results(children_parents[i],genos,phenos_m);
