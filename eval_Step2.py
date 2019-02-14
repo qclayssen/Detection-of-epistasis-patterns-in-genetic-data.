@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+
+#//Autors : Quentin Clayssen, Antoine Laine (Master2 Bioinformatics, University of Nantes)
+#//Seconde evalution of Naive result
+#//Created :09/11/18
+#//Modified :11/02/2019
+
 import re
 import os
 import random
